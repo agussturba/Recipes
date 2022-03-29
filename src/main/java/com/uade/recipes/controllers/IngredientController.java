@@ -1,5 +1,6 @@
 package com.uade.recipes.controllers;
 
+
 import com.uade.recipes.model.Ingredient;
 import com.uade.recipes.service.IngredientService;
 import com.uade.recipes.vo.IngredientVo;
@@ -42,4 +43,5 @@ public class IngredientController {
     public ResponseEntity<Ingredient> getIngredientByName(@PathVariable String name) {
         return ResponseEntity.status(HttpStatus.OK).body(ingredientService.getIngredientByName(name));
     }
+
 }

@@ -14,17 +14,15 @@ public class User {
     @Column(name = "user_name")
     private String userName;
     private String password;
-    private Boolean enabled;
 
 
     public User() {
     }
 
-    public User(String userName, String password, Boolean enabled, String email) {
+    public User(String userName, String password, String email) {
         this.userName = userName;
         this.password = password;
         this.email = email;
-        this.enabled = enabled;
     }
 
     public Integer getId() {
@@ -39,10 +37,6 @@ public class User {
         return userName;
     }
 
-
-    public boolean isEnabled() {
-        return enabled;
-    }
 
     public String getPassword() {
         return password;
@@ -72,14 +66,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
     }
 }
 

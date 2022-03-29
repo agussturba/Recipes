@@ -28,11 +28,11 @@ public class UserController {
     public ResponseEntity<List<User>> getAllUsers(){
         return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
     }
-    @GetMapping("/{email}")
+    @GetMapping("/email/{email}")
     public ResponseEntity<User> getUserByEmail(@PathVariable String email){
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByEmail(email));
     }
-    @GetMapping("/{username}")
+    @GetMapping("/userName/{username}")
     public ResponseEntity<User> getUserByUserName(@PathVariable String userName){
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByUserName(userName));
     }
@@ -41,7 +41,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.saveOrUpdateUser(userVo,"ROLE_CLIENT"));
     }
     @PostMapping("/admin")
-    public ResponseEntity<User> saveUserAdmin(@RequestBody UserVo userVo) throws ValidationException, UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException {
+    public ResponseEntity<User> saveUserStudent(@RequestBody UserVo userVo) throws ValidationException, UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException {
         return ResponseEntity.status(HttpStatus.OK).body(userService.saveOrUpdateUser(userVo,"ROLE_ADMIN"));
     }
 

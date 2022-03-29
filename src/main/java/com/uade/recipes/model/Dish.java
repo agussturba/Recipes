@@ -3,8 +3,7 @@ package com.uade.recipes.model;
 import javax.persistence.*;
 
 @Entity
-public class Ingredient {
-
+public class Dish {//Los platos para los burros
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -12,9 +11,17 @@ public class Ingredient {
     private String name;
     private String type;
 
-    public Ingredient(String name, String type) {
+    public Dish(String name, String type) {
         this.name = name;
         this.type = type;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -31,13 +38,5 @@ public class Ingredient {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 }

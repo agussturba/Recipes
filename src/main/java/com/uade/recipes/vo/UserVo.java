@@ -69,7 +69,6 @@ public class UserVo {
          user.setEmail(email);
          user.setPassword(password);
          user.setUserName(userName);
-         user.setEnabled(true);
          user.setRole(role);
          return user;
     }

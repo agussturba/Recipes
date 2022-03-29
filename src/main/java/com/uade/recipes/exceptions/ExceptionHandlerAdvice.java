@@ -1,9 +1,13 @@
 package com.uade.recipes.exceptions;
 
+import com.uade.recipes.exceptions.dishExceptions.DishNameContainsNumberException;
+import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;
+import com.uade.recipes.exceptions.dishExceptions.DishTypeContainsNumberException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNameContainsNumberException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientTypeContainsNumberException;
 import com.uade.recipes.exceptions.userExceptions.*;
+import com.uade.recipes.model.Dish;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -19,6 +23,10 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(IngredientNotFoundException.class)
     public ResponseEntity handleIngredientNotFoundException() {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ingredient was not found");
+    }
+    @ExceptionHandler(DishNotFoundException.class)
+    public ResponseEntity handleDishNotFoundException() {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dish was not found");
     }
 
     @ExceptionHandler(EmailExistsException.class)
@@ -49,6 +57,15 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(IngredientTypeContainsNumberException.class)
     public ResponseEntity handleIngredientTypeContainsNumberException() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The ingredient type cant contain numbers");
+    }
+    @ExceptionHandler(DishNameContainsNumberException.class)
+    public ResponseEntity handleDishNameContainsNumberException() {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The dish name cant contain numbers");
+    }
+
+    @ExceptionHandler(DishTypeContainsNumberException.class)
+    public ResponseEntity handleDishTypeContainsNumberException() {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The dish type cant contain numbers");
     }
 
 }
