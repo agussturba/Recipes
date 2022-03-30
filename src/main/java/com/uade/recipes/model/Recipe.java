@@ -12,7 +12,6 @@ public class Recipe {
     private String name;
     private String description;
     private String photos;//TODO BUSCAR COMO SE GUARDA LAS FOTOS EN UNA BASE DE DATOS
-    private Double rating;//Del 1 al 5 y que se vea desde el front,con un estilo de estrellas o puntacion.
     @OneToMany
     private List<IngredientQuantity> ingredientQuantityList;//Si se puede, buscar una forma mas eficiente.
     private String instructions;//TODO FIX THIS BUSCAR UNA FORMA DE AGREGAR FOTOS O VIDEOS EN LOS PASOS DEJO A PRIORI ASI
@@ -20,13 +19,12 @@ public class Recipe {
     private Dish dish;
     @ManyToOne
     private User user;
-    private String type;//Maybe useless pero creo con una query todo lo de esto es arreglable pero me dio paja.
+    private String type;//Maybe useless,remplazable con una query todo lo de esto es arreglable pero me dio paja.
 
-    public Recipe(String name, String description, String photos, Double rating, List<IngredientQuantity> ingredientQuantityList, String instructions, Dish dish, User user) {
+    public Recipe(String name, String description, String photos, List<IngredientQuantity> ingredientQuantityList, String instructions, Dish dish, User user) {
         this.name = name;
         this.description = description;
         this.photos = photos;
-        this.rating = rating;
         this.ingredientQuantityList = ingredientQuantityList;
         this.instructions = instructions;
         this.dish = dish;
@@ -56,14 +54,6 @@ public class Recipe {
 
     public void setPhotos(String photos) {
         this.photos = photos;
-    }
-
-    public Double getRating() {
-        return rating;
-    }
-
-    public void setRating(Double rating) {
-        this.rating = rating;
     }
 
     public List<IngredientQuantity> getIngredients() {

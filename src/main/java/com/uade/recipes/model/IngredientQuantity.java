@@ -10,10 +10,9 @@ public class IngredientQuantity {
     private Integer id;
     @ManyToOne
     private Ingredient ingredient;
-    private int quantity;
+    private Double quantity;
 
-    public IngredientQuantity(Integer id, Ingredient ingredient, int quantity) {
-        this.id = id;
+    public IngredientQuantity( Ingredient ingredient, Double quantity) {
         this.ingredient = ingredient;
         this.quantity = quantity;
     }
@@ -26,11 +25,11 @@ public class IngredientQuantity {
         this.ingredient = ingredient;
     }
 
-    public int getQuantity() {
+    public Double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
 

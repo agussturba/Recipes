@@ -5,8 +5,10 @@ import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.Dish;
 import com.uade.recipes.model.Recipe;
+import com.uade.recipes.model.RecipeRating;
 import com.uade.recipes.model.User;
 import com.uade.recipes.persistance.DishRepository;
+import com.uade.recipes.persistance.RecipeRatingRepository;
 import com.uade.recipes.persistance.RecipeRepository;
 import com.uade.recipes.persistance.UserRepository;
 import com.uade.recipes.vo.RecipeVo;
@@ -19,11 +21,13 @@ public class RecipeImplementation implements RecipeService {
     private final RecipeRepository recipeRepository;
     private final UserRepository userRepository;
     private final DishRepository dishRepository;
+    private final RecipeRatingRepository recipeRatingRepository;
 
-    public RecipeImplementation(RecipeRepository recipeRepository, UserRepository userRepository, DishRepository dishRepository) {
+    public RecipeImplementation(RecipeRepository recipeRepository, UserRepository userRepository, DishRepository dishRepository, RecipeRatingRepository ratingRepository) {
         this.recipeRepository = recipeRepository;
         this.userRepository = userRepository;
         this.dishRepository = dishRepository;
+        this.recipeRatingRepository = ratingRepository;
     }
 
     @Override
@@ -96,7 +100,10 @@ public class RecipeImplementation implements RecipeService {
         }
         User user = userRepository.findById(recipeVo.getUserId()).orElseThrow(UserNotFoundException::new);
         Dish dish = dishRepository.findById(recipeVo.getDishId()).orElseThrow(DishNotFoundException::new);
-        Recipe recipe = new Recipe(recipeVo.getName(), recipeVo.getDescription(), recipeVo.getPhotos(), recipeVo.getRating(), null, recipeVo.getInstructions(), dish, user);
-        return recipeRepository.save(recipe);
+        Recipe recipe = new Recipe(recipeVo.getName(), recipeVo.getDescription(), recipeVo.getPhotos(), null, recipeVo.getInstructions(), dish, user);
+        Recipe newRecipe = recipeRepository.save(recipe);
+        RecipeRating recipeRating = new RecipeRating(newRecipe);
+        recipeRatingRepository.save(recipeRating);
+        return newRecipe;
     }
 }

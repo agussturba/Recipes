@@ -1,9 +1,6 @@
 package com.uade.recipes.service;
 
-import com.uade.recipes.model.Dish;
 import com.uade.recipes.model.Recipe;
-import com.uade.recipes.model.User;
-import com.uade.recipes.vo.DishVo;
 import com.uade.recipes.vo.RecipeVo;
 
 import java.util.List;
