@@ -2,6 +2,7 @@ package com.uade.recipes.controllers;
 
 import com.uade.recipes.model.Recipe;
 import com.uade.recipes.service.RecipeService;
+import com.uade.recipes.vo.RecipeVo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,28 +18,43 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-    @GetMapping
+    @GetMapping//se hace asi por standard de rest
     public ResponseEntity<List<Recipe>> getAllRecipes(@RequestParam(required = false) Integer userId, @RequestParam(required = false) Integer dishId, @RequestParam(required = false) String type) {
         if (userId == null && dishId == null && type == null) {
             return ResponseEntity.status(HttpStatus.OK).body(recipeService.getAllRecipes());
-        }
-        if (userId != null && dishId == null && type == null) {
+        } else if (userId != null && dishId == null && type == null) {
             return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByUserId(userId));
-        }
-        if (userId == null && dishId != null && type == null) {
+        } else if (userId == null && dishId != null && type == null) {
             return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByDishId(dishId));
-        }
-        if (userId == null && dishId == null && type != null) {
+        } else if (userId == null && dishId == null && type != null) {
             return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipeByType(type));
+        } else if (userId != null && dishId != null && type == null) {
+            return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByUserIdAndDishId(userId, dishId));
+        } else if (userId != null && dishId == null && type != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByUserIdAndType(userId, type));
+        } else if (userId == null && dishId != null && type != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByDishIdAndType(dishId, type));
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByDishIdAndTypeAndUserId(dishId, type, userId));
         }
-        return null;//Terminar los metodos que falta
+
     }
+
     @GetMapping("/{name}")
-    public ResponseEntity<Recipe> getRecipesByName(@PathVariable String name){
+    public ResponseEntity<Recipe> getRecipesByName(@PathVariable String name) {
         return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipeByName(name));
     }
+
     @GetMapping("/rating/{rating}")
-    public ResponseEntity<List<Recipe>> getRecipesByRating(@PathVariable Double rating){
+    public ResponseEntity<List<Recipe>> getRecipesByRating(@PathVariable Double rating) {
         return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipeByHavingGreaterRating(rating));
+    }
+    @PostMapping
+    public ResponseEntity<Recipe> saveRecipe(@RequestBody RecipeVo recipeVo){
+        return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.saveOrUpdateRecipe(recipeVo));
+    }
+    @PutMapping
+    public ResponseEntity<Recipe> updateRecipe(@RequestBody RecipeVo recipeVo){
+        return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.saveOrUpdateRecipe(recipeVo));
     }
 }

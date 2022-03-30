@@ -20,7 +20,7 @@ public class Recipe {
     private Dish dish;
     @ManyToOne
     private User user;
-    private String type;
+    private String type;//Maybe useless pero creo con una query todo lo de esto es arreglable pero me dio paja.
 
     public Recipe(String name, String description, String photos, Double rating, List<IngredientQuantity> ingredientQuantityList, String instructions, Dish dish, User user) {
         this.name = name;

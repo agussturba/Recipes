@@ -53,6 +53,32 @@ public class RecipeImplementation implements RecipeService {
     }
 
     @Override
+    public List<Recipe> getRecipesByUserIdAndDishId(Integer userId, Integer dishId) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Dish dish = dishRepository.findById(dishId).orElseThrow(DishNotFoundException::new);
+        return recipeRepository.findByUserAndDish(user, dish);
+    }
+
+    @Override
+    public List<Recipe> getRecipesByDishIdAndTypeAndUserId(Integer userId, String type, Integer dishId) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Dish dish = dishRepository.findById(dishId).orElseThrow(DishNotFoundException::new);
+        return recipeRepository.findByDishAndTypeAndUser(dish, type, user);
+    }
+
+    @Override
+    public List<Recipe> getRecipesByUserIdAndType(Integer userId, String type) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        return recipeRepository.findByUserAndType(user, type);
+    }
+
+    @Override
+    public List<Recipe> getRecipesByDishIdAndType(Integer dishId, String type) {//Maybe useless
+        Dish dish = dishRepository.findById(dishId).orElseThrow(DishNotFoundException::new);
+        return recipeRepository.findByDishAndType(dish, type);
+    }
+
+    @Override
     public List<Recipe> getRecipesByDishId(Integer dishId) {
         Dish dish = dishRepository.findById(dishId).orElseThrow(UserNotFoundException::new);
         return recipeRepository.findByDish(dish);
@@ -65,12 +91,12 @@ public class RecipeImplementation implements RecipeService {
 
     @Override
     public Recipe saveOrUpdateRecipe(RecipeVo recipeVo) {//TODO THE VALIDATIONS AND THE INGREDIENT QUANTITY PROBLEM
-        if (recipeVo.getId()!=null){
+        if (recipeVo.getId() != null) {
             this.getRecipeById(recipeVo.getId());
         }
         User user = userRepository.findById(recipeVo.getUserId()).orElseThrow(UserNotFoundException::new);
         Dish dish = dishRepository.findById(recipeVo.getDishId()).orElseThrow(DishNotFoundException::new);
-        Recipe recipe = new Recipe(recipeVo.getName(),recipeVo.getDescription(), recipeVo.getPhotos(), recipeVo.getRating(), null,recipeVo.getInstructions(),dish,user);
+        Recipe recipe = new Recipe(recipeVo.getName(), recipeVo.getDescription(), recipeVo.getPhotos(), recipeVo.getRating(), null, recipeVo.getInstructions(), dish, user);
         return recipeRepository.save(recipe);
     }
 }
