@@ -1,14 +1,11 @@
 package com.uade.recipes.service;
 
-import com.uade.recipes.model.Recipe;
 import com.uade.recipes.model.RecipeRating;
 
-import java.util.Optional;
-
 public interface RecipeRatingService {
-    Optional<RecipeRating> getRecipeRatingByRecipeId(Integer recipeId);
+    RecipeRating getRecipeRatingByRecipeId(Integer recipeId);
 
-    Integer getAmountOfRecipeRatingsByRecipeId(Integer recipeId);
+    Integer getAmountOfRatingsByRecipeId(Integer recipeId);
 
     Double getAverageOfRecipeRatingsByRecipeId(Integer recipeId);
 
