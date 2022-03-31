@@ -1,8 +1,10 @@
 package com.uade.recipes.model;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import javax.persistence.*;
 
-@Entity
+@Document
 public class Dish {//Los platos para los burros
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -10,6 +12,9 @@ public class Dish {//Los platos para los burros
     private Integer id;
     private String name;
     private String type;
+
+    public Dish() {
+    }
 
     public Dish(String name, String type) {
         this.name = name;

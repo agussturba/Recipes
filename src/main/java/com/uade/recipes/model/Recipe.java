@@ -1,9 +1,11 @@
 package com.uade.recipes.model;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
+@Document
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

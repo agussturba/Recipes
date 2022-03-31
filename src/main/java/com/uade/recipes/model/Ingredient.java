@@ -1,8 +1,10 @@
 package com.uade.recipes.model;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import javax.persistence.*;
 
-@Entity
+@Document
 public class Ingredient {
 
     @Id
