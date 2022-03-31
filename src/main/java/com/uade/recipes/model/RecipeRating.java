@@ -1,10 +1,12 @@
 package com.uade.recipes.model;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import javax.persistence.*;
 import java.util.*;
 
-@Table(name = "recipe_rating")
-@Entity
+
+@Document
 public class RecipeRating {
     @Id
     @Column(name = "id", nullable = false)

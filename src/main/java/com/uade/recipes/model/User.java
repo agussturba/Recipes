@@ -1,9 +1,10 @@
 package com.uade.recipes.model;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import javax.persistence.*;
 
-@Entity
-@Table(name = "users")
+@Document
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

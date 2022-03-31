@@ -1,8 +1,12 @@
 package com.uade.recipes.model;
 
+import lombok.Data;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import javax.persistence.*;
 
-@Entity
+@Document
+//@Data to learn
 public class Dish {//Los platos para los burros
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
