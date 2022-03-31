@@ -11,6 +11,7 @@ public class RecipeRating {
     private Integer id;
     @OneToOne
     private Recipe recipe;
+    @ElementCollection
     private List<Double> ratings;
 
     public RecipeRating(Recipe recipe) {
@@ -41,13 +42,16 @@ public class RecipeRating {
     public void setRatings(List<Double> ratings) {
         this.ratings = ratings;
     }
-    public void addRating(Double rating){
+
+    public void addRating(Double rating) {
         this.ratings.add(rating);
     }
-    public int getNumberOfRatings(){
+
+    public int getNumberOfRatings() {
         return ratings.size();
     }
-    public Double getAverageRating(){
+
+    public Double getAverageRating() {
         return ratings.stream().mapToDouble(a -> a).average().orElse(0);
     }
 }

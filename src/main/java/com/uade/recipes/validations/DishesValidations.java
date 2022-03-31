@@ -1,10 +1,10 @@
-package com.uade.recipes.utilities;
+package com.uade.recipes.validations;
 
 import com.uade.recipes.exceptions.dishExceptions.DishNameContainsNumberException;
 import com.uade.recipes.exceptions.dishExceptions.DishTypeContainsNumberException;
 import com.uade.recipes.vo.DishVo;
 
-import static com.uade.recipes.utilities.IngredientsValidations.containsNumber;
+import static com.uade.recipes.validations.IngredientsValidations.containsNumber;
 
 public class DishesValidations {
     public static void validateDishData(DishVo dishVo){

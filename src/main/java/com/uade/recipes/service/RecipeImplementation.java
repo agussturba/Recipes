@@ -1,6 +1,6 @@
 package com.uade.recipes.service;
 
-import com.uade.recipes.exceptions.RecipeNotFoundException;
+import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.Dish;
@@ -43,11 +43,6 @@ public class RecipeImplementation implements RecipeService {
     @Override
     public Recipe getRecipeByName(String recipeName) {
         return recipeRepository.findByName(recipeName).orElseThrow(RecipeNotFoundException::new);
-    }
-
-    @Override
-    public List<Recipe> getRecipeByHavingGreaterRating(Double rating) {
-        return recipeRepository.findByRatingGreaterThanEqual(rating);
     }
 
     @Override

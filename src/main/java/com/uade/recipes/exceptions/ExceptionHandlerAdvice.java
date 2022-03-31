@@ -6,6 +6,7 @@ import com.uade.recipes.exceptions.dishExceptions.DishTypeContainsNumberExceptio
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNameContainsNumberException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientTypeContainsNumberException;
+import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.*;
 import com.uade.recipes.model.Dish;
 import org.springframework.http.HttpStatus;
@@ -17,16 +18,20 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ExceptionHandlerAdvice {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity handleClientNotFoundException() {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User was not found");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The User was not found");
     }
 
     @ExceptionHandler(IngredientNotFoundException.class)
     public ResponseEntity handleIngredientNotFoundException() {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ingredient was not found");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The Ingredient was not found");
     }
     @ExceptionHandler(DishNotFoundException.class)
     public ResponseEntity handleDishNotFoundException() {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Dish was not found");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The Dish was not found");
+    }
+    @ExceptionHandler(RecipeNotFoundException.class)
+    public ResponseEntity handleRecipeNotFoundException() {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The Recipe was not found");
     }
 
     @ExceptionHandler(EmailExistsException.class)
@@ -67,5 +72,6 @@ public class ExceptionHandlerAdvice {
     public ResponseEntity handleDishTypeContainsNumberException() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The dish type cant contain numbers");
     }
+
 
 }

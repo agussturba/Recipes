@@ -1,6 +1,5 @@
 package com.uade.recipes.service;
 
-import com.uade.recipes.exceptions.RecipeRatingException;
 import com.uade.recipes.model.Recipe;
 import com.uade.recipes.model.RecipeRating;
 import com.uade.recipes.persistance.RecipeRatingRepository;

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.uade.recipes.utilities.DishesValidations.validateDishData;
+import static com.uade.recipes.validations.DishesValidations.validateDishData;
 
 @Service
 public class DishImplementation implements DishService {

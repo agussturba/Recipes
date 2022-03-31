@@ -13,13 +13,12 @@ public class Recipe {
     private String description;
     private String photos;//TODO BUSCAR COMO SE GUARDA LAS FOTOS EN UNA BASE DE DATOS
     @OneToMany
-    private List<IngredientQuantity> ingredientQuantityList;//Si se puede, buscar una forma mas eficiente.
+    private List<IngredientQuantity> ingredientQuantityList;
     private String instructions;//TODO FIX THIS BUSCAR UNA FORMA DE AGREGAR FOTOS O VIDEOS EN LOS PASOS DEJO A PRIORI ASI
     @ManyToOne
     private Dish dish;
     @ManyToOne
     private User user;
-    private String type;//Maybe useless,remplazable con una query todo lo de esto es arreglable pero me dio paja.
 
     public Recipe(String name, String description, String photos, List<IngredientQuantity> ingredientQuantityList, String instructions, Dish dish, User user) {
         this.name = name;
@@ -29,7 +28,7 @@ public class Recipe {
         this.instructions = instructions;
         this.dish = dish;
         this.user = user;
-        this.type = dish.getType();
+
     }
 
     public String getName() {
@@ -104,11 +103,7 @@ public class Recipe {
         this.user = user;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
+    public String getRecipeType(){
+        return dish.getType();
     }
 }

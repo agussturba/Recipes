@@ -13,7 +13,6 @@ import java.util.Optional;
 @Repository
 public interface RecipeRepository extends CrudRepository<Recipe,Integer> {
     Optional<Recipe> findByName(String name);
-    List<Recipe> findByRatingGreaterThanEqual(Double rating);
     List<Recipe> findByType(String type);
     List<Recipe> findByUser(User user);
     List<Recipe> findByDish(Dish dish);

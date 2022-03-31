@@ -1,4 +1,4 @@
-package com.uade.recipes.utilities;
+package com.uade.recipes.validations;
 
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNameContainsNumberException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientTypeContainsNumberException;

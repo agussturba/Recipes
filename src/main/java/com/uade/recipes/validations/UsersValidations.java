@@ -1,4 +1,4 @@
-package com.uade.recipes.utilities;
+package com.uade.recipes.validations;
 
 import com.uade.recipes.exceptions.userExceptions.InvalidPasswordException;
 import com.uade.recipes.exceptions.userExceptions.InvalidRoleException;

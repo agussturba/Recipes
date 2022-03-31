@@ -44,11 +44,6 @@ public class RecipeController {
     public ResponseEntity<Recipe> getRecipesByName(@PathVariable String name) {
         return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipeByName(name));
     }
-
-    @GetMapping("/rating/{rating}")
-    public ResponseEntity<List<Recipe>> getRecipesByRating(@PathVariable Double rating) {
-        return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipeByHavingGreaterRating(rating));
-    }
     @PostMapping
     public ResponseEntity<Recipe> saveRecipe(@RequestBody RecipeVo recipeVo){
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.saveOrUpdateRecipe(recipeVo));

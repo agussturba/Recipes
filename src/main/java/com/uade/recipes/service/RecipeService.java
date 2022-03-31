@@ -12,8 +12,6 @@ public interface RecipeService {
 
     Recipe getRecipeByName(String recipeName);
 
-    List<Recipe> getRecipeByHavingGreaterRating(Double rating);
-
     List<Recipe> getRecipesByUserId(Integer userId);
 
     List<Recipe> getRecipesByUserIdAndDishId(Integer userId, Integer dishId);
