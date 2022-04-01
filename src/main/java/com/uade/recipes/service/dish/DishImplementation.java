@@ -45,6 +45,7 @@ public class DishImplementation implements DishService {
         }
         validateDishData(dishVo);
         Dish dish = new Dish(dishVo.getName(),dishVo.getType());
+
         return dishRepository.save(dish);
     }
 }
