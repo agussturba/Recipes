@@ -1,7 +1,7 @@
 package com.uade.recipes.controllers;
 
 import com.uade.recipes.model.RecipeRating;
-import com.uade.recipes.service.RecipeRatingService;
+import com.uade.recipes.service.recipeRating.RecipeRatingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

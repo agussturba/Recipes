@@ -1,4 +1,4 @@
-package com.uade.recipes.service;
+package com.uade.recipes.service.recipe;
 
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;

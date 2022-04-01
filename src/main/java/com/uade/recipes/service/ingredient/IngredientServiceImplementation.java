@@ -1,4 +1,4 @@
-package com.uade.recipes.service;
+package com.uade.recipes.service.ingredient;
 
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.model.Ingredient;

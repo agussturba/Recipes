@@ -7,10 +7,7 @@ import javax.persistence.*;
 @Document
 public class IngredientQuantity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Integer id;
-    @ManyToOne
     private Ingredient ingredient;
     private Double quantity;
 

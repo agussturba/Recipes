@@ -1,4 +1,4 @@
-package com.uade.recipes.service;
+package com.uade.recipes.service.ingredient;
 
 import com.uade.recipes.model.Ingredient;
 import com.uade.recipes.vo.IngredientVo;

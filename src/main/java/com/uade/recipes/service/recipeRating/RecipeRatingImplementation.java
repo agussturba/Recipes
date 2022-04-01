@@ -1,9 +1,10 @@
-package com.uade.recipes.service;
+package com.uade.recipes.service.recipeRating;
 
 import com.uade.recipes.model.Recipe;
 import com.uade.recipes.model.RecipeRating;
 import com.uade.recipes.persistance.RecipeRatingRepository;
 import com.uade.recipes.persistance.RecipeRepository;
+import com.uade.recipes.service.recipe.RecipeService;
 import org.springframework.stereotype.Service;
 
 @Service

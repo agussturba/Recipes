@@ -8,18 +8,13 @@ import java.util.List;
 @Document
 public class Recipe {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Integer id;
     private String name;
     private String description;
     private String photos;//TODO BUSCAR COMO SE GUARDA LAS FOTOS EN UNA BASE DE DATOS
-    @OneToMany
     private List<IngredientQuantity> ingredientQuantityList;
     private String instructions;//TODO FIX THIS BUSCAR UNA FORMA DE AGREGAR FOTOS O VIDEOS EN LOS PASOS DEJO A PRIORI ASI
-    @ManyToOne
     private Dish dish;
-    @ManyToOne
     private User user;
 
     public Recipe(String name, String description, String photos, List<IngredientQuantity> ingredientQuantityList, String instructions, Dish dish, User user) {

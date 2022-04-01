@@ -1,4 +1,4 @@
-package com.uade.recipes.service;
+package com.uade.recipes.service.user;
 
 import com.uade.recipes.model.User;
 import com.uade.recipes.vo.UserVo;

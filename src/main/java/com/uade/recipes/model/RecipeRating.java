@@ -8,11 +8,8 @@ import java.util.*;
 @Document
 public class RecipeRating {
     @Id
-    @Column(name = "id", nullable = false)
     private Integer id;
-    @OneToOne
     private Recipe recipe;
-    @ElementCollection
     private List<Double> ratings;
 
     public RecipeRating(Recipe recipe) {

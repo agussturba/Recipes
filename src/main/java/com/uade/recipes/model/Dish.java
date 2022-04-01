@@ -7,8 +7,6 @@ import javax.persistence.*;
 @Document
 public class Dish {//Los platos para los burros
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Integer id;
     private String name;
     private String type;

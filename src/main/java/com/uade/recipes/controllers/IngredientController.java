@@ -2,7 +2,7 @@ package com.uade.recipes.controllers;
 
 
 import com.uade.recipes.model.Ingredient;
-import com.uade.recipes.service.IngredientService;
+import com.uade.recipes.service.ingredient.IngredientService;
 import com.uade.recipes.vo.IngredientVo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

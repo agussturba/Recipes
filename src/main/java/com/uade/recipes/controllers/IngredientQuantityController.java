@@ -1,10 +1,8 @@
 package com.uade.recipes.controllers;
 
-import com.uade.recipes.model.Ingredient;
 import com.uade.recipes.model.IngredientQuantity;
-import com.uade.recipes.service.IngredientQuantityService;
+import com.uade.recipes.service.ingredientQuantity.IngredientQuantityService;
 import com.uade.recipes.vo.IngredientQuantityVo;
-import com.uade.recipes.vo.IngredientVo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,4 +1,4 @@
-package com.uade.recipes.service;
+package com.uade.recipes.service.recipeRating;
 
 import com.uade.recipes.model.RecipeRating;
 

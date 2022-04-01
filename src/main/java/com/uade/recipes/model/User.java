@@ -7,12 +7,9 @@ import javax.persistence.*;
 @Document
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Integer id;
     private String role;
     private String email;
-    @Column(name = "user_name")
     private String userName;
     private String password;
 

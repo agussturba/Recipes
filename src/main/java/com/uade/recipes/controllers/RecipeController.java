@@ -1,7 +1,7 @@
 package com.uade.recipes.controllers;
 
 import com.uade.recipes.model.Recipe;
-import com.uade.recipes.service.RecipeService;
+import com.uade.recipes.service.recipe.RecipeService;
 import com.uade.recipes.vo.RecipeVo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

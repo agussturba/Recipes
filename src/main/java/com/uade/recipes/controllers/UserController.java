@@ -6,7 +6,7 @@ import com.uade.recipes.exceptions.userExceptions.InvalidPasswordException;
 import com.uade.recipes.exceptions.userExceptions.InvalidRoleException;
 import com.uade.recipes.exceptions.userExceptions.UserNameExistsException;
 import com.uade.recipes.model.User;
-import com.uade.recipes.service.UserService;
+import com.uade.recipes.service.user.UserService;
 import com.uade.recipes.vo.UserVo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
