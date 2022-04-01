@@ -1,15 +1,14 @@
 package com.uade.recipes.service.user;
 
 
+import com.uade.recipes.exceptions.InvalidEmailException;
 import com.uade.recipes.exceptions.userExceptions.*;
 import com.uade.recipes.model.User;
 import com.uade.recipes.persistance.UserRepository;
-import com.uade.recipes.service.user.UserService;
 import com.uade.recipes.validations.UsersValidations;
 import com.uade.recipes.vo.UserVo;
 import org.springframework.stereotype.Service;
 
-import javax.xml.bind.ValidationException;
 import java.util.List;
 
 @Service
@@ -37,7 +36,7 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public User saveOrUpdateUser(UserVo user, String role) throws UserNameExistsException, EmailExistsException, InvalidPasswordException, InvalidRoleException, ValidationException {
+    public User saveOrUpdateUser(UserVo user, String role) throws UserNameExistsException, EmailExistsException, InvalidPasswordException, InvalidRoleException, InvalidEmailException {
         existsUser(user);
         user.setRole(role);
         UsersValidations.validateUserData(user);

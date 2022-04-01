@@ -1,14 +1,8 @@
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-
 spring:
-  jpa:
-    hibernate:
-      ddl-auto: update
-  datasource:
-    url: "jdbc:sqlserver://localhost:1433;databaseName=Recipes"
-    username: agustin
-    password:
+  data:
+    mongodb:
+      authentication-database: recipes
+      username: rootuser
+      database: recipes
+      port: 27100
+      host: localhost

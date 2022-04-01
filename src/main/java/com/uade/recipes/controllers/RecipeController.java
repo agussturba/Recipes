@@ -19,37 +19,30 @@ public class RecipeController {
     }
 
     @GetMapping//se hace asi por standard de rest
-    public ResponseEntity<List<Recipe>> getAllRecipes(@RequestParam(required = false) Integer userId, @RequestParam(required = false) Integer dishId, @RequestParam(required = false) String type) {
-        if (userId == null && dishId == null && type == null) {
+    public ResponseEntity<List<Recipe>> getAllRecipes(@RequestParam(required = false) Integer userId, @RequestParam(required = false) Integer dishId) {
+        if (userId == null && dishId == null) {
             return ResponseEntity.status(HttpStatus.OK).body(recipeService.getAllRecipes());
-        } else if (userId != null && dishId == null && type == null) {
+        } else if (userId != null && dishId == null) {
             return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByUserId(userId));
-        } else if (userId == null && dishId != null && type == null) {
+        } else if (userId == null && dishId != null) {
             return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByDishId(dishId));
-        } else if (userId == null && dishId == null && type != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipeByType(type));
-        } else if (userId != null && dishId != null && type == null) {
-            return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByUserIdAndDishId(userId, dishId));
-        } else if (userId != null && dishId == null && type != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByUserIdAndType(userId, type));
-        } else if (userId == null && dishId != null && type != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByDishIdAndType(dishId, type));
         } else {
-            return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByDishIdAndTypeAndUserId(dishId, type, userId));
+            return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByUserIdAndDishId(userId, dishId));
         }
-
     }
 
     @GetMapping("/{name}")
     public ResponseEntity<Recipe> getRecipesByName(@PathVariable String name) {
         return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipeByName(name));
     }
+
     @PostMapping
-    public ResponseEntity<Recipe> saveRecipe(@RequestBody RecipeVo recipeVo){
+    public ResponseEntity<Recipe> saveRecipe(@RequestBody RecipeVo recipeVo) {
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.saveOrUpdateRecipe(recipeVo));
     }
+
     @PutMapping
-    public ResponseEntity<Recipe> updateRecipe(@RequestBody RecipeVo recipeVo){
+    public ResponseEntity<Recipe> updateRecipe(@RequestBody RecipeVo recipeVo) {
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.saveOrUpdateRecipe(recipeVo));
     }
 }

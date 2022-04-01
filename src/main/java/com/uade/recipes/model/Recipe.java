@@ -1,8 +1,8 @@
 package com.uade.recipes.model;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import java.util.List;
 
 @Document
@@ -100,7 +100,7 @@ public class Recipe {
         this.user = user;
     }
 
-    public String getRecipeType(){
+    public String getRecipeType() {
         return dish.getType();
     }
 }

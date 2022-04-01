@@ -1,6 +1,7 @@
 package com.uade.recipes.controllers;
 
 
+import com.uade.recipes.exceptions.InvalidEmailException;
 import com.uade.recipes.exceptions.userExceptions.EmailExistsException;
 import com.uade.recipes.exceptions.userExceptions.InvalidPasswordException;
 import com.uade.recipes.exceptions.userExceptions.InvalidRoleException;
@@ -12,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.bind.ValidationException;
 import java.util.List;
 
 @RestController
@@ -37,16 +37,16 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByUserName(userName));
     }
     @PostMapping
-    public ResponseEntity<User> saveUserClient(@RequestBody UserVo userVo) throws ValidationException, UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException {
+    public ResponseEntity<User> saveUserClient(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException {
         return ResponseEntity.status(HttpStatus.OK).body(userService.saveOrUpdateUser(userVo,"ROLE_CLIENT"));
     }
     @PostMapping("/admin")
-    public ResponseEntity<User> saveUserStudent(@RequestBody UserVo userVo) throws ValidationException, UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException {
+    public ResponseEntity<User> saveUserStudent(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException {
         return ResponseEntity.status(HttpStatus.OK).body(userService.saveOrUpdateUser(userVo,"ROLE_ADMIN"));
     }
 
     @PutMapping
-    public ResponseEntity<User> updateUser(@RequestBody UserVo userVo) throws ValidationException, UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException {
+    public ResponseEntity<User> updateUser(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException {
         return ResponseEntity.status(HttpStatus.OK).body(userService.saveOrUpdateUser(userVo,userVo.getRole()));
     }
 }

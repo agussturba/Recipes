@@ -32,7 +32,7 @@ public class RecipeImplementation implements RecipeService {
 
     @Override
     public List<Recipe> getAllRecipes() {
-        return (List<Recipe>) recipeRepository.findAll();
+        return recipeRepository.findAll();
     }
 
     @Override
@@ -59,37 +59,14 @@ public class RecipeImplementation implements RecipeService {
     }
 
     @Override
-    public List<Recipe> getRecipesByDishIdAndTypeAndUserId(Integer userId, String type, Integer dishId) {
-        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        Dish dish = dishRepository.findById(dishId).orElseThrow(DishNotFoundException::new);
-        return recipeRepository.findByDishAndTypeAndUser(dish, type, user);
-    }
-
-    @Override
-    public List<Recipe> getRecipesByUserIdAndType(Integer userId, String type) {
-        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        return recipeRepository.findByUserAndType(user, type);
-    }
-
-    @Override
-    public List<Recipe> getRecipesByDishIdAndType(Integer dishId, String type) {//Maybe useless
-        Dish dish = dishRepository.findById(dishId).orElseThrow(DishNotFoundException::new);
-        return recipeRepository.findByDishAndType(dish, type);
-    }
-
-    @Override
     public List<Recipe> getRecipesByDishId(Integer dishId) {
         Dish dish = dishRepository.findById(dishId).orElseThrow(UserNotFoundException::new);
         return recipeRepository.findByDish(dish);
     }
 
-    @Override
-    public List<Recipe> getRecipeByType(String type) {
-        return recipeRepository.findByType(type);
-    }
 
     @Override
-    public Recipe saveOrUpdateRecipe(RecipeVo recipeVo) {//TODO THE VALIDATIONS AND THE INGREDIENT QUANTITY PROBLEM
+    public Recipe saveOrUpdateRecipe(RecipeVo recipeVo) {//TODO THE VALIDATIONS
         if (recipeVo.getId() != null) {
             this.getRecipeById(recipeVo.getId());
         }

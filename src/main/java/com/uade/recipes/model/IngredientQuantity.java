@@ -1,8 +1,8 @@
 package com.uade.recipes.model;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 
 @Document
 public class IngredientQuantity {

@@ -1,10 +1,10 @@
 package com.uade.recipes.validations;
 
+import com.uade.recipes.exceptions.InvalidEmailException;
 import com.uade.recipes.exceptions.userExceptions.InvalidPasswordException;
 import com.uade.recipes.exceptions.userExceptions.InvalidRoleException;
 import com.uade.recipes.vo.UserVo;
 
-import javax.xml.bind.ValidationException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,15 +14,15 @@ public class UsersValidations {
 
     private static final Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
 
-    private static void validateEmail(String email) throws ValidationException {
+    private static void validateEmail(String email) throws InvalidEmailException {
         String regex = "^(.+)@(.+)$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
         if (email == null) {
-            throw new ValidationException("Not a valid email");
+            throw new InvalidEmailException("Th email cant be null");
         }
         if (!matcher.matches()) {
-            throw new ValidationException("Not a valid email");
+            throw new InvalidEmailException("That is not a valid email");
         }
     }
 
@@ -37,7 +37,7 @@ public class UsersValidations {
         }
         return true;
     }
-    public static void validateUserData(UserVo userVo) throws InvalidRoleException, InvalidPasswordException, ValidationException {
+    public static void validateUserData(UserVo userVo) throws InvalidRoleException, InvalidPasswordException, InvalidEmailException {
         if (!isValidRole(userVo.getRole())){
             throw new InvalidRoleException();
         }

@@ -1,9 +1,9 @@
 package com.uade.recipes.service.user;
 
+import com.uade.recipes.exceptions.InvalidEmailException;
 import com.uade.recipes.model.User;
 import com.uade.recipes.vo.UserVo;
 
-import javax.xml.bind.ValidationException;
 import java.util.List;
 
 public interface UserService {
@@ -15,6 +15,6 @@ public interface UserService {
 
     User getUserById(Integer idClient);
 
-    User saveOrUpdateUser(UserVo user, String role) throws ValidationException;
+    User saveOrUpdateUser(UserVo user, String role) throws InvalidEmailException;
 
 }
