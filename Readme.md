@@ -17,6 +17,8 @@ If you want more info about mongo and spring:
 
 https://www.youtube.com/watch?v=ssj0CGxv60k&ab_channel=Amigoscode
 
+Swagger configuration
+http://localhost:8080/swagger-ui.html#/
 
     
     
