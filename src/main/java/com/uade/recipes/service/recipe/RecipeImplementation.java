@@ -1,19 +1,15 @@
 package com.uade.recipes.service.recipe;
 
+import com.uade.recipes.exceptions.InstructionNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
-import com.uade.recipes.model.Dish;
-import com.uade.recipes.model.Recipe;
-import com.uade.recipes.model.RecipeRating;
-import com.uade.recipes.model.User;
-import com.uade.recipes.persistance.DishRepository;
-import com.uade.recipes.persistance.RecipeRatingRepository;
-import com.uade.recipes.persistance.RecipeRepository;
-import com.uade.recipes.persistance.UserRepository;
+import com.uade.recipes.model.*;
+import com.uade.recipes.persistance.*;
 import com.uade.recipes.vo.RecipeVo;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,12 +18,14 @@ public class RecipeImplementation implements RecipeService {
     private final UserRepository userRepository;
     private final DishRepository dishRepository;
     private final RecipeRatingRepository recipeRatingRepository;
+    private final InstructionRepository instructionRepository;
 
-    public RecipeImplementation(RecipeRepository recipeRepository, UserRepository userRepository, DishRepository dishRepository, RecipeRatingRepository ratingRepository) {
+    public RecipeImplementation(RecipeRepository recipeRepository, UserRepository userRepository, DishRepository dishRepository, RecipeRatingRepository ratingRepository, InstructionRepository instructionRepository) {
         this.recipeRepository = recipeRepository;
         this.userRepository = userRepository;
         this.dishRepository = dishRepository;
         this.recipeRatingRepository = ratingRepository;
+        this.instructionRepository = instructionRepository;
     }
 
     @Override
@@ -52,6 +50,11 @@ public class RecipeImplementation implements RecipeService {
     }
 
     @Override
+    public List<Recipe> getRecipesByLabels(List<String> labels) {//TODO BUSCAR UN METODO MAS PERFORMATE(POSIBLEMENT UNA QUERY)
+        return null;//TODO HACELO FRANCO,MAESTRO DE MONGO,EL KING,EL EMPEREDARO
+    }
+
+    @Override
     public List<Recipe> getRecipesByUserIdAndDishId(Integer userId, Integer dishId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Dish dish = dishRepository.findById(dishId).orElseThrow(DishNotFoundException::new);
@@ -72,10 +75,20 @@ public class RecipeImplementation implements RecipeService {
         }
         User user = userRepository.findById(recipeVo.getUserId()).orElseThrow(UserNotFoundException::new);
         Dish dish = dishRepository.findById(recipeVo.getDishId()).orElseThrow(DishNotFoundException::new);
-        Recipe recipe = new Recipe(recipeVo.getName(), recipeVo.getDescription(), recipeVo.getPhotos(), null, recipeVo.getInstructions(), dish, user);
+        List<Instruction> instructions = getInstructionsByIds(recipeVo.getInstructions());
+        Recipe recipe = new Recipe(recipeVo.getName(), recipeVo.getDescription(), recipeVo.getPhotos(), null, instructions, dish, user);
         Recipe newRecipe = recipeRepository.save(recipe);
         RecipeRating recipeRating = new RecipeRating(newRecipe);
         recipeRatingRepository.save(recipeRating);
         return newRecipe;
+    }
+
+    private List<Instruction> getInstructionsByIds(List<Integer> instructionsIds) {
+        List<Instruction> instructions = new ArrayList<>();
+        for (Integer instructionId : instructionsIds) {
+            Instruction instruction = instructionRepository.findById(instructionId).orElseThrow(InstructionNotFoundException::new);
+            instructions.add(instruction);
+        }
+        return instructions;
     }
 }

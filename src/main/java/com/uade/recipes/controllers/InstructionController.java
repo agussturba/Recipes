@@ -3,6 +3,7 @@ package com.uade.recipes.controllers;
 import com.uade.recipes.model.Instruction;
 import com.uade.recipes.service.instruction.InstructionService;
 import com.uade.recipes.vo.InstructionVo;
+import io.swagger.annotations.SwaggerDefinition;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

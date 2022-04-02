@@ -1,6 +1,6 @@
 package com.uade.recipes.validations;
 
-import com.uade.recipes.exceptions.InvalidEmailException;
+import com.uade.recipes.exceptions.userExceptions.InvalidEmailException;
 import com.uade.recipes.exceptions.userExceptions.InvalidPasswordException;
 import com.uade.recipes.exceptions.userExceptions.InvalidRoleException;
 import com.uade.recipes.vo.UserVo;
@@ -32,10 +32,7 @@ public class UsersValidations {
     }
 
     private static boolean isValidRole(String role) {
-        if (role != "INVITADO" && role != "ALUMNO"){
-            return false;
-        }
-        return true;
+        return role == "INVITADO" || role == "ALUMNO";
     }
     public static void validateUserData(UserVo userVo) throws InvalidRoleException, InvalidPasswordException, InvalidEmailException {
         if (!isValidRole(userVo.getRole())){

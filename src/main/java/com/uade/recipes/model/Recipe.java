@@ -13,11 +13,11 @@ public class Recipe {
     private String description;
     private String photos;//TODO BUSCAR COMO SE GUARDA LAS FOTOS EN UNA BASE DE DATOS
     private List<IngredientQuantity> ingredientQuantityList;
-    private String instructions;//TODO FIX THIS BUSCAR UNA FORMA DE AGREGAR FOTOS O VIDEOS EN LOS PASOS DEJO A PRIORI ASI
+    private List<Instruction> instructions;//TODO FIX THIS BUSCAR UNA FORMA DE AGREGAR FOTOS O VIDEOS EN LOS PASOS DEJO A PRIORI ASI
     private Dish dish;
     private User user;
 
-    public Recipe(String name, String description, String photos, List<IngredientQuantity> ingredientQuantityList, String instructions, Dish dish, User user) {
+    public Recipe(String name, String description, String photos, List<IngredientQuantity> ingredientQuantityList, List<Instruction> instructions, Dish dish, User user) {
         this.name = name;
         this.description = description;
         this.photos = photos;
@@ -60,11 +60,11 @@ public class Recipe {
         this.ingredientQuantityList = ingredientQuantityList;
     }
 
-    public String getInstructions() {
+    public List<Instruction> getInstructions() {
         return instructions;
     }
 
-    public void setInstructions(String instructions) {
+    public void setInstructions(List<Instruction> instructions) {
         this.instructions = instructions;
     }
 
@@ -100,7 +100,8 @@ public class Recipe {
         this.user = user;
     }
 
-    public String getRecipeType() {
-        return dish.getType();
+    public List<String> getLabels(){
+        return dish.getLabels();
     }
+
 }

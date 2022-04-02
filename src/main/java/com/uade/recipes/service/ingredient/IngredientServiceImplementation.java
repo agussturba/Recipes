@@ -18,7 +18,7 @@ public class IngredientServiceImplementation implements IngredientService {
 
     @Override
     public List<Ingredient> getAllIngredients() {
-        return (List<Ingredient>) ingredientRepository.findAll();
+        return ingredientRepository.findAll();
     }
 
     @Override

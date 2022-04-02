@@ -13,7 +13,7 @@ public interface DishService {
 
     Dish getDishByName(String dishName);
 
-    List<Dish> getDishesByType(String dishType);
+    List<Dish> getDishesByLabel(String dishType);
 
     Dish saveOrUpdateDish(DishVo DishVo);
 }

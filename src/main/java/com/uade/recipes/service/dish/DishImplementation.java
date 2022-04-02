@@ -20,7 +20,7 @@ public class DishImplementation implements DishService {
 
     @Override
     public List<Dish> getAllDishes() {
-        return (List<Dish>) dishRepository.findAll();//sucede esto porque findAll devuelve un Optional
+        return dishRepository.findAll();
     }
 
     @Override
@@ -34,17 +34,16 @@ public class DishImplementation implements DishService {
     }
 
     @Override
-    public List<Dish> getDishesByType(String dishType) {
-        return dishRepository.findByType(dishType);
+    public List<Dish> getDishesByLabel(String dishLabel) {
+        return dishRepository.findByLabels(dishLabel);
     }
 
     @Override
     public Dish saveOrUpdateDish(DishVo dishVo) {
-        if (dishVo.getId() !=null){
-            this.getDishById(dishVo.getId());
-        }
         validateDishData(dishVo);
-        Dish dish = new Dish(dishVo.getName(),dishVo.getType());
+
+        Dish dish = new Dish(dishVo.getName(),dishVo.getLabels());
+        dish.setId(dishVo.getId());
 
         return dishRepository.save(dish);
     }

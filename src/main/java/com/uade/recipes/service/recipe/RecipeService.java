@@ -14,6 +14,8 @@ public interface RecipeService {
 
     List<Recipe> getRecipesByUserId(Integer userId);
 
+    List<Recipe> getRecipesByLabels(List<String> labels);
+
     List<Recipe> getRecipesByUserIdAndDishId(Integer userId, Integer dishId);
 
     List<Recipe> getRecipesByDishId(Integer dishId);

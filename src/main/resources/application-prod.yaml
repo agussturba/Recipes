@@ -1,8 +1,12 @@
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
   data:
     mongodb:
-      authentication-database: recipes
-      username: rootuser
-      database: recipes
-      port: 27100
+      authentication-database: admin
       host: localhost
+      port: 27017
+      userName: rootuser
+      password: rootpass
+      database: recipes

@@ -3,20 +3,22 @@ package com.uade.recipes.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 
 @Document
-public class Dish {//Los platos para los burros
+public class Dish {
     @Id
     private Integer id;
     private String name;
-    private String type;
+    private List<String> labels;
 
     public Dish() {
     }
 
-    public Dish(String name, String type) {
+    public Dish(String name, List<String> labels) {
         this.name = name;
-        this.type = type;
+        this.labels = labels;
     }
 
     public Integer getId() {
@@ -35,11 +37,11 @@ public class Dish {//Los platos para los burros
         this.name = name;
     }
 
-    public String getType() {
-        return type;
+    public List<String> getLabels() {
+        return labels;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setLabels(List<String> labels) {
+        this.labels = labels;
     }
 }

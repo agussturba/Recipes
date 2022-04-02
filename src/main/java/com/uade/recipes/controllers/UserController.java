@@ -1,7 +1,7 @@
 package com.uade.recipes.controllers;
 
 
-import com.uade.recipes.exceptions.InvalidEmailException;
+import com.uade.recipes.exceptions.userExceptions.InvalidEmailException;
 import com.uade.recipes.exceptions.userExceptions.EmailExistsException;
 import com.uade.recipes.exceptions.userExceptions.InvalidPasswordException;
 import com.uade.recipes.exceptions.userExceptions.InvalidRoleException;

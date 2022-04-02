@@ -20,7 +20,7 @@ public class DishController {
     @GetMapping
     public ResponseEntity<List<Dish>> getAllDishes(@RequestParam(required = false) String type) {
         if (type != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(dishService.getDishesByType(type));
+            return ResponseEntity.status(HttpStatus.OK).body(dishService.getDishesByLabel(type));
         }
         return ResponseEntity.status(HttpStatus.OK).body(dishService.getAllDishes());
     }

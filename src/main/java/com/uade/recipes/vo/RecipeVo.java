@@ -1,6 +1,5 @@
 package com.uade.recipes.vo;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public class RecipeVo {
@@ -9,7 +8,7 @@ public class RecipeVo {
     String description;
     String photos;
     List<Integer> ingredientQuantityIdList;
-    String instructions;
+    List<Integer> instructionsIds;
     Integer dishId;
     Integer userId;
 
@@ -55,12 +54,12 @@ public class RecipeVo {
         this.ingredientQuantityIdList = ingredientQuantityIdList;
     }
 
-    public String getInstructions() {
-        return instructions;
+    public List<Integer> getInstructions() {
+        return instructionsIds;
     }
 
-    public void setInstructions(String instructions) {
-        this.instructions = instructions;
+    public void setInstructions(List<Integer> instructions) {
+        this.instructionsIds = instructions;
     }
 
     public Integer getDishId() {

@@ -1,7 +1,7 @@
 package com.uade.recipes.service.user;
 
 
-import com.uade.recipes.exceptions.InvalidEmailException;
+import com.uade.recipes.exceptions.userExceptions.InvalidEmailException;
 import com.uade.recipes.exceptions.userExceptions.*;
 import com.uade.recipes.model.User;
 import com.uade.recipes.persistance.UserRepository;

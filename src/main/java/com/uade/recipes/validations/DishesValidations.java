@@ -11,8 +11,11 @@ public class DishesValidations {
         if (containsNumber(dishVo.getName())){
             throw new DishNameContainsNumberException();
         }
-        if (containsNumber(dishVo.getType())){
-            throw new DishTypeContainsNumberException();
+        for (String label: dishVo.getLabels()) {
+            if (containsNumber(label)){
+                throw new DishTypeContainsNumberException();
+            }
         }
+
     }
 }

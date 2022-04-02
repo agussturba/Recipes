@@ -1,9 +1,11 @@
 package com.uade.recipes.vo;
 
+import java.util.List;
+
 public class DishVo {
      Integer id;
      String name;
-     String type;
+     List<String> type;
 
      public Integer getId() {
           return id;
@@ -21,11 +23,11 @@ public class DishVo {
           this.name = name;
      }
 
-     public String getType() {
+     public List<String> getLabels() {
           return type;
      }
 
-     public void setType(String type) {
+     public void setType(List<String> type) {
           this.type = type;
      }
 }
