@@ -42,8 +42,8 @@ public class RecipeImplementation implements RecipeService {
     }
 
     @Override
-    public Recipe getRecipeByName(String recipeName) {
-        return recipeRepository.findByName(recipeName).orElseThrow(RecipeNotFoundException::new);
+    public List<Recipe> getRecipeByName(String recipeName) {
+        return recipeRepository.findByName(recipeName);
     }
 
     @Override
@@ -53,8 +53,8 @@ public class RecipeImplementation implements RecipeService {
     }
 
     @Override
-    public List<Recipe> getRecipesByLabels(List<String> labels) {//TODO BUSCAR UN METODO MAS PERFORMATE(POSIBLEMENT UNA QUERY)
-        return null;//TODO HACELO FRANCO,MAESTRO DE MONGO,EL KING,EL EMPERADOR
+    public List<Recipe> getRecipesByLabels(List<String> labels) {//TODO Test method
+        return recipeRepository.findRecipeByLabelsContains(labels);
     }
 
     @Override

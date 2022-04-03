@@ -1,6 +1,5 @@
 package com.uade.recipes.controllers;
 
-import com.uade.recipes.model.Dish;
 import com.uade.recipes.model.Recipe;
 import com.uade.recipes.service.SequenceGeneratorService;
 import com.uade.recipes.service.recipe.RecipeService;
@@ -36,7 +35,7 @@ public class RecipeController {
     }
 
     @GetMapping("/{name}")
-    public ResponseEntity<Recipe> getRecipesByName(@PathVariable String name) {
+    public ResponseEntity<List<Recipe>> getRecipesByName(@PathVariable String name) {
         return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipeByName(name));
     }
 

@@ -10,7 +10,7 @@ public interface RecipeService {
 
     Recipe getRecipeById(Integer recipeId);
 
-    Recipe getRecipeByName(String recipeName);
+    List<Recipe> getRecipeByName(String recipeName);
 
     List<Recipe> getRecipesByUserId(Integer userId);
 

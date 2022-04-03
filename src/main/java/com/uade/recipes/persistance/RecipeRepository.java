@@ -11,12 +11,9 @@ import java.util.Optional;
 
 @Repository
 public interface RecipeRepository extends MongoRepository<Recipe,Integer> {
-    Optional<Recipe> findByName(String name);
-   // List<Recipe> findByType(String type);
+    List<Recipe> findByName(String name);
     List<Recipe> findByUser(User user);
     List<Recipe> findByDish(Dish dish);
     List<Recipe> findByUserAndDish(User user,Dish dish);
-    //List<Recipe> findByUserAndType(User user,String type);
-    //List<Recipe> findByDishAndType(Dish dish,String type);
-    //List<Recipe> findByDishAndTypeAndUser(Dish dish,String type,User user);
+    List<Recipe> findRecipeByLabelsContains(List<String> labels);
 }

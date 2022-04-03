@@ -13,6 +13,9 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+/***
+ * Class for generating ids for the documents.
+ */
 
 @Service
 public class SequenceGeneratorService {
