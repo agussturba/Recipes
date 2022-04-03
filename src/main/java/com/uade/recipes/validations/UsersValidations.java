@@ -34,6 +34,7 @@ public class UsersValidations {
     private static boolean isValidRole(String role) {
         return role == "INVITADO" || role == "ALUMNO";
     }
+
     public static void validateUserData(UserVo userVo) throws InvalidRoleException, InvalidPasswordException, InvalidEmailException {
         if (!isValidRole(userVo.getRole())){
             throw new InvalidRoleException();

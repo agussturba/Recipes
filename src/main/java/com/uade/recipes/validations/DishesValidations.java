@@ -4,7 +4,7 @@ import com.uade.recipes.exceptions.dishExceptions.DishNameContainsNumberExceptio
 import com.uade.recipes.exceptions.dishExceptions.DishTypeContainsNumberException;
 import com.uade.recipes.vo.DishVo;
 
-import static com.uade.recipes.validations.IngredientsValidations.containsNumber;
+import static com.uade.recipes.validations.GeneralValidations.containsNumber;
 
 public class DishesValidations {
     public static void validateDishData(DishVo dishVo){

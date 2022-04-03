@@ -1,6 +1,6 @@
 package com.uade.recipes.service.recipe;
 
-import com.uade.recipes.exceptions.InstructionNotFoundException;
+import com.uade.recipes.exceptions.instructionExceptions.InstructionNotFoundException;
 import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;

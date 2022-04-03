@@ -4,15 +4,10 @@ import com.uade.recipes.exceptions.ingredientExceptions.IngredientNameContainsNu
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientTypeContainsNumberException;
 import com.uade.recipes.vo.IngredientVo;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import static com.uade.recipes.validations.GeneralValidations.containsNumber;
 
 public class IngredientsValidations {
-    public static boolean containsNumber(String string) {
-        Pattern pattern = Pattern.compile("(.)*(\\d)(.)*");
-        Matcher matcher = pattern.matcher(string);
-        return matcher.matches();
-    }
+
     public static void validateIngredientData(IngredientVo ingredientVo){
         if (containsNumber(ingredientVo.getName())){
             throw new IngredientNameContainsNumberException();

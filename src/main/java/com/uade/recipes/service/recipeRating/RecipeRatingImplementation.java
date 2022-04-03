@@ -7,6 +7,8 @@ import com.uade.recipes.persistance.RecipeRepository;
 import com.uade.recipes.service.recipe.RecipeService;
 import org.springframework.stereotype.Service;
 
+import static com.uade.recipes.validations.RatingValidations.validateRating;
+
 @Service
 public class RecipeRatingImplementation implements RecipeRatingService {
     private final RecipeRatingRepository recipeRatingRepository;
@@ -39,7 +41,9 @@ public class RecipeRatingImplementation implements RecipeRatingService {
     @Override
     public void addRatingToRecipeByRecipeId(Integer recipeId, Double rating) {
         RecipeRating recipeRating = this.getRecipeRatingByRecipeId(recipeId);
+        validateRating(rating);
         recipeRating.addRating(rating);
         recipeRatingRepository.save(recipeRating);
     }
+
 }

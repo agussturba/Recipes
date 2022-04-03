@@ -6,7 +6,11 @@ import com.uade.recipes.exceptions.dishExceptions.DishTypeContainsNumberExceptio
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNameContainsNumberException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientTypeContainsNumberException;
+import com.uade.recipes.exceptions.ingredientQuantityExceptions.IngredientQuantityNotFoundException;
+import com.uade.recipes.exceptions.instructionExceptions.InstructionNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
+import com.uade.recipes.exceptions.recipeRatingExceptions.RatingIsLowerThanZeroException;
+import com.uade.recipes.exceptions.recipeRatingExceptions.RatingIsNullException;
 import com.uade.recipes.exceptions.userExceptions.*;
 import com.uade.recipes.model.Dish;
 import org.springframework.http.HttpStatus;
@@ -23,17 +27,28 @@ public class ExceptionHandlerAdvice {
     }
 
     @ExceptionHandler(IngredientNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity handleIngredientNotFoundException() {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The Ingredient was not found");
     }
+
     @ExceptionHandler(DishNotFoundException.class)
     public ResponseEntity handleDishNotFoundException() {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The Dish was not found");
     }
+
     @ExceptionHandler(RecipeNotFoundException.class)
     public ResponseEntity handleRecipeNotFoundException() {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The Recipe was not found");
+    }
+
+    @ExceptionHandler(InstructionNotFoundException.class)
+    public ResponseEntity handleInstructionNotFoundException() {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The Instruction was not found");
+    }
+
+    @ExceptionHandler(IngredientQuantityNotFoundException.class)
+    public ResponseEntity handleIngredientQuantityNotFoundException() {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The Ingredient-Quantity was not found");
     }
 
     @ExceptionHandler(EmailExistsException.class)
@@ -65,6 +80,7 @@ public class ExceptionHandlerAdvice {
     public ResponseEntity handleIngredientTypeContainsNumberException() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The ingredient type cant contain numbers");
     }
+
     @ExceptionHandler(DishNameContainsNumberException.class)
     public ResponseEntity handleDishNameContainsNumberException() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The dish name cant contain numbers");
@@ -73,6 +89,16 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(DishTypeContainsNumberException.class)
     public ResponseEntity handleDishTypeContainsNumberException() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The dish type cant contain numbers");
+    }
+
+    @ExceptionHandler(RatingIsNullException.class)
+    public ResponseEntity handleRatingIsNullException() {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The rating cant be null");
+    }
+
+    @ExceptionHandler(RatingIsLowerThanZeroException.class)
+    public ResponseEntity handleRatingIsLowerThanZeroException() {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The rating cant be lower than zero");
     }
 
 

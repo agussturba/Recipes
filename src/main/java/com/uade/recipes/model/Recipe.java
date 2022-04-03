@@ -16,7 +16,7 @@ public class Recipe {
     private String description;
     private List<String> photos;
     private List<IngredientQuantity> ingredientQuantityList;
-    private List<Instruction> instructions;//TODO FIX THIS BUSCAR UNA FORMA DE AGREGAR FOTOS O VIDEOS EN LOS PASOS DEJO A PRIORI ASI
+    private List<Instruction> instructions;
     private Dish dish;
     private User user;
 
@@ -109,5 +109,6 @@ public class Recipe {
     public List<String> getLabels() {
         return dish.getLabels();
     }
+
 
 }
