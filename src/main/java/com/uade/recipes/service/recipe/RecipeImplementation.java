@@ -1,11 +1,12 @@
 package com.uade.recipes.service.recipe;
 
 import com.uade.recipes.exceptions.InstructionNotFoundException;
-import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;
+import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.*;
 import com.uade.recipes.persistance.*;
+import com.uade.recipes.service.SequenceGeneratorService;
 import com.uade.recipes.vo.RecipeVo;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +20,15 @@ public class RecipeImplementation implements RecipeService {
     private final DishRepository dishRepository;
     private final RecipeRatingRepository recipeRatingRepository;
     private final InstructionRepository instructionRepository;
+    private final SequenceGeneratorService sequenceGeneratorService;
 
-    public RecipeImplementation(RecipeRepository recipeRepository, UserRepository userRepository, DishRepository dishRepository, RecipeRatingRepository ratingRepository, InstructionRepository instructionRepository) {
+    public RecipeImplementation(RecipeRepository recipeRepository, UserRepository userRepository, DishRepository dishRepository, RecipeRatingRepository ratingRepository, InstructionRepository instructionRepository, SequenceGeneratorService sequenceGeneratorService) {
         this.recipeRepository = recipeRepository;
         this.userRepository = userRepository;
         this.dishRepository = dishRepository;
         this.recipeRatingRepository = ratingRepository;
         this.instructionRepository = instructionRepository;
+        this.sequenceGeneratorService = sequenceGeneratorService;
     }
 
     @Override
@@ -51,7 +54,7 @@ public class RecipeImplementation implements RecipeService {
 
     @Override
     public List<Recipe> getRecipesByLabels(List<String> labels) {//TODO BUSCAR UN METODO MAS PERFORMATE(POSIBLEMENT UNA QUERY)
-        return null;//TODO HACELO FRANCO,MAESTRO DE MONGO,EL KING,EL EMPEREDARO
+        return null;//TODO HACELO FRANCO,MAESTRO DE MONGO,EL KING,EL EMPERADOR
     }
 
     @Override
@@ -70,16 +73,11 @@ public class RecipeImplementation implements RecipeService {
 
     @Override
     public Recipe saveOrUpdateRecipe(RecipeVo recipeVo) {//TODO THE VALIDATIONS
-        if (recipeVo.getId() != null) {
-            this.getRecipeById(recipeVo.getId());
-        }
         User user = userRepository.findById(recipeVo.getUserId()).orElseThrow(UserNotFoundException::new);
         Dish dish = dishRepository.findById(recipeVo.getDishId()).orElseThrow(DishNotFoundException::new);
         List<Instruction> instructions = getInstructionsByIds(recipeVo.getInstructions());
-        Recipe recipe = new Recipe(recipeVo.getName(), recipeVo.getDescription(), recipeVo.getPhotos(), null, instructions, dish, user);
-        Recipe newRecipe = recipeRepository.save(recipe);
-        RecipeRating recipeRating = new RecipeRating(newRecipe);
-        recipeRatingRepository.save(recipeRating);
+        Recipe newRecipe = recipeRepository.save(recipeVo.toModel(user,dish,instructions,null));
+        saveRecipeRating(newRecipe);
         return newRecipe;
     }
 
@@ -90,5 +88,11 @@ public class RecipeImplementation implements RecipeService {
             instructions.add(instruction);
         }
         return instructions;
+    }
+
+    private void saveRecipeRating(Recipe recipe) {
+        RecipeRating recipeRating = new RecipeRating(recipe);
+        recipeRating.setId(sequenceGeneratorService.generateSequence(RecipeRating.SEQUENCE_NAME));
+        recipeRatingRepository.save(recipeRating);
     }
 }

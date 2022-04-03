@@ -1,5 +1,8 @@
 package com.uade.recipes.vo;
 
+import com.uade.recipes.model.Instruction;
+import com.uade.recipes.model.Recipe;
+
 public class InstructionVo {
     Integer recipeId;
     Integer id;
@@ -45,5 +48,15 @@ public class InstructionVo {
 
     public void setVideo(String video) {
         this.video = video;
+    }
+
+    public Instruction toModel(Recipe recipe){
+        Instruction instruction = new Instruction();
+        instruction.setId(this.getId());
+        instruction.setDescription(this.getDescription());
+        instruction.setPhoto(this.getPhoto());
+        instruction.setVideo(this.getVideo());
+        instruction.setRecipe(recipe);
+        return instruction;
     }
 }

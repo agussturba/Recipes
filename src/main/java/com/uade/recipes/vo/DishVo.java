@@ -1,11 +1,13 @@
 package com.uade.recipes.vo;
 
+import com.uade.recipes.model.Dish;
+
 import java.util.List;
 
 public class DishVo {
      Integer id;
      String name;
-     List<String> type;
+     List<String> labels;
 
      public Integer getId() {
           return id;
@@ -24,10 +26,19 @@ public class DishVo {
      }
 
      public List<String> getLabels() {
-          return type;
+          return labels;
      }
 
-     public void setType(List<String> type) {
-          this.type = type;
+     public void setLabels(List<String> labels) {
+          this.labels = labels;
      }
+
+     public Dish toModel(){
+          Dish dish = new Dish();
+          dish.setId(getId());
+          dish.setName(this.name);
+          dish.setLabels(this.labels);
+          return dish;
+     }
+
 }

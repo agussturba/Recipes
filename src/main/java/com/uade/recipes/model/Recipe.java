@@ -1,23 +1,29 @@
 package com.uade.recipes.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
 @Document
 public class Recipe {
+    @Transient
+    public static final String SEQUENCE_NAME = "recipe_sequence";
     @Id
     private Integer id;
     private String name;
     private String description;
-    private String photos;//TODO BUSCAR COMO SE GUARDA LAS FOTOS EN UNA BASE DE DATOS
+    private List<String> photos;
     private List<IngredientQuantity> ingredientQuantityList;
     private List<Instruction> instructions;//TODO FIX THIS BUSCAR UNA FORMA DE AGREGAR FOTOS O VIDEOS EN LOS PASOS DEJO A PRIORI ASI
     private Dish dish;
     private User user;
 
-    public Recipe(String name, String description, String photos, List<IngredientQuantity> ingredientQuantityList, List<Instruction> instructions, Dish dish, User user) {
+    public Recipe() {
+    }
+
+    public Recipe(String name, String description, List<String> photos, List<IngredientQuantity> ingredientQuantityList, List<Instruction> instructions, Dish dish, User user) {
         this.name = name;
         this.description = description;
         this.photos = photos;
@@ -44,11 +50,11 @@ public class Recipe {
         this.description = description;
     }
 
-    public String getPhotos() {
+    public List<String> getPhotos() {
         return photos;
     }
 
-    public void setPhotos(String photos) {
+    public void setPhotos(List<String> photos) {
         this.photos = photos;
     }
 
@@ -100,7 +106,7 @@ public class Recipe {
         this.user = user;
     }
 
-    public List<String> getLabels(){
+    public List<String> getLabels() {
         return dish.getLabels();
     }
 

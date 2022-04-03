@@ -1,5 +1,8 @@
 package com.uade.recipes.vo;
 
+import com.uade.recipes.model.IngredientQuantity;
+import com.uade.recipes.model.User;
+
 public class IngredientQuantityVo {
     Integer id;
     Integer ingredientId;
@@ -28,4 +31,5 @@ public class IngredientQuantityVo {
     public void setQuantity(Double quantity) {
         this.quantity = quantity;
     }
+
 }

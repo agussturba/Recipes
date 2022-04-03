@@ -1,11 +1,14 @@
 package com.uade.recipes.model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
 @Document
 public class Instruction {
+    @Transient
+    public static final String SEQUENCE_NAME = "instruction_sequence";
     @Id
     private Integer id;
     private String description;

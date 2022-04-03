@@ -14,11 +14,11 @@ public class UserVo {
     }
 
     public UserVo(User user) {
-        idUser=user.getId();
-        userName=user.getUserName();
-        password=user.getPassword();
-        email=user.getEmail();
-        role=user.getRol();
+        idUser = user.getId();
+        userName = user.getUserName();
+        password = user.getPassword();
+        email = user.getEmail();
+        role = user.getRol();
     }
 
     public Integer getIdUser() {
@@ -63,13 +63,11 @@ public class UserVo {
 
     public User toModel() {
         User user = new User();
-        if(idUser!=null){
-            user.setId(idUser);
-        }
-         user.setEmail(email);
-         user.setPassword(password);
-         user.setUserName(userName);
-         user.setRole(role);
-         return user;
+        user.setId(idUser);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setUserName(userName);
+        user.setRole(role);
+        return user;
     }
 }

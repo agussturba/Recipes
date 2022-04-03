@@ -41,10 +41,6 @@ public class DishImplementation implements DishService {
     @Override
     public Dish saveOrUpdateDish(DishVo dishVo) {
         validateDishData(dishVo);
-
-        Dish dish = new Dish(dishVo.getName(),dishVo.getLabels());
-        dish.setId(dishVo.getId());
-
-        return dishRepository.save(dish);
+        return dishRepository.save(dishVo.toModel());
     }
 }

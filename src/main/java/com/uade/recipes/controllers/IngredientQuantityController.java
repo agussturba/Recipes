@@ -1,6 +1,8 @@
 package com.uade.recipes.controllers;
 
+import com.uade.recipes.model.Dish;
 import com.uade.recipes.model.IngredientQuantity;
+import com.uade.recipes.service.SequenceGeneratorService;
 import com.uade.recipes.service.ingredientQuantity.IngredientQuantityService;
 import com.uade.recipes.vo.IngredientQuantityVo;
 import org.springframework.http.HttpStatus;
@@ -13,29 +15,36 @@ import java.util.List;
 @RequestMapping("api/ingredientQuantity")
 public class IngredientQuantityController {
     private final IngredientQuantityService ingredientQuantityService;
+    private final SequenceGeneratorService sequenceGeneratorService;
 
-    public IngredientQuantityController(IngredientQuantityService ingredientQuantityService) {
+    public IngredientQuantityController(IngredientQuantityService ingredientQuantityService, SequenceGeneratorService sequenceGeneratorService) {
         this.ingredientQuantityService = ingredientQuantityService;
+        this.sequenceGeneratorService = sequenceGeneratorService;
     }
+
     @GetMapping
-    public ResponseEntity<List<IngredientQuantity>> getAllIngredientQuantities(@RequestParam (required = false)Integer ingredientId){
-        if (ingredientId == null){
+    public ResponseEntity<List<IngredientQuantity>> getAllIngredientQuantities(@RequestParam(required = false) Integer ingredientId) {
+        if (ingredientId == null) {
             return ResponseEntity.status(HttpStatus.OK).body(ingredientQuantityService.getAllIngredientQuantity());
-        }
-        else{
+        } else {
             return ResponseEntity.status(HttpStatus.OK).body(ingredientQuantityService.getIngredientQuantityByIngredientId(ingredientId));
         }
     }
+
     @GetMapping("/{id}")
-    public ResponseEntity<IngredientQuantity> getIngredientQuantityById(@PathVariable Integer ingredientQuantityId){
+    public ResponseEntity<IngredientQuantity> getIngredientQuantityById(@PathVariable Integer ingredientQuantityId) {
         return ResponseEntity.status(HttpStatus.FOUND).body(ingredientQuantityService.getIngredientQuantityById(ingredientQuantityId));
     }
+
     @PostMapping
-    public ResponseEntity<IngredientQuantity> saveIngredientQuantity(@RequestBody IngredientQuantityVo ingredientQuantityVo){
+    public ResponseEntity<IngredientQuantity> saveIngredientQuantity(@RequestBody IngredientQuantityVo ingredientQuantityVo) {
+        ingredientQuantityVo.setId(sequenceGeneratorService.generateSequence(IngredientQuantity.SEQUENCE_NAME));
+
         return ResponseEntity.status(HttpStatus.CREATED).body(ingredientQuantityService.saveOrUpdateIngredientQuantity(ingredientQuantityVo));
     }
+
     @PutMapping
-    public ResponseEntity<IngredientQuantity> updateIngredientQuantity(@RequestBody IngredientQuantityVo ingredientQuantityVo){
+    public ResponseEntity<IngredientQuantity> updateIngredientQuantity(@RequestBody IngredientQuantityVo ingredientQuantityVo) {
         return ResponseEntity.status(HttpStatus.OK).body(ingredientQuantityService.saveOrUpdateIngredientQuantity(ingredientQuantityVo));
     }
 

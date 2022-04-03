@@ -1,7 +1,9 @@
 package com.uade.recipes.controllers;
 
 
+import com.uade.recipes.model.Dish;
 import com.uade.recipes.model.Ingredient;
+import com.uade.recipes.service.SequenceGeneratorService;
 import com.uade.recipes.service.ingredient.IngredientService;
 import com.uade.recipes.vo.IngredientVo;
 import org.springframework.http.HttpStatus;
@@ -14,9 +16,11 @@ import java.util.List;
 @RequestMapping("/api/ingredient")
 public class IngredientController {
     private final IngredientService ingredientService;
+    private final SequenceGeneratorService sequenceGeneratorService;
 
-    public IngredientController(IngredientService ingredientService) {
+    public IngredientController(IngredientService ingredientService, SequenceGeneratorService sequenceGeneratorService) {
         this.ingredientService = ingredientService;
+        this.sequenceGeneratorService = sequenceGeneratorService;
     }
 
     @GetMapping
@@ -26,12 +30,15 @@ public class IngredientController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(ingredientService.getAllIngredients());
     }
+
     @PostMapping
-    public ResponseEntity<Ingredient> saveIngredient(@RequestBody IngredientVo ingredientVo){
+    public ResponseEntity<Ingredient> saveIngredient(@RequestBody IngredientVo ingredientVo) {
+        ingredientVo.setId(sequenceGeneratorService.generateSequence(Ingredient.SEQUENCE_NAME));
         return ResponseEntity.status(HttpStatus.CREATED).body(ingredientService.saveOrUpdateIngredient(ingredientVo));
     }
+
     @PutMapping
-    public ResponseEntity<Ingredient> updateIngredient(@RequestBody IngredientVo ingredientVo){
+    public ResponseEntity<Ingredient> updateIngredient(@RequestBody IngredientVo ingredientVo) {
         return ResponseEntity.status(HttpStatus.OK).body(ingredientService.saveOrUpdateIngredient(ingredientVo));
     }
 
@@ -39,6 +46,7 @@ public class IngredientController {
     public ResponseEntity<Ingredient> getIngredientById(@PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.OK).body(ingredientService.getIngredientById(id));
     }
+
     @GetMapping("/name/{name}")
     public ResponseEntity<Ingredient> getIngredientByName(@PathVariable String name) {
         return ResponseEntity.status(HttpStatus.OK).body(ingredientService.getIngredientByName(name));

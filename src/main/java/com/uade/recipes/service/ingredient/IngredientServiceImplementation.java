@@ -38,11 +38,7 @@ public class IngredientServiceImplementation implements IngredientService {
 
     @Override
     public Ingredient saveOrUpdateIngredient(IngredientVo ingredientVo) {
-        if (ingredientVo.getId() != null){
-            this.getIngredientById(ingredientVo.getId());
-        }
-        Ingredient ingredient = new Ingredient(ingredientVo.getName(), ingredientVo.getType());
-        return ingredientRepository.save(ingredient);
+        return ingredientRepository.save(ingredientVo.toModel());
     }
 
 

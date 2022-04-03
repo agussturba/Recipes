@@ -40,15 +40,6 @@ public class InstructionServiceImplementation implements InstructionService {
     @Override
     public Instruction saveOrUpdateInstruction(InstructionVo instructionVo) {
         Recipe recipe = recipeRepository.findById(instructionVo.getRecipeId()).orElseThrow(RecipeNotFoundException::new);
-        Instruction instruction = new Instruction();
-        if (instructionVo.getId() != null) {
-            this.getInstructionById(instruction.getId());
-            instruction.setId(instructionVo.getId());
-        }
-        instruction.setDescription(instructionVo.getDescription());
-        instruction.setPhoto(instructionVo.getPhoto());
-        instruction.setVideo(instructionVo.getVideo());
-        instruction.setRecipe(recipe);
-        return instructionRepository.save(instruction);
+        return instructionRepository.save(instructionVo.toModel(recipe));
     }
 }

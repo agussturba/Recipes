@@ -1,12 +1,14 @@
 package com.uade.recipes.vo;
 
+import com.uade.recipes.model.*;
+
 import java.util.List;
 
 public class RecipeVo {
     Integer id;
     String name;
     String description;
-    String photos;
+    List<String> photos;
     List<Integer> ingredientQuantityIdList;
     List<Integer> instructionsIds;
     Integer dishId;
@@ -37,11 +39,11 @@ public class RecipeVo {
         this.description = description;
     }
 
-    public String getPhotos() {
+    public List<String> getPhotos() {
         return photos;
     }
 
-    public void setPhotos(String photos) {
+    public void setPhotos(List<String> photos) {
         this.photos = photos;
     }
 
@@ -76,5 +78,18 @@ public class RecipeVo {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public Recipe toModel(User user, Dish dish, List<Instruction> instructions, List<IngredientQuantity> ingredientQuantityList) {
+        Recipe recipe = new Recipe();
+        recipe.setId(getId());
+        recipe.setName(getName());
+        recipe.setDescription(getDescription());
+        recipe.setPhotos(getPhotos());
+        recipe.setIngredientQuantityList(ingredientQuantityList);
+        recipe.setInstructions(instructions);
+        recipe.setDish(dish);
+        recipe.setUser(user);
+        return recipe;
     }
 }

@@ -1,5 +1,7 @@
 package com.uade.recipes.vo;
 
+import com.uade.recipes.model.Ingredient;
+
 public class IngredientVo {
     Integer id;
     String name;
@@ -27,5 +29,13 @@ public class IngredientVo {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Ingredient toModel() {
+        Ingredient ingredient = new Ingredient();
+        ingredient.setId(this.getId());
+        ingredient.setName(this.getName());
+        ingredient.setType(this.getName());
+        return ingredient;
     }
 }

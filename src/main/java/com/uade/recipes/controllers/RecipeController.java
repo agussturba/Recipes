@@ -1,6 +1,8 @@
 package com.uade.recipes.controllers;
 
+import com.uade.recipes.model.Dish;
 import com.uade.recipes.model.Recipe;
+import com.uade.recipes.service.SequenceGeneratorService;
 import com.uade.recipes.service.recipe.RecipeService;
 import com.uade.recipes.vo.RecipeVo;
 import org.springframework.http.HttpStatus;
@@ -13,9 +15,11 @@ import java.util.List;
 @RequestMapping("api/recipes")
 public class RecipeController {
     private final RecipeService recipeService;
+    private final SequenceGeneratorService sequenceGeneratorService;
 
-    public RecipeController(RecipeService recipeService) {
+    public RecipeController(RecipeService recipeService, SequenceGeneratorService sequenceGeneratorService) {
         this.recipeService = recipeService;
+        this.sequenceGeneratorService = sequenceGeneratorService;
     }
 
     @GetMapping//se hace asi por standard de rest
@@ -38,6 +42,7 @@ public class RecipeController {
 
     @PostMapping
     public ResponseEntity<Recipe> saveRecipe(@RequestBody RecipeVo recipeVo) {
+        recipeVo.setId(sequenceGeneratorService.generateSequence(Recipe.SEQUENCE_NAME));
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.saveOrUpdateRecipe(recipeVo));
     }
 
