@@ -33,13 +33,12 @@ public class InstructionServiceImplementation implements InstructionService {
 
     @Override
     public List<Instruction> getInstructionsByRecipeId(Integer recipeId) {
-        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(RecipeNotFoundException::new);
-        return instructionRepository.findByRecipe(recipe);
+        //return instructionRepository.findByRecipe(recipe);
+        return null;
     }
 
     @Override
     public Instruction saveOrUpdateInstruction(InstructionVo instructionVo) {
-        Recipe recipe = recipeRepository.findById(instructionVo.getRecipeId()).orElseThrow(RecipeNotFoundException::new);
-        return instructionRepository.save(instructionVo.toModel(recipe));
+        return instructionRepository.save(instructionVo.toModel());
     }
 }

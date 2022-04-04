@@ -1,11 +1,14 @@
 package com.uade.recipes.model;
 
-import org.springframework.data.annotation.Transient;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 
 @Entity
+@Data
+@NoArgsConstructor
 public class IngredientQuantity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,35 +18,8 @@ public class IngredientQuantity {
     private Ingredient ingredient;
     private Double quantity;
 
-    public IngredientQuantity() {
-    }
-
     public IngredientQuantity(Ingredient ingredient, Double quantity) {
         this.ingredient = ingredient;
         this.quantity = quantity;
-    }
-
-    public Ingredient getIngredient() {
-        return ingredient;
-    }
-
-    public void setIngredient(Ingredient ingredient) {
-        this.ingredient = ingredient;
-    }
-
-    public Double getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Double quantity) {
-        this.quantity = quantity;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 }

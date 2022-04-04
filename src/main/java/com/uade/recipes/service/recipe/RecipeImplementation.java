@@ -73,7 +73,7 @@ public class RecipeImplementation implements RecipeService {
     public Recipe saveOrUpdateRecipe(RecipeVo recipeVo) {//TODO THE VALIDATIONS
         User user = userRepository.findById(recipeVo.getUserId()).orElseThrow(UserNotFoundException::new);
         Dish dish = dishRepository.findById(recipeVo.getDishId()).orElseThrow(DishNotFoundException::new);
-        List<Instruction> instructions = getInstructionsByIds(recipeVo.getInstructions());
+        List<Instruction> instructions = getInstructionsByIds(recipeVo.getInstructionsIds());
         Recipe newRecipe = recipeRepository.save(recipeVo.toModel(user,dish,instructions,null));
         saveRecipeRating(newRecipe);
         return newRecipe;
