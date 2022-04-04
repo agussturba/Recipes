@@ -6,7 +6,6 @@ import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.*;
 import com.uade.recipes.persistance.*;
-import com.uade.recipes.service.SequenceGeneratorService;
 import com.uade.recipes.vo.RecipeVo;
 import org.springframework.stereotype.Service;
 
@@ -20,20 +19,18 @@ public class RecipeImplementation implements RecipeService {
     private final DishRepository dishRepository;
     private final RecipeRatingRepository recipeRatingRepository;
     private final InstructionRepository instructionRepository;
-    private final SequenceGeneratorService sequenceGeneratorService;
 
-    public RecipeImplementation(RecipeRepository recipeRepository, UserRepository userRepository, DishRepository dishRepository, RecipeRatingRepository ratingRepository, InstructionRepository instructionRepository, SequenceGeneratorService sequenceGeneratorService) {
+    public RecipeImplementation(RecipeRepository recipeRepository, UserRepository userRepository, DishRepository dishRepository, RecipeRatingRepository ratingRepository, InstructionRepository instructionRepository) {
         this.recipeRepository = recipeRepository;
         this.userRepository = userRepository;
         this.dishRepository = dishRepository;
         this.recipeRatingRepository = ratingRepository;
         this.instructionRepository = instructionRepository;
-        this.sequenceGeneratorService = sequenceGeneratorService;
     }
 
     @Override
     public List<Recipe> getAllRecipes() {
-        return recipeRepository.findAll();
+        return (List<Recipe>) recipeRepository.findAll();
     }
 
     @Override
@@ -54,7 +51,8 @@ public class RecipeImplementation implements RecipeService {
 
     @Override
     public List<Recipe> getRecipesByLabels(List<String> labels) {//TODO Test method
-        return recipeRepository.findRecipeByLabelsContains(labels);
+      //  return recipeRepository.findRecipeByLabelsContains(labels);
+        return null;
     }
 
     @Override
@@ -92,7 +90,6 @@ public class RecipeImplementation implements RecipeService {
 
     private void saveRecipeRating(Recipe recipe) {
         RecipeRating recipeRating = new RecipeRating(recipe);
-        recipeRating.setId(sequenceGeneratorService.generateSequence(RecipeRating.SEQUENCE_NAME));
         recipeRatingRepository.save(recipeRating);
     }
 }

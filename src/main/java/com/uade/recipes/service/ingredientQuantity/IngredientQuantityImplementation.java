@@ -23,7 +23,7 @@ public class IngredientQuantityImplementation implements IngredientQuantityServi
 
     @Override
     public List<IngredientQuantity> getAllIngredientQuantity() {
-        return ingredientQuantityRepository.findAll();
+        return (List<IngredientQuantity>) ingredientQuantityRepository.findAll();
     }
 
     @Override

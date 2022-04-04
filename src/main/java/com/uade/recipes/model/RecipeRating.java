@@ -1,19 +1,24 @@
 package com.uade.recipes.model;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.*;
 import java.util.*;
 
-@Document
+@Entity
 public class RecipeRating {
-    @Transient
-    public static final String SEQUENCE_NAME = "recipeRating_sequence";
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Integer id;
+    @OneToOne
     private Recipe recipe;
+    @ElementCollection
     private List<Double> ratings;
+
+
+    public RecipeRating() {
+    }
 
     public RecipeRating(Recipe recipe) {
         ratings = new ArrayList<>();

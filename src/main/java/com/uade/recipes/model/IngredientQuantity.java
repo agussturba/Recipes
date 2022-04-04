@@ -1,20 +1,24 @@
 package com.uade.recipes.model;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.persistence.*;
 
 
-@Document
+@Entity
 public class IngredientQuantity {
-    @Transient
-    public static final String SEQUENCE_NAME = "ingredientQuantity_sequence";
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Integer id;
+    @ManyToOne
     private Ingredient ingredient;
     private Double quantity;
 
-    public IngredientQuantity( Ingredient ingredient, Double quantity) {
+    public IngredientQuantity() {
+    }
+
+    public IngredientQuantity(Ingredient ingredient, Double quantity) {
         this.ingredient = ingredient;
         this.quantity = quantity;
     }

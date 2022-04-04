@@ -1,9 +1,7 @@
 package com.uade.recipes.controllers;
 
 
-import com.uade.recipes.model.Dish;
 import com.uade.recipes.model.Ingredient;
-import com.uade.recipes.service.SequenceGeneratorService;
 import com.uade.recipes.service.ingredient.IngredientService;
 import com.uade.recipes.vo.IngredientVo;
 import org.springframework.http.HttpStatus;
@@ -16,11 +14,9 @@ import java.util.List;
 @RequestMapping("/api/ingredient")
 public class IngredientController {
     private final IngredientService ingredientService;
-    private final SequenceGeneratorService sequenceGeneratorService;
 
-    public IngredientController(IngredientService ingredientService, SequenceGeneratorService sequenceGeneratorService) {
+    public IngredientController(IngredientService ingredientService) {
         this.ingredientService = ingredientService;
-        this.sequenceGeneratorService = sequenceGeneratorService;
     }
 
     @GetMapping
@@ -33,7 +29,6 @@ public class IngredientController {
 
     @PostMapping
     public ResponseEntity<Ingredient> saveIngredient(@RequestBody IngredientVo ingredientVo) {
-        ingredientVo.setId(sequenceGeneratorService.generateSequence(Ingredient.SEQUENCE_NAME));
         return ResponseEntity.status(HttpStatus.CREATED).body(ingredientService.saveOrUpdateIngredient(ingredientVo));
     }
 

@@ -2,11 +2,10 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
-  data:
-    mongodb:
-      authentication-database: admin
-      host: localhost
-      port: 27017
-      userName: rootuser
-      password: rootpass
-      database: recipes
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: "jdbc:sqlserver://localhost:2000;databaseName=Recipes"
+    username: agustin
+    password:

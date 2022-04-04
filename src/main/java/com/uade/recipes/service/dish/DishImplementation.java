@@ -20,7 +20,7 @@ public class DishImplementation implements DishService {
 
     @Override
     public List<Dish> getAllDishes() {
-        return dishRepository.findAll();
+        return (List<Dish>) dishRepository.findAll();
     }
 
     @Override

@@ -1,18 +1,18 @@
 package com.uade.recipes.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.mapping.Document;
+import javax.persistence.*;
 
 
-@Document
+@Entity
 public class Ingredient {
-    @Transient
-    public static final String SEQUENCE_NAME = "ingredients_sequence";
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Integer id;
+
     private String name;
     private String type;
+
 
     public Ingredient() {
     }

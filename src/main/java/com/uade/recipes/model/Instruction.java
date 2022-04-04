@@ -1,20 +1,24 @@
 package com.uade.recipes.model;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.persistence.*;
 
 
-@Document
+@Entity
 public class Instruction {
-    @Transient
-    public static final String SEQUENCE_NAME = "instruction_sequence";
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Integer id;
+
     private String description;
     private String photo;
     private String video;
+    @ManyToOne
+    @JoinColumn(name = "recipe_id")
     private Recipe recipe; //TODO REVISAR SI ESTA BIEN ESTA DEPENDENCIA
+
 
     public Instruction(String description, String photo, String video, Recipe recipe) {
         this.description = description;

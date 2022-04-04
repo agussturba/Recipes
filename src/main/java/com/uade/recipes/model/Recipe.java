@@ -1,24 +1,28 @@
 package com.uade.recipes.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.mapping.Document;
-
+import javax.persistence.*;
 import java.util.List;
 
-@Document
+@Entity
 public class Recipe {
-    @Transient
-    public static final String SEQUENCE_NAME = "recipe_sequence";
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Integer id;
+
     private String name;
     private String description;
+    @ElementCollection
     private List<String> photos;
+    @ManyToMany
     private List<IngredientQuantity> ingredientQuantityList;
+    @OneToMany
     private List<Instruction> instructions;
+    @OneToOne
     private Dish dish;
+    @OneToOne
     private User user;
+
 
     public Recipe() {
     }

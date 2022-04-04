@@ -1,7 +1,6 @@
 package com.uade.recipes.controllers;
 
 import com.uade.recipes.model.Dish;
-import com.uade.recipes.service.SequenceGeneratorService;
 import com.uade.recipes.service.dish.DishService;
 import com.uade.recipes.vo.DishVo;
 import org.springframework.http.HttpStatus;
@@ -14,11 +13,9 @@ import java.util.List;
 @RequestMapping("/api/dish")
 public class DishController {
     private final DishService dishService;
-    private final SequenceGeneratorService sequenceGeneratorService;
 
-    public DishController(DishService dishService, SequenceGeneratorService sequenceGeneratorService) {
+    public DishController(DishService dishService) {
         this.dishService = dishService;
-        this.sequenceGeneratorService = sequenceGeneratorService;
     }
 
     @GetMapping
@@ -41,7 +38,6 @@ public class DishController {
 
     @PostMapping
     public ResponseEntity<Dish> saveDish(@RequestBody DishVo dishVo) {
-        dishVo.setId(sequenceGeneratorService.generateSequence(Dish.SEQUENCE_NAME));
         return ResponseEntity.status(HttpStatus.CREATED).body(dishService.saveOrUpdateDish(dishVo));
     }
 

@@ -1,8 +1,6 @@
 package com.uade.recipes.controllers;
 
-import com.uade.recipes.model.Dish;
 import com.uade.recipes.model.Instruction;
-import com.uade.recipes.service.SequenceGeneratorService;
 import com.uade.recipes.service.instruction.InstructionService;
 import com.uade.recipes.vo.InstructionVo;
 import org.springframework.http.HttpStatus;
@@ -15,11 +13,9 @@ import java.util.List;
 @RequestMapping("/api/instruction")
 public class InstructionController {
     private final InstructionService instructionService;
-    private final SequenceGeneratorService sequenceGeneratorService;
 
-    public InstructionController(InstructionService instructionService, SequenceGeneratorService sequenceGeneratorService) {
+    public InstructionController(InstructionService instructionService) {
         this.instructionService = instructionService;
-        this.sequenceGeneratorService = sequenceGeneratorService;
     }
 
     @GetMapping
@@ -39,7 +35,6 @@ public class InstructionController {
 
     @PostMapping
     public ResponseEntity<Instruction> saveInstruction(@RequestBody InstructionVo instructionVo) {
-        instructionVo.setId(sequenceGeneratorService.generateSequence(Instruction.SEQUENCE_NAME));
         return ResponseEntity.status(HttpStatus.CREATED).body(instructionService.saveOrUpdateInstruction(instructionVo));
     }
 

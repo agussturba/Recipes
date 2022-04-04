@@ -1,8 +1,6 @@
 package com.uade.recipes.controllers;
 
-import com.uade.recipes.model.Dish;
 import com.uade.recipes.model.IngredientQuantity;
-import com.uade.recipes.service.SequenceGeneratorService;
 import com.uade.recipes.service.ingredientQuantity.IngredientQuantityService;
 import com.uade.recipes.vo.IngredientQuantityVo;
 import org.springframework.http.HttpStatus;
@@ -15,11 +13,9 @@ import java.util.List;
 @RequestMapping("api/ingredientQuantity")
 public class IngredientQuantityController {
     private final IngredientQuantityService ingredientQuantityService;
-    private final SequenceGeneratorService sequenceGeneratorService;
 
-    public IngredientQuantityController(IngredientQuantityService ingredientQuantityService, SequenceGeneratorService sequenceGeneratorService) {
+    public IngredientQuantityController(IngredientQuantityService ingredientQuantityService) {
         this.ingredientQuantityService = ingredientQuantityService;
-        this.sequenceGeneratorService = sequenceGeneratorService;
     }
 
     @GetMapping
@@ -38,7 +34,6 @@ public class IngredientQuantityController {
 
     @PostMapping
     public ResponseEntity<IngredientQuantity> saveIngredientQuantity(@RequestBody IngredientQuantityVo ingredientQuantityVo) {
-        ingredientQuantityVo.setId(sequenceGeneratorService.generateSequence(IngredientQuantity.SEQUENCE_NAME));
 
         return ResponseEntity.status(HttpStatus.CREATED).body(ingredientQuantityService.saveOrUpdateIngredientQuantity(ingredientQuantityVo));
     }

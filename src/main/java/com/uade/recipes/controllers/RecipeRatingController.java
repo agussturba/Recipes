@@ -1,7 +1,6 @@
 package com.uade.recipes.controllers;
 
 import com.uade.recipes.model.RecipeRating;
-import com.uade.recipes.service.SequenceGeneratorService;
 import com.uade.recipes.service.recipeRating.RecipeRatingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,11 +10,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/rating")
 public class RecipeRatingController {
     private final RecipeRatingService recipeRatingService;
-    private final SequenceGeneratorService sequenceGeneratorService;
 
-    public RecipeRatingController(RecipeRatingService recipeRatingService, SequenceGeneratorService sequenceGeneratorService) {
+    public RecipeRatingController(RecipeRatingService recipeRatingService) {
         this.recipeRatingService = recipeRatingService;
-        this.sequenceGeneratorService = sequenceGeneratorService;
     }
 
     @GetMapping("/{id}")

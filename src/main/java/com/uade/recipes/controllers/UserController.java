@@ -7,7 +7,6 @@ import com.uade.recipes.exceptions.userExceptions.InvalidPasswordException;
 import com.uade.recipes.exceptions.userExceptions.InvalidRoleException;
 import com.uade.recipes.exceptions.userExceptions.UserNameExistsException;
 import com.uade.recipes.model.User;
-import com.uade.recipes.service.SequenceGeneratorService;
 import com.uade.recipes.service.user.UserService;
 import com.uade.recipes.vo.UserVo;
 import org.springframework.http.HttpStatus;
@@ -20,11 +19,9 @@ import java.util.List;
 @RequestMapping("/api/user")
 public class UserController {
     private final UserService userService;
-    private final SequenceGeneratorService sequenceGeneratorService;
 
-    public UserController(UserService userService, SequenceGeneratorService sequenceGeneratorService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.sequenceGeneratorService = sequenceGeneratorService;
     }
 
     @GetMapping
@@ -49,7 +46,6 @@ public class UserController {
 
     @PostMapping("/admin")
     public ResponseEntity<User> saveUserStudent(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException {
-        userVo.setIdUser(sequenceGeneratorService.generateSequence(User.SEQUENCE_NAME));
         return ResponseEntity.status(HttpStatus.OK).body(userService.saveOrUpdateUser(userVo, "ROLE_ADMIN"));
     }
 

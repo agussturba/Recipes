@@ -28,7 +28,7 @@ public class InstructionServiceImplementation implements InstructionService {
 
     @Override
     public List<Instruction> getAllInstructions() {
-        return instructionRepository.findAll();
+        return (List<Instruction>) instructionRepository.findAll();
     }
 
     @Override
