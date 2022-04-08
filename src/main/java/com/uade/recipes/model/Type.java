@@ -4,20 +4,14 @@ import lombok.Data;
 
 import javax.persistence.*;
 
-
 @Entity
+@Table(name="type")
 @Data
-public class Instruction {
+public class Type {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-    @ManyToOne
-    private Recipe recipe;
     private String description;
-    private Integer numberOfStep;
-    private String photo;
-    private String video;
-
 
 }

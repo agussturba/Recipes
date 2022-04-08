@@ -19,11 +19,13 @@ public class Recipe {
     private List<String> photos;
     @ManyToMany
     private List<IngredientQuantity> ingredientQuantityList;
-    @OneToMany
-    private List<Instruction> instructions;
     @OneToOne
     private Dish dish;
     @OneToOne
     private User user;
+    private Integer peopleAmount;
+    @OneToMany
+    private Type type;
+
 
 }

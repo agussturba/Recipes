@@ -11,6 +11,9 @@ public class UserVo {
     String password;
     String email;
     String role;
+    boolean enabled;
+    String name;
+    String avatar;
 
     public UserVo(User user) {
         idUser = user.getId();
@@ -18,6 +21,9 @@ public class UserVo {
         password = user.getPassword();
         email = user.getEmail();
         role = user.getRole();
+        enabled = user.isEnabled();
+        name = user.getName();
+        avatar = user.getAvatar();
     }
 
     public User toModel() {
@@ -27,6 +33,9 @@ public class UserVo {
         user.setPassword(password);
         user.setUserName(userName);
         user.setRole(role);
+        user.setEnabled(enabled);
+        user.setName(name);
+        user.setAvatar(avatar);
         return user;
     }
 }

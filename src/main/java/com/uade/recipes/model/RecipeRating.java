@@ -1,6 +1,7 @@
 package com.uade.recipes.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Transient;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.util.*;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class RecipeRating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,22 +17,13 @@ public class RecipeRating {
     private Integer id;
     @OneToOne
     private Recipe recipe;
-    @ElementCollection
-    private List<Double> ratings;
+    private Double rating;
+    @OneToOne
+    private User user;
+    private String comments;
 
     public RecipeRating(Recipe recipe) {
         this.recipe = recipe;
     }
 
-    public void addRating(Double rating) {
-        this.ratings.add(rating);
-    }
-
-    public int getNumberOfRatings() {
-        return ratings.size();
-    }
-
-    public Double getAverageRating() {
-        return ratings.stream().mapToDouble(a -> a).average().orElse(0);
-    }
 }

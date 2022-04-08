@@ -16,7 +16,13 @@ public class IngredientQuantity {
     private Integer id;
     @ManyToOne
     private Ingredient ingredient;
+    @ManyToOne
+    private Recipe recipe;
     private Double quantity;
+    @OneToOne
+    private Unity unity;
+    private String observations;
+
 
     public IngredientQuantity(Ingredient ingredient, Double quantity) {
         this.ingredient = ingredient;

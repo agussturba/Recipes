@@ -20,7 +20,12 @@ https://www.youtube.com/watch?v=ssj0CGxv60k&ab_channel=Amigoscode
 Swagger configuration
 http://localhost:8080/swagger-ui.html#/
 
-    
+
+                                TO DO /// IMPORTANT 
+
+-   Switch the way we calculate rating
+
+-   Complete the VO's with the new attributes and create the VO's for the new entities.
     
 
 
