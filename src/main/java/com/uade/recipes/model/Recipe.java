@@ -15,8 +15,8 @@ public class Recipe {
 
     private String name;
     private String description;
-    @ElementCollection
-    private List<String> photos;
+    @OneToMany
+    private List<Photo> photos;
     @ManyToMany
     private List<IngredientQuantity> ingredientQuantityList;
     @OneToOne
@@ -26,6 +26,7 @@ public class Recipe {
     private Integer peopleAmount;
     @OneToMany
     private Type type;
+
 
 
 }
