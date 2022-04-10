@@ -80,9 +80,8 @@
                 <configuration>
                     <excludes>
                         <exclude>
-                            <groupId>io.freefair.lombok</groupId>
+                            <groupId>org.lombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>5.1.0</version>
                         </exclude>
                     </excludes>
                 </configuration>
