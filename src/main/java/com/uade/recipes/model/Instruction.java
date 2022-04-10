@@ -16,8 +16,7 @@ public class Instruction {
     private Recipe recipe;
     private String description;
     private Integer numberOfStep;
-    private String photo;
-    private String video;
+
 
 
 }

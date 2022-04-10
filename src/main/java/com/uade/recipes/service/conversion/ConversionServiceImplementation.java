@@ -1,7 +1,7 @@
 package com.uade.recipes.service.conversion;
 
-import com.uade.recipes.exceptions.ConversionNotFoundException;
-import com.uade.recipes.exceptions.UnitNotFoundException;
+import com.uade.recipes.exceptions.conversionExceptions.ConversionNotFoundException;
+import com.uade.recipes.exceptions.unitExceptions.UnitNotFoundException;
 import com.uade.recipes.model.Conversion;
 import com.uade.recipes.model.Unit;
 import com.uade.recipes.persistance.ConversionsRepository;

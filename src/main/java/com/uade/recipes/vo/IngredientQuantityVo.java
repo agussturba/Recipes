@@ -8,5 +8,4 @@ public class IngredientQuantityVo {
     Integer ingredientId;
     Double quantity;
 
-
 }

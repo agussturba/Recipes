@@ -1,6 +1,6 @@
 package com.uade.recipes.service.recipePhoto;
 
-import com.uade.recipes.exceptions.PhotoNotFoundException;
+import com.uade.recipes.exceptions.recipePhotoExceptions.RecipePhotoNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.model.Recipe;
 import com.uade.recipes.model.RecipePhoto;
@@ -23,7 +23,7 @@ public class RecipePhotoServiceImplementation implements RecipePhotoService {
 
     @Override
     public RecipePhoto getRecipePhotoById(Integer id) {
-        return recipePhotoRepository.findById(id).orElseThrow(PhotoNotFoundException::new);
+        return recipePhotoRepository.findById(id).orElseThrow(RecipePhotoNotFoundException::new);
     }
 
     @Override

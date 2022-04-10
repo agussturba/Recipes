@@ -10,8 +10,9 @@ public class ConversionVo {
     Integer sourceUnitId;
     Integer targetUnitId;
     double conversionFactor;
-    public Conversion toModel(Unit sourceUnit,Unit targetUnit){
-        Conversion conversion=new Conversion();
+
+    public Conversion toModel(Unit sourceUnit, Unit targetUnit) {
+        Conversion conversion = new Conversion();
         conversion.setId(id);
         conversion.setConversionFactor(conversionFactor);
         conversion.setSourceUnit(sourceUnit);

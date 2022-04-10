@@ -8,16 +8,14 @@ import lombok.Data;
 public class InstructionVo {
     Integer id;
     String description;
-    String photo;
-    String video;
+    Integer numberOfStep;
 
 
     public Instruction toModel(){
         Instruction instruction = new Instruction();
         instruction.setId(this.getId());
         instruction.setDescription(this.getDescription());
-        instruction.setPhoto(this.getPhoto());
-        instruction.setVideo(this.getVideo());
+        instruction.setNumberOfStep(this.numberOfStep);
         return instruction;
     }
 }

@@ -1,6 +1,6 @@
 package com.uade.recipes.service.type;
 
-import com.uade.recipes.exceptions.TypeNotFountException;
+import com.uade.recipes.exceptions.typeExceptions.TypeNotFountException;
 import com.uade.recipes.model.Type;
 import com.uade.recipes.persistance.TypeRepository;
 import com.uade.recipes.vo.TypeVo;
