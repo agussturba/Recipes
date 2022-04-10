@@ -96,6 +96,7 @@
                 <version>3.0.3</version>
                 <configuration>
                     <appName>tasty-hub</appName>
+                    <jdkVersion>1.8.11</jdkVersion>
                     <processTypes>
                         <web>java $JAVA_OPTS -cp target/classes:target/dependency/* RecipesApplication</web>
                     </processTypes>
