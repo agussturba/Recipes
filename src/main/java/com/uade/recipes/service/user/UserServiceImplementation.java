@@ -34,6 +34,11 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
+    public User getUserByUserNameAndPassword(String userName, String password) {
+        return userRepository.findByUserNameAndPassword(userName,password);
+    }
+
+    @Override
     public User getUserByUserName(String userName) {
         return userRepository.findByUserName(userName);
     }

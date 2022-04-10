@@ -7,6 +7,6 @@ spring:
       ddl-auto: update
     show-sql: true
   datasource:
-    url: "jdbc:sqlserver://uade-recipes-trident.database.windows.net;databaseName=RecipesUade"
-    username: TridentAdmin
-    password: Tridente+1
+    url: "jdbc:sqlserver://localhost:2000;databaseName=Recipes"
+    username: agustin
+    password:

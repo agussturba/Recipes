@@ -30,9 +30,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByEmail(email));
     }
 
-    @GetMapping("/userName/{username}")
+    @GetMapping("/userName/{userName}")
     public ResponseEntity<User> getUserByUserName(@PathVariable String userName) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByUserName(userName));
+    }
+    @GetMapping("/auth/")
+    public ResponseEntity<User> getUserByUserNameAndPassword(@RequestParam String userName,@RequestParam String password) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByUserNameAndPassword(userName,password));
     }
 
     @PostMapping
