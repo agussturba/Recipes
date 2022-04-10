@@ -5,7 +5,8 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    show-sql: true
   datasource:
-    url: "jdbc:sqlserver://localhost:2000;databaseName=Recipes"
-    username: agustin
-    password:
+    url: "jdbc:sqlserver://uade-recipes-trident.database.windows.net;databaseName=RecipesUade"
+    username: TridentAdmin
+    password: Tridente+1
