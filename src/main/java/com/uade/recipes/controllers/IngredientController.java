@@ -1,6 +1,9 @@
 package com.uade.recipes.controllers;
 
 
+import com.uade.recipes.exceptions.ingredientExceptions.IngredientNameContainsNumberException;
+import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
+import com.uade.recipes.exceptions.ingredientExceptions.IngredientTypeContainsNumberException;
 import com.uade.recipes.model.Ingredient;
 import com.uade.recipes.service.ingredient.IngredientService;
 import com.uade.recipes.vo.IngredientVo;
@@ -28,23 +31,23 @@ public class IngredientController {
     }
 
     @PostMapping
-    public ResponseEntity<Ingredient> saveIngredient(@RequestBody IngredientVo ingredientVo) {
+    public ResponseEntity<Ingredient> saveIngredient(@RequestBody IngredientVo ingredientVo) throws IngredientTypeContainsNumberException, IngredientNameContainsNumberException {
         return ResponseEntity.status(HttpStatus.CREATED).body(ingredientService.saveOrUpdateIngredient(ingredientVo));
     }
 
     @PutMapping
-    public ResponseEntity<Ingredient> updateIngredient(@RequestBody IngredientVo ingredientVo) {
+    public ResponseEntity<Ingredient> updateIngredient(@RequestBody IngredientVo ingredientVo) throws IngredientTypeContainsNumberException, IngredientNameContainsNumberException {
         return ResponseEntity.status(HttpStatus.OK).body(ingredientService.saveOrUpdateIngredient(ingredientVo));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Ingredient> getIngredientById(@PathVariable Integer id) {
-        return ResponseEntity.status(HttpStatus.OK).body(ingredientService.getIngredientById(id));
+    public ResponseEntity<Ingredient> getIngredientById(@PathVariable Integer id) throws IngredientNotFoundException {
+        return ResponseEntity.status(HttpStatus.FOUND).body(ingredientService.getIngredientById(id));
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<Ingredient> getIngredientByName(@PathVariable String name) {
-        return ResponseEntity.status(HttpStatus.OK).body(ingredientService.getIngredientByName(name));
+    public ResponseEntity<Ingredient> getIngredientByName(@PathVariable String name) throws IngredientNotFoundException {
+        return ResponseEntity.status(HttpStatus.FOUND).body(ingredientService.getIngredientByName(name));
     }
 
 }

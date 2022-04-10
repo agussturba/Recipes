@@ -1,7 +1,12 @@
 package com.uade.recipes.controllers;
 
+import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
+import com.uade.recipes.exceptions.recipeRatingExceptions.RatingIsLowerThanZeroException;
+import com.uade.recipes.exceptions.recipeRatingExceptions.RatingIsNullException;
+import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.RecipeRating;
 import com.uade.recipes.service.recipeRating.RecipeRatingService;
+import com.uade.recipes.vo.RecipeRatingVo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,23 +21,26 @@ public class RecipeRatingController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RecipeRating> getRecipeRatingById(@PathVariable Integer recipeRatingId) {
+    public ResponseEntity<RecipeRating> getRecipeRatingById(@PathVariable Integer recipeRatingId) throws RecipeNotFoundException {
         return ResponseEntity.status(HttpStatus.FOUND).body(recipeRatingService.getRecipeRatingByRecipeId(recipeRatingId));
     }
 
     @GetMapping("/amount/{recipeId}")
-    public ResponseEntity<Integer> getAmountOfRatingsByRecipeId(@PathVariable Integer recipeId) {
+    public ResponseEntity<Integer> getAmountOfRatingsByRecipeId(@PathVariable Integer recipeId) throws RecipeNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(recipeRatingService.getAmountOfRatingsByRecipeId(recipeId));
     }
 
     @GetMapping("/average/{recipeId}")
-    public ResponseEntity<Double> getAverageOfRatingByRecipeId(@PathVariable Integer recipeId) {
+    public ResponseEntity<Double> getAverageOfRatingByRecipeId(@PathVariable Integer recipeId) throws RecipeNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(recipeRatingService.getAverageOfRecipeRatingsByRecipeId(recipeId));
     }
-
-    @PutMapping
-    public ResponseEntity addRatingToRecipe(@RequestParam Integer recipeId, @RequestParam Double rating) {
-        recipeRatingService.addRatingToRecipeByRecipeId(recipeId, rating);
-        return ResponseEntity.status(HttpStatus.OK).body("Added rating with success");
+    @PostMapping
+    public ResponseEntity<RecipeRating> saveRecipeRating(@RequestBody RecipeRatingVo recipeRatingVo) throws UserNotFoundException, RecipeNotFoundException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(recipeRatingService.saveOrUpdateRecipeRating(recipeRatingVo));
     }
+    @PutMapping
+    public ResponseEntity<RecipeRating> updateRecipeRating(@RequestBody RecipeRatingVo recipeRatingVo) throws UserNotFoundException, RecipeNotFoundException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(recipeRatingService.saveOrUpdateRecipeRating(recipeRatingVo));
+    }
+
 }

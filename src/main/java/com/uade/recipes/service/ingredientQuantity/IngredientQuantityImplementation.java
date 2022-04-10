@@ -1,7 +1,7 @@
 package com.uade.recipes.service.ingredientQuantity;
 
-import com.uade.recipes.exceptions.ingredientQuantityExceptions.IngredientQuantityNotFoundException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
+import com.uade.recipes.exceptions.ingredientQuantityExceptions.IngredientQuantityNotFoundException;
 import com.uade.recipes.model.Ingredient;
 import com.uade.recipes.model.IngredientQuantity;
 import com.uade.recipes.persistance.IngredientQuantityRepository;
@@ -13,6 +13,7 @@ import java.util.List;
 
 @Service
 public class IngredientQuantityImplementation implements IngredientQuantityService {
+
     private final IngredientQuantityRepository ingredientQuantityRepository;
     private final IngredientRepository ingredientRepository;
 
@@ -27,31 +28,26 @@ public class IngredientQuantityImplementation implements IngredientQuantityServi
     }
 
     @Override
-    public IngredientQuantity getIngredientQuantityById(Integer ingredientQuantityId) {
+    public IngredientQuantity getIngredientQuantityById(Integer ingredientQuantityId) throws IngredientQuantityNotFoundException {
         return ingredientQuantityRepository.findById(ingredientQuantityId).orElseThrow(IngredientQuantityNotFoundException::new);
     }
 
     @Override
-    public List<IngredientQuantity> getIngredientQuantityByIngredientId(Integer ingredientId) {
+    public List<IngredientQuantity> getIngredientQuantityByIngredientId(Integer ingredientId) throws IngredientNotFoundException {
         Ingredient ingredient = ingredientRepository.findById(ingredientId).orElseThrow(IngredientNotFoundException::new);
         return ingredientQuantityRepository.findByIngredient(ingredient);
     }
 
     @Override
-    public IngredientQuantity getIngredientQuantityByIngredientAndQuantity(Ingredient ingredient, Double quantity) {
-        return ingredientQuantityRepository.findByIngredientAndQuantity(ingredient,quantity).orElseThrow(IngredientQuantityNotFoundException::new);
+    public IngredientQuantity getIngredientQuantityByIngredientAndQuantity(Ingredient ingredient, Double quantity) throws IngredientQuantityNotFoundException {
+        return ingredientQuantityRepository.findByIngredientAndQuantity(ingredient, quantity).orElseThrow(IngredientQuantityNotFoundException::new);
     }
 
     @Override
-    public IngredientQuantity saveOrUpdateIngredientQuantity(IngredientQuantityVo ingredientQuantityVo) {
+    public IngredientQuantity saveOrUpdateIngredientQuantity(IngredientQuantityVo ingredientQuantityVo) throws IngredientNotFoundException, IngredientQuantityNotFoundException {
         Ingredient ingredient = ingredientRepository.findById(ingredientQuantityVo.getIngredientId()).orElseThrow(IngredientNotFoundException::new);
         Double quantity = ingredientQuantityVo.getQuantity();
-        try {
-            this.getIngredientQuantityByIngredientAndQuantity(ingredient,quantity);
-            return null;
-        }catch (IngredientQuantityNotFoundException e){//Para no crear IngredientQuantity repetidos
-            IngredientQuantity ingredientQuantity = new IngredientQuantity(ingredient,quantity);
-            return ingredientQuantityRepository.save(ingredientQuantity);
-        }
+        IngredientQuantity ingredientQuantity = new IngredientQuantity(ingredient, quantity);
+        return ingredientQuantityRepository.save(ingredientQuantity);
     }
 }

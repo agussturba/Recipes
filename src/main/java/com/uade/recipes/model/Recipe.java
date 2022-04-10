@@ -12,20 +12,18 @@ public class Recipe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-
     private String name;
     private String description;
     @OneToMany
-    private List<Photo> photos;
-    @ManyToMany
-    private List<IngredientQuantity> ingredientQuantityList;
+    private List<RecipePhoto> recipePhotos;
     @OneToOne
     private Dish dish;
     @OneToOne
     private User user;
     private Integer peopleAmount;
+    private Double portions;
     @OneToMany
-    private Type type;
+    private List<Type> type;
 
 
 

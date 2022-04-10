@@ -17,13 +17,10 @@ public class RecipeRating {
     private Integer id;
     @OneToOne
     private Recipe recipe;
-    private Double rating;
     @OneToOne
     private User user;
     private String comments;
+    private Double rating;
 
-    public RecipeRating(Recipe recipe) {
-        this.recipe = recipe;
-    }
 
 }

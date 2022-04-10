@@ -5,9 +5,8 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "unity")
 @Data
-public class Unity {
+public class Unit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)

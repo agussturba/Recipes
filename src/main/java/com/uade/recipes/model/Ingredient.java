@@ -13,6 +13,7 @@ public class Ingredient {
     @Column(name = "id", nullable = false)
     private Integer id;
     private String name;
-    private String type;
+    @OneToOne
+    private Type type;
 
 }

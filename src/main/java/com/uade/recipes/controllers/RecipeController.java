@@ -1,5 +1,8 @@
 package com.uade.recipes.controllers;
 
+import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;
+import com.uade.recipes.exceptions.instructionExceptions.InstructionNotFoundException;
+import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.Recipe;
 import com.uade.recipes.service.recipe.RecipeService;
 import com.uade.recipes.vo.RecipeVo;
@@ -19,7 +22,7 @@ public class RecipeController {
     }
 
     @GetMapping//se hace asi por standard de rest
-    public ResponseEntity<List<Recipe>> getAllRecipes(@RequestParam(required = false) Integer userId, @RequestParam(required = false) Integer dishId) {
+    public ResponseEntity<List<Recipe>> getAllRecipes(@RequestParam(required = false) Integer userId, @RequestParam(required = false) Integer dishId) throws DishNotFoundException, UserNotFoundException {
         if (userId == null && dishId == null) {
             return ResponseEntity.status(HttpStatus.OK).body(recipeService.getAllRecipes());
         } else if (userId != null && dishId == null) {
@@ -37,12 +40,12 @@ public class RecipeController {
     }
 
     @PostMapping
-    public ResponseEntity<Recipe> saveRecipe(@RequestBody RecipeVo recipeVo) {
+    public ResponseEntity<Recipe> saveRecipe(@RequestBody RecipeVo recipeVo) throws InstructionNotFoundException, DishNotFoundException, UserNotFoundException {
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.saveOrUpdateRecipe(recipeVo));
     }
 
     @PutMapping
-    public ResponseEntity<Recipe> updateRecipe(@RequestBody RecipeVo recipeVo) {
+    public ResponseEntity<Recipe> updateRecipe(@RequestBody RecipeVo recipeVo) throws InstructionNotFoundException, DishNotFoundException, UserNotFoundException {
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.saveOrUpdateRecipe(recipeVo));
     }
 }

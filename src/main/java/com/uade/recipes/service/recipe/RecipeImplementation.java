@@ -1,7 +1,7 @@
 package com.uade.recipes.service.recipe;
 
-import com.uade.recipes.exceptions.instructionExceptions.InstructionNotFoundException;
 import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;
+import com.uade.recipes.exceptions.instructionExceptions.InstructionNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.*;
@@ -10,7 +10,9 @@ import com.uade.recipes.vo.RecipeVo;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class RecipeImplementation implements RecipeService {
@@ -34,7 +36,7 @@ public class RecipeImplementation implements RecipeService {
     }
 
     @Override
-    public Recipe getRecipeById(Integer recipeId) {
+    public Recipe getRecipeById(Integer recipeId) throws RecipeNotFoundException {
         return recipeRepository.findById(recipeId).orElseThrow(RecipeNotFoundException::new);
     }
 
@@ -44,42 +46,43 @@ public class RecipeImplementation implements RecipeService {
     }
 
     @Override
-    public List<Recipe> getRecipesByUserId(Integer userId) {
+    public List<Recipe> getRecipesByUserId(Integer userId) throws UserNotFoundException {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         return recipeRepository.findByUser(user);
     }
 
     @Override
-    public List<Recipe> getRecipesByLabels(List<String> labels) {//TODO Test method
-      //  return recipeRepository.findRecipeByLabelsContains(labels);
-        return null;
+    public Set<Recipe> getRecipesByTypes(List<Type> types) {//TODO Test method
+        Set<Recipe> recipes = new HashSet<>();
+        for (Type type: types) {
+            recipes.addAll(recipeRepository.findRecipeByType(type));
+        }
+        return recipes;
     }
 
     @Override
-    public List<Recipe> getRecipesByUserIdAndDishId(Integer userId, Integer dishId) {
+    public List<Recipe> getRecipesByUserIdAndDishId(Integer userId, Integer dishId) throws DishNotFoundException, UserNotFoundException {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Dish dish = dishRepository.findById(dishId).orElseThrow(DishNotFoundException::new);
         return recipeRepository.findByUserAndDish(user, dish);
     }
 
     @Override
-    public List<Recipe> getRecipesByDishId(Integer dishId) {
+    public List<Recipe> getRecipesByDishId(Integer dishId) throws UserNotFoundException {
         Dish dish = dishRepository.findById(dishId).orElseThrow(UserNotFoundException::new);
         return recipeRepository.findByDish(dish);
     }
 
 
     @Override
-    public Recipe saveOrUpdateRecipe(RecipeVo recipeVo) {//TODO THE VALIDATIONS
+    public Recipe saveOrUpdateRecipe(RecipeVo recipeVo) throws DishNotFoundException, InstructionNotFoundException, UserNotFoundException {//TODO THE VALIDATIONS
         User user = userRepository.findById(recipeVo.getUserId()).orElseThrow(UserNotFoundException::new);
         Dish dish = dishRepository.findById(recipeVo.getDishId()).orElseThrow(DishNotFoundException::new);
-        List<Instruction> instructions = getInstructionsByIds(recipeVo.getInstructionsIds());
-        Recipe newRecipe = recipeRepository.save(recipeVo.toModel(user,dish,instructions,null));
-        saveRecipeRating(newRecipe);
-        return newRecipe;
+        //TODO
+        return null;
     }
 
-    private List<Instruction> getInstructionsByIds(List<Integer> instructionsIds) {
+    private List<Instruction> getInstructionsByIds(List<Integer> instructionsIds) throws InstructionNotFoundException {
         List<Instruction> instructions = new ArrayList<>();
         for (Integer instructionId : instructionsIds) {
             Instruction instruction = instructionRepository.findById(instructionId).orElseThrow(InstructionNotFoundException::new);
@@ -88,8 +91,4 @@ public class RecipeImplementation implements RecipeService {
         return instructions;
     }
 
-    private void saveRecipeRating(Recipe recipe) {
-        RecipeRating recipeRating = new RecipeRating(recipe);
-        recipeRatingRepository.save(recipeRating);
-    }
 }

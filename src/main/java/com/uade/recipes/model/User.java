@@ -18,7 +18,8 @@ public class User {
     private String userName;
     private String password;
     private String name;
-    private String avatar;
+    @OneToOne
+    private UserPhoto avatar;
     private boolean enabled;
 
 

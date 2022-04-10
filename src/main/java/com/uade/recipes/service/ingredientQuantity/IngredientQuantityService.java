@@ -1,9 +1,9 @@
 package com.uade.recipes.service.ingredientQuantity;
 
-import com.uade.recipes.model.Dish;
+import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
+import com.uade.recipes.exceptions.ingredientQuantityExceptions.IngredientQuantityNotFoundException;
 import com.uade.recipes.model.Ingredient;
 import com.uade.recipes.model.IngredientQuantity;
-import com.uade.recipes.vo.DishVo;
 import com.uade.recipes.vo.IngredientQuantityVo;
 
 import java.util.List;
@@ -11,11 +11,11 @@ import java.util.List;
 public interface IngredientQuantityService {
     List<IngredientQuantity> getAllIngredientQuantity();
 
-    IngredientQuantity getIngredientQuantityById(Integer ingredientQuantityId);
+    IngredientQuantity getIngredientQuantityById(Integer ingredientQuantityId) throws IngredientQuantityNotFoundException;
 
-    List<IngredientQuantity> getIngredientQuantityByIngredientId(Integer ingredientId);
+    List<IngredientQuantity> getIngredientQuantityByIngredientId(Integer ingredientId) throws IngredientNotFoundException;
 
-    IngredientQuantity getIngredientQuantityByIngredientAndQuantity(Ingredient ingredient,Double quantity);
+    IngredientQuantity getIngredientQuantityByIngredientAndQuantity(Ingredient ingredient, Double quantity) throws IngredientQuantityNotFoundException;
 
-    IngredientQuantity saveOrUpdateIngredientQuantity(IngredientQuantityVo ingredientQuantityVo);
+    IngredientQuantity saveOrUpdateIngredientQuantity(IngredientQuantityVo ingredientQuantityVo) throws IngredientNotFoundException, IngredientQuantityNotFoundException;
 }

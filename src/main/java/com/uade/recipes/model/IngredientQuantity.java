@@ -20,7 +20,7 @@ public class IngredientQuantity {
     private Recipe recipe;
     private Double quantity;
     @OneToOne
-    private Unity unity;
+    private Unit unit;
     private String observations;
 
 

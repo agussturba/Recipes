@@ -4,7 +4,7 @@ import com.uade.recipes.exceptions.recipeRatingExceptions.RatingIsLowerThanZeroE
 import com.uade.recipes.exceptions.recipeRatingExceptions.RatingIsNullException;
 
 public class RatingValidations {
-    public static void validateRating(Double rating){
+    public static void validateRating(Double rating) throws RatingIsLowerThanZeroException, RatingIsNullException {
         if(rating==null){
             throw new RatingIsNullException();
         }

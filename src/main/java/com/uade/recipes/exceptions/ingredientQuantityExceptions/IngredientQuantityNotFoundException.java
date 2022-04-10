@@ -1,4 +1,4 @@
 package com.uade.recipes.exceptions.ingredientQuantityExceptions;
 
-public class IngredientQuantityNotFoundException extends RuntimeException {
+public class IngredientQuantityNotFoundException extends Exception {
 }

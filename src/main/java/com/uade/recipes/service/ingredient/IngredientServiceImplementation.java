@@ -1,9 +1,12 @@
 package com.uade.recipes.service.ingredient;
 
+import com.uade.recipes.exceptions.ingredientExceptions.IngredientNameContainsNumberException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
+import com.uade.recipes.exceptions.ingredientExceptions.IngredientTypeContainsNumberException;
 import com.uade.recipes.model.Ingredient;
+import com.uade.recipes.model.Type;
 import com.uade.recipes.persistance.IngredientRepository;
-import com.uade.recipes.validations.IngredientsValidations;
+import com.uade.recipes.service.type.TypeService;
 import com.uade.recipes.vo.IngredientVo;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +17,11 @@ import static com.uade.recipes.validations.IngredientsValidations.validateIngred
 @Service
 public class IngredientServiceImplementation implements IngredientService {
     private final IngredientRepository ingredientRepository;
+    private final TypeService typeService;
 
-    public IngredientServiceImplementation(IngredientRepository ingredientRepository) {
+    public IngredientServiceImplementation(IngredientRepository ingredientRepository, TypeService typeService) {
         this.ingredientRepository = ingredientRepository;
+        this.typeService = typeService;
     }
 
     @Override
@@ -25,12 +30,12 @@ public class IngredientServiceImplementation implements IngredientService {
     }
 
     @Override
-    public Ingredient getIngredientById(Integer ingredientId) {
+    public Ingredient getIngredientById(Integer ingredientId) throws IngredientNotFoundException {
         return ingredientRepository.findById(ingredientId).orElseThrow(IngredientNotFoundException::new);
     }
 
     @Override
-    public Ingredient getIngredientByName(String ingredientName) {
+    public Ingredient getIngredientByName(String ingredientName) throws IngredientNotFoundException {
         return ingredientRepository.findByName(ingredientName).orElseThrow(IngredientNotFoundException::new);
     }
 
@@ -40,9 +45,10 @@ public class IngredientServiceImplementation implements IngredientService {
     }
 
     @Override
-    public Ingredient saveOrUpdateIngredient(IngredientVo ingredientVo) {
+    public Ingredient saveOrUpdateIngredient(IngredientVo ingredientVo) throws IngredientTypeContainsNumberException, IngredientNameContainsNumberException {
         validateIngredientData(ingredientVo);
-        return ingredientRepository.save(ingredientVo.toModel());
+        Type type = typeService.getTypeById(ingredientVo.getTypeId());
+        return ingredientRepository.save(ingredientVo.toModel(type));
     }
 
 

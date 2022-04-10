@@ -1,5 +1,7 @@
 package com.uade.recipes.controllers;
 
+import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
+import com.uade.recipes.exceptions.ingredientQuantityExceptions.IngredientQuantityNotFoundException;
 import com.uade.recipes.model.IngredientQuantity;
 import com.uade.recipes.service.ingredientQuantity.IngredientQuantityService;
 import com.uade.recipes.vo.IngredientQuantityVo;
@@ -19,7 +21,7 @@ public class IngredientQuantityController {
     }
 
     @GetMapping
-    public ResponseEntity<List<IngredientQuantity>> getAllIngredientQuantities(@RequestParam(required = false) Integer ingredientId) {
+    public ResponseEntity<List<IngredientQuantity>> getAllIngredientQuantities(@RequestParam(required = false) Integer ingredientId) throws IngredientNotFoundException {
         if (ingredientId == null) {
             return ResponseEntity.status(HttpStatus.OK).body(ingredientQuantityService.getAllIngredientQuantity());
         } else {
@@ -27,19 +29,19 @@ public class IngredientQuantityController {
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<IngredientQuantity> getIngredientQuantityById(@PathVariable Integer ingredientQuantityId) {
+    @GetMapping("/{ingredientQuantityId}")
+    public ResponseEntity<IngredientQuantity> getIngredientQuantityById(@PathVariable Integer ingredientQuantityId) throws IngredientQuantityNotFoundException {
         return ResponseEntity.status(HttpStatus.FOUND).body(ingredientQuantityService.getIngredientQuantityById(ingredientQuantityId));
     }
 
     @PostMapping
-    public ResponseEntity<IngredientQuantity> saveIngredientQuantity(@RequestBody IngredientQuantityVo ingredientQuantityVo) {
+    public ResponseEntity<IngredientQuantity> saveIngredientQuantity(@RequestBody IngredientQuantityVo ingredientQuantityVo) throws IngredientNotFoundException, IngredientQuantityNotFoundException {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(ingredientQuantityService.saveOrUpdateIngredientQuantity(ingredientQuantityVo));
     }
 
     @PutMapping
-    public ResponseEntity<IngredientQuantity> updateIngredientQuantity(@RequestBody IngredientQuantityVo ingredientQuantityVo) {
+    public ResponseEntity<IngredientQuantity> updateIngredientQuantity(@RequestBody IngredientQuantityVo ingredientQuantityVo) throws IngredientNotFoundException, IngredientQuantityNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(ingredientQuantityService.saveOrUpdateIngredientQuantity(ingredientQuantityVo));
     }
 

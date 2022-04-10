@@ -1,6 +1,6 @@
 package com.uade.recipes.service.user;
 
-import com.uade.recipes.exceptions.userExceptions.InvalidEmailException;
+import com.uade.recipes.exceptions.userExceptions.*;
 import com.uade.recipes.model.User;
 import com.uade.recipes.vo.UserVo;
 
@@ -13,8 +13,8 @@ public interface UserService {
 
     User getUserByUserName(String userName);
 
-    User getUserById(Integer idClient);
+    User getUserById(Integer idClient) throws UserNotFoundException;
 
-    User saveOrUpdateUser(UserVo user, String role) throws InvalidEmailException;
+    User saveOrUpdateUser(UserVo user, String role) throws InvalidEmailException, InvalidPasswordException, InvalidRoleException, UserNameExistsException, EmailExistsException, UserNotFoundException;
 
 }

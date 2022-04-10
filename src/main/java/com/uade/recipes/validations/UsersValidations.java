@@ -19,10 +19,10 @@ public class UsersValidations {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
         if (email == null) {
-            throw new InvalidEmailException("Th email cant be null");
+            throw new InvalidEmailException();
         }
         if (!matcher.matches()) {
-            throw new InvalidEmailException("That is not a valid email");
+            throw new InvalidEmailException();
         }
     }
 

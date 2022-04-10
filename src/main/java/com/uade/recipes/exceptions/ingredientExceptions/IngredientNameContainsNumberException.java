@@ -1,4 +1,4 @@
 package com.uade.recipes.exceptions.ingredientExceptions;
 
-public class IngredientNameContainsNumberException extends RuntimeException {
+public class IngredientNameContainsNumberException extends Exception {
 }

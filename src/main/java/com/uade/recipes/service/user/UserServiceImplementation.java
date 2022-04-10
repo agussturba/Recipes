@@ -1,10 +1,12 @@
 package com.uade.recipes.service.user;
 
 
-import com.uade.recipes.exceptions.userExceptions.InvalidEmailException;
 import com.uade.recipes.exceptions.userExceptions.*;
 import com.uade.recipes.model.User;
+import com.uade.recipes.model.UserPhoto;
 import com.uade.recipes.persistance.UserRepository;
+import com.uade.recipes.service.type.TypeService;
+import com.uade.recipes.service.userPhoto.UserPhotoService;
 import com.uade.recipes.validations.UsersValidations;
 import com.uade.recipes.vo.UserVo;
 import org.springframework.stereotype.Service;
@@ -13,10 +15,11 @@ import java.util.List;
 
 @Service
 public class UserServiceImplementation implements UserService {
+    private final UserPhotoService userPhotoService;
     private final UserRepository userRepository;
 
-
-    public UserServiceImplementation(UserRepository userRepository) {
+    public UserServiceImplementation(UserPhotoService userPhotoService, UserRepository userRepository) {
+        this.userPhotoService = userPhotoService;
         this.userRepository = userRepository;
     }
 
@@ -36,15 +39,16 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public User saveOrUpdateUser(UserVo user, String role) throws UserNameExistsException, EmailExistsException, InvalidPasswordException, InvalidRoleException, InvalidEmailException {
+    public User saveOrUpdateUser(UserVo user, String role) throws InvalidEmailException, InvalidPasswordException, InvalidRoleException, UserNameExistsException, EmailExistsException, UserNotFoundException {
         existsUser(user);
         user.setRole(role);
         UsersValidations.validateUserData(user);
-        return userRepository.save(user.toModel());
+        UserPhoto userPhoto = userPhotoService.getUserPhotoByUserId(user.getIdUser());
+        return userRepository.save(user.toModel(userPhoto));
     }
 
     @Override
-    public User getUserById(Integer idUser) {
+    public User getUserById(Integer idUser) throws UserNotFoundException {
         return userRepository.findById(idUser).orElseThrow(UserNotFoundException::new);
     }
 

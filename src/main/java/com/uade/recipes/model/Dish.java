@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -13,7 +14,7 @@ public class Dish {
     @Column(name = "id", nullable = false)
     private Integer id;
     private String name;
-    @ElementCollection
-    private List<String> labels;
+    @OneToMany
+    private Set<Type> types;
 
 }

@@ -1,4 +1,4 @@
 package com.uade.recipes.exceptions.userExceptions;
 
-public class UserNameExistsException extends RuntimeException {
+public class UserNameExistsException extends Exception {
 }

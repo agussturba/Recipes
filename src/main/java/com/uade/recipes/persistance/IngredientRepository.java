@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface IngredientRepository extends CrudRepository<Ingredient,Integer> {
+public interface IngredientRepository extends CrudRepository<Ingredient, Integer> {
     Optional<Ingredient> findByName(String name);
+
     List<Ingredient> findByType(String type);
 }

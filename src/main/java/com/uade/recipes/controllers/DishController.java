@@ -1,5 +1,8 @@
 package com.uade.recipes.controllers;
 
+import com.uade.recipes.exceptions.dishExceptions.DishNameContainsNumberException;
+import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;
+import com.uade.recipes.exceptions.dishExceptions.DishTypeContainsNumberException;
 import com.uade.recipes.model.Dish;
 import com.uade.recipes.service.dish.DishService;
 import com.uade.recipes.vo.DishVo;
@@ -19,30 +22,30 @@ public class DishController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Dish>> getAllDishes(@RequestParam(required = false) String type) {
-        if (type != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(dishService.getDishesByLabel(type));
+    public ResponseEntity<List<Dish>> getAllDishes(@RequestParam(required = false) Integer typeId) {
+        if (typeId != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(dishService.getDishesByTypeId(typeId));
         }
         return ResponseEntity.status(HttpStatus.OK).body(dishService.getAllDishes());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Dish> getDishById(@PathVariable Integer id) {
-        return ResponseEntity.status(HttpStatus.OK).body(dishService.getDishById(id));
+    public ResponseEntity<Dish> getDishById(@PathVariable Integer id) throws DishNotFoundException {
+        return ResponseEntity.status(HttpStatus.FOUND).body(dishService.getDishById(id));
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<Dish> getDishByName(@PathVariable String name) {
-        return ResponseEntity.status(HttpStatus.OK).body(dishService.getDishByName(name));
+    public ResponseEntity<Dish> getDishByName(@PathVariable String name) throws DishNotFoundException {
+        return ResponseEntity.status(HttpStatus.FOUND).body(dishService.getDishByName(name));
     }
 
     @PostMapping
-    public ResponseEntity<Dish> saveDish(@RequestBody DishVo dishVo) {
+    public ResponseEntity<Dish> saveDish(@RequestBody DishVo dishVo) throws DishNameContainsNumberException, DishTypeContainsNumberException {
         return ResponseEntity.status(HttpStatus.CREATED).body(dishService.saveOrUpdateDish(dishVo));
     }
 
     @PutMapping
-    public ResponseEntity<Dish> updateDish(@RequestBody DishVo dishVo) {
+    public ResponseEntity<Dish> updateDish(@RequestBody DishVo dishVo) throws DishNameContainsNumberException, DishTypeContainsNumberException {
         return ResponseEntity.status(HttpStatus.OK).body(dishService.saveOrUpdateDish(dishVo));
     }
 

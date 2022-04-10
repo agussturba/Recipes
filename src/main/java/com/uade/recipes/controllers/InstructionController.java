@@ -1,5 +1,7 @@
 package com.uade.recipes.controllers;
 
+import com.uade.recipes.exceptions.instructionExceptions.InstructionNotFoundException;
+import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.model.Instruction;
 import com.uade.recipes.service.instruction.InstructionService;
 import com.uade.recipes.vo.InstructionVo;
@@ -24,22 +26,22 @@ public class InstructionController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Instruction> getInstructionById(@PathVariable Integer id) {
+    public ResponseEntity<Instruction> getInstructionById(@PathVariable Integer id) throws InstructionNotFoundException {
         return ResponseEntity.status(HttpStatus.FOUND).body(instructionService.getInstructionById(id));
     }
 
     @GetMapping("/recipe/{recipeId}")
-    public ResponseEntity<List<Instruction>> getInstructionsByRecipeId(@PathVariable Integer recipeId) {
+    public ResponseEntity<List<Instruction>> getInstructionsByRecipeId(@PathVariable Integer recipeId) throws RecipeNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(instructionService.getInstructionsByRecipeId(recipeId));
     }
 
     @PostMapping
-    public ResponseEntity<Instruction> saveInstruction(@RequestBody InstructionVo instructionVo) {
+    public ResponseEntity<Instruction> saveInstruction(@RequestBody InstructionVo instructionVo) throws RecipeNotFoundException {
         return ResponseEntity.status(HttpStatus.CREATED).body(instructionService.saveOrUpdateInstruction(instructionVo));
     }
 
     @PutMapping
-    public ResponseEntity<Instruction> updateInstruction(@RequestBody InstructionVo instructionVo) {
+    public ResponseEntity<Instruction> updateInstruction(@RequestBody InstructionVo instructionVo) throws RecipeNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(instructionService.saveOrUpdateInstruction(instructionVo));
     }
 }

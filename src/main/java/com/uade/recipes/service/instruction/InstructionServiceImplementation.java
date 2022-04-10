@@ -3,7 +3,6 @@ package com.uade.recipes.service.instruction;
 import com.uade.recipes.exceptions.instructionExceptions.InstructionNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.model.Instruction;
-import com.uade.recipes.model.Recipe;
 import com.uade.recipes.persistance.InstructionRepository;
 import com.uade.recipes.persistance.RecipeRepository;
 import com.uade.recipes.vo.InstructionVo;
@@ -22,7 +21,7 @@ public class InstructionServiceImplementation implements InstructionService {
     }
 
     @Override
-    public Instruction getInstructionById(Integer id) {
+    public Instruction getInstructionById(Integer id) throws InstructionNotFoundException {
         return instructionRepository.findById(id).orElseThrow(InstructionNotFoundException::new);
     }
 
@@ -32,13 +31,13 @@ public class InstructionServiceImplementation implements InstructionService {
     }
 
     @Override
-    public List<Instruction> getInstructionsByRecipeId(Integer recipeId) {
+    public List<Instruction> getInstructionsByRecipeId(Integer recipeId) throws RecipeNotFoundException {
         //return instructionRepository.findByRecipe(recipe);
         return null;
     }
 
     @Override
-    public Instruction saveOrUpdateInstruction(InstructionVo instructionVo) {
+    public Instruction saveOrUpdateInstruction(InstructionVo instructionVo) throws RecipeNotFoundException {
         return instructionRepository.save(instructionVo.toModel());
     }
 }
