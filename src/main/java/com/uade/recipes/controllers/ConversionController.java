@@ -34,12 +34,14 @@ public class ConversionController {
     public ResponseEntity<Conversion> getConversionById(@PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.FOUND).body(conversionService.getConversionById(id));
     }
+
     @PostMapping
-    public ResponseEntity<Conversion> saveConversion(@RequestBody ConversionVo conversionVo){
+    public ResponseEntity<Conversion> saveConversion(@RequestBody ConversionVo conversionVo) {
         return ResponseEntity.status(HttpStatus.CREATED).body(conversionService.saveOrUpdateConversion(conversionVo));
     }
+
     @PutMapping
-    public ResponseEntity<Conversion> updateConversion(@RequestBody ConversionVo conversionVo){
+    public ResponseEntity<Conversion> updateConversion(@RequestBody ConversionVo conversionVo) {
         return ResponseEntity.status(HttpStatus.OK).body(conversionService.saveOrUpdateConversion(conversionVo));
     }
 }

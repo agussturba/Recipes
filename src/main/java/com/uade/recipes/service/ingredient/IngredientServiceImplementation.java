@@ -41,7 +41,7 @@ public class IngredientServiceImplementation implements IngredientService {
 
     @Override
     public List<Ingredient> getIngredientsByType(String ingredientType) {
-        return ingredientRepository.findByType(ingredientType);
+        return null;
     }
 
     @Override
