@@ -10,6 +10,14 @@ public class UserPhotoVo {
      Integer userId;
      String photoUrl;
      String extension;
+
+     public UserPhotoVo (Integer id, Integer userId) {
+         this.id = id;
+         this.userId = userId;
+         photoUrl = "";
+         extension = "";
+     }
+
      public UserPhoto toModel(User user){
          UserPhoto userPhoto = new UserPhoto();
          userPhoto.setUser(user);
