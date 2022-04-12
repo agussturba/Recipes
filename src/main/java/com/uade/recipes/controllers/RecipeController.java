@@ -6,6 +6,9 @@ import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.Recipe;
 import com.uade.recipes.service.recipe.RecipeService;
 import com.uade.recipes.vo.RecipeVo;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +25,14 @@ public class RecipeController {
     }
 
     @GetMapping//se hace asi por standard de rest
+    @ApiOperation(value = "Retrieve a list of recipes", response = Iterable.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully retrieved a list of recipes"),
+            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The user/dish was not found"),
+
+    })
     public ResponseEntity<List<Recipe>> getAllRecipes(@RequestParam(required = false) Integer userId, @RequestParam(required = false) Integer dishId) throws DishNotFoundException, UserNotFoundException {
         if (userId == null && dishId == null) {
             return ResponseEntity.status(HttpStatus.OK).body(recipeService.getAllRecipes());
@@ -34,17 +45,41 @@ public class RecipeController {
         }
     }
 
-    @GetMapping("/{name}")
+    @GetMapping("name/{name}")
+    @ApiOperation(value = "Retrieve one or more recipes by its name", response = Iterable.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully retrieved one or more recipes by its name"),
+            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The recipe was not found"),
+
+    })
     public ResponseEntity<List<Recipe>> getRecipesByName(@PathVariable String name) {
         return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipeByName(name));
     }
 
     @PostMapping
+    @ApiOperation(value = "Create a new recipe", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Successfully created a new recipe"),
+            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The user/dish/recipePhoto/type was not found"),
+
+    })
     public ResponseEntity<Recipe> saveRecipe(@RequestBody RecipeVo recipeVo) throws InstructionNotFoundException, DishNotFoundException, UserNotFoundException {
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.saveOrUpdateRecipe(recipeVo));
     }
 
     @PutMapping
+    @ApiOperation(value = "Updated a recipe", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully updated a recipe"),
+            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The user/dish/recipePhoto/type was not found"),
+
+    })
     public ResponseEntity<Recipe> updateRecipe(@RequestBody RecipeVo recipeVo) throws InstructionNotFoundException, DishNotFoundException, UserNotFoundException {
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.saveOrUpdateRecipe(recipeVo));
     }
