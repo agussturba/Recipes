@@ -14,7 +14,7 @@ public class RecipeVo {
     Integer id;
     String name;
     String description;
-    List<String> photos;
+    List<Integer> recipePhotosIds;
     List<Integer> typeIdList;
     Integer dishId;
     Integer userId;
@@ -22,7 +22,7 @@ public class RecipeVo {
     Double portions;
 
 
-    public Recipe toModel(User user, Dish dish, List<RecipePhoto> recipePhotos,List<Type> types) {
+    public Recipe toModel(User user, Dish dish, List<RecipePhoto> recipePhotos) {
         Recipe recipe = new Recipe();
         recipe.setId(getId());
         recipe.setName(getName());
@@ -31,7 +31,7 @@ public class RecipeVo {
         recipe.setDish(dish);
         recipe.setUser(user);
         recipe.setPeopleAmount(peopleAmount);
-        recipe.setType(types);
+        recipe.setType((List<Type>) dish.getTypes());
         recipe.setPortions(portions);
         return recipe;
     }

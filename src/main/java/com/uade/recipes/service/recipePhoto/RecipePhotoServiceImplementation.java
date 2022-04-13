@@ -42,4 +42,9 @@ public class RecipePhotoServiceImplementation implements RecipePhotoService {
         Recipe recipe = recipeRepository.findById(recipePhotoVo.getRecipeId()).orElseThrow(RecipeNotFoundException::new);
         return recipePhotoRepository.save(recipePhotoVo.toModel(recipe));
     }
+
+    @Override
+    public List<RecipePhoto> getRecipePhotosByIds(List<Integer> recipePhotoIdList) {//TODO TEST
+        return (List<RecipePhoto>) recipePhotoRepository.findAllById(recipePhotoIdList);
+    }
 }

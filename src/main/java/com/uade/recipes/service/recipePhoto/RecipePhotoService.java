@@ -14,6 +14,8 @@ public interface RecipePhotoService {
     List<RecipePhoto> getRecipePhotosByRecipeId(Integer recipeId) throws RecipeNotFoundException;
 
     RecipePhoto saveOrUpdateRecipePhoto(RecipePhotoVo recipePhotoVo) throws RecipeNotFoundException;
+
+    List<RecipePhoto> getRecipePhotosByIds(List<Integer> recipePhotoIdList);
 }
 
 

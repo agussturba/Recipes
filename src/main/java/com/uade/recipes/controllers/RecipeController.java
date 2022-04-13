@@ -30,22 +30,30 @@ public class RecipeController {
             @ApiResponse(code = 200, message = "Successfully retrieved a list of recipes"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The user/dish was not found"),
+            @ApiResponse(code = 404, message = "The user/dish/people amount was not found"),
 
     })
-    public ResponseEntity<List<Recipe>> getAllRecipes(@RequestParam(required = false) Integer userId, @RequestParam(required = false) Integer dishId) throws DishNotFoundException, UserNotFoundException {
-        if (userId == null && dishId == null) {
+    public ResponseEntity<List<Recipe>> getAllRecipes(@RequestParam(required = false) Integer userId, @RequestParam(required = false) Integer dishId, @RequestParam(required = false) Integer peopleAmount) throws DishNotFoundException, UserNotFoundException {
+        if (userId == null && dishId == null && peopleAmount == null) {
             return ResponseEntity.status(HttpStatus.OK).body(recipeService.getAllRecipes());
-        } else if (userId != null && dishId == null) {
+        } else if (userId != null && dishId == null && peopleAmount == null) {
             return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByUserId(userId));
-        } else if (userId == null && dishId != null) {
+        } else if (userId == null && dishId != null && peopleAmount == null) {
             return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByDishId(dishId));
-        } else {
-            return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByUserIdAndDishId(userId, dishId));
+        } else if (userId != null && dishId != null && peopleAmount == null) {
+            return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByUserIdAndDishId(userId,dishId));
+        } else if (userId != null && dishId == null && peopleAmount != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByUserIdAndPeopleAmount(userId, peopleAmount));
+        } else if (userId == null && dishId == null && peopleAmount != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByPeopleAmount(peopleAmount));
+        } else if (userId == null && dishId != null && peopleAmount != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByDishIdAndPeopleAmount(dishId, peopleAmount));
         }
+        return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByUserIdAndDishIdAndPeopleAmount(userId, dishId, peopleAmount));
     }
 
-    @GetMapping("name/{name}")
+
+    @GetMapping("/name/{name}")
     @ApiOperation(value = "Retrieve one or more recipes by its name", response = Iterable.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved one or more recipes by its name"),
@@ -55,7 +63,20 @@ public class RecipeController {
 
     })
     public ResponseEntity<List<Recipe>> getRecipesByName(@PathVariable String name) {
-        return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipeByName(name));
+        return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByName(name));
+    }
+
+    @GetMapping("/type")
+    @ApiOperation(value = "Retrieve one or more recipes by its type/s", response = Iterable.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully retrieved one or more recipes by their type"),
+            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The recipe/s were not found"),
+
+    })
+    public ResponseEntity<List<Recipe>> getRecipesByTypes(@RequestBody List<Integer> typesIds) {//TODO  PUEDE SER UN REQUEST PARAM
+        return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByTypes(typesIds));
     }
 
     @PostMapping
@@ -70,6 +91,7 @@ public class RecipeController {
     public ResponseEntity<Recipe> saveRecipe(@RequestBody RecipeVo recipeVo) throws InstructionNotFoundException, DishNotFoundException, UserNotFoundException {
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.saveOrUpdateRecipe(recipeVo));
     }
+
 
     @PutMapping
     @ApiOperation(value = "Updated a recipe", response = ResponseEntity.class)

@@ -30,8 +30,14 @@ public class TypeServiceImplementation implements TypeService {
     public Type getTypeById(Integer idType) {
         return typeRepository.findById(idType).orElseThrow(TypeNotFountException::new);
     }
+
     @Override
     public Type saveOrUpdateType(TypeVo typeVo) {
         return typeRepository.save(typeVo.toModel());
+    }
+
+    @Override
+    public List<Type> getTypesByIdList(List<Integer> types) {
+        return (List<Type>) typeRepository.findAllById(types);
     }
 }

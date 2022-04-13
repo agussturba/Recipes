@@ -13,4 +13,6 @@ public interface TypeService {
     Type getTypeById(Integer idType);
 
     Type saveOrUpdateType(TypeVo typeVo);
+
+    List<Type> getTypesByIdList(List<Integer> types);
 }
