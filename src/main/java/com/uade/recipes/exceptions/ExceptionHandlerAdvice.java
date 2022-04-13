@@ -1,5 +1,6 @@
 package com.uade.recipes.exceptions;
 
+import com.uade.recipes.exceptions.conversionExceptions.ConversionNotFoundException;
 import com.uade.recipes.exceptions.dishExceptions.DishNameContainsNumberException;
 import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;
 import com.uade.recipes.exceptions.dishExceptions.DishTypeContainsNumberException;
@@ -9,22 +10,38 @@ import com.uade.recipes.exceptions.ingredientExceptions.IngredientTypeContainsNu
 import com.uade.recipes.exceptions.ingredientQuantityExceptions.IngredientQuantityNotFoundException;
 import com.uade.recipes.exceptions.instructionExceptions.InstructionNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
+import com.uade.recipes.exceptions.recipePhotoExceptions.RecipePhotoNotFoundException;
 import com.uade.recipes.exceptions.recipeRatingExceptions.RatingIsLowerThanZeroException;
 import com.uade.recipes.exceptions.recipeRatingExceptions.RatingIsNullException;
+import com.uade.recipes.exceptions.typeExceptions.TypeNotFountException;
+import com.uade.recipes.exceptions.unitExceptions.UnitNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.*;
+import com.uade.recipes.exceptions.userPhotoExceptions.UserPhotoNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class ExceptionHandlerAdvice {
     @ExceptionHandler(UserNotFoundException.class)
-    @ResponseBody
     public ResponseEntity handleClientNotFoundException() {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The User was not found");
+    }
+
+    @ExceptionHandler(TypeNotFountException.class)
+    public ResponseEntity handleTypeNotFountException() {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The Type was not found");
+    }
+
+    @ExceptionHandler(ConversionNotFoundException.class)
+    public ResponseEntity handleConversionNotFoundException() {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The Conversion was not found");
+    }
+
+    @ExceptionHandler(UnitNotFoundException.class)
+    public ResponseEntity handleUnitNotFoundException() {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The Unit was not found");
     }
 
     @ExceptionHandler(IngredientNotFoundException.class)
@@ -42,6 +59,11 @@ public class ExceptionHandlerAdvice {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The Recipe was not found");
     }
 
+    @ExceptionHandler(RecipePhotoNotFoundException.class)
+    public ResponseEntity handleRecipePhotoNotFoundException() {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The Recipe photo was not found");
+    }
+
     @ExceptionHandler(InstructionNotFoundException.class)
     public ResponseEntity handleInstructionNotFoundException() {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The Instruction was not found");
@@ -52,9 +74,23 @@ public class ExceptionHandlerAdvice {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The Ingredient-Quantity was not found");
     }
 
+    @ExceptionHandler(UserPhotoNotFoundException.class)
+    public ResponseEntity handleUserPhotoNotFoundException() {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The photo of the user was not found");
+    }
+
     @ExceptionHandler(EmailExistsException.class)
     public ResponseEntity handleEmailExistsException() {
         return ResponseEntity.status(HttpStatus.CONFLICT).body("There is already a user with that email");
+    }
+    @ExceptionHandler(MultimediaNotFoundException.class)
+    public ResponseEntity handleMultimediaNotFoundException() {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("There multimedia was not found");
+    }
+
+    @ExceptionHandler(InvalidEmailException.class)
+    public ResponseEntity handleInvalidEmailException() {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("The mail has an invalid forma");
     }
 
     @ExceptionHandler(UserNameExistsException.class)
