@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class UserPhotoServiceImplementation implements UserPhotoService{
+public class UserPhotoServiceImplementation implements UserPhotoService {
     private final UserPhotoRepository userPhotoRepository;
     private final UserRepository userRepository;
     private final Cloudinary cloudinary = CloudinaryUtil.getInstance();
@@ -30,7 +30,7 @@ public class UserPhotoServiceImplementation implements UserPhotoService{
     }
 
     @Override
-    public UserPhoto getUserPhotoById(Integer id) {
+    public UserPhoto getUserPhotoById(Integer id) throws UserPhotoNotFoundException {
         return userPhotoRepository.findById(id).orElseThrow(UserPhotoNotFoundException::new);
     }
 
@@ -40,19 +40,31 @@ public class UserPhotoServiceImplementation implements UserPhotoService{
     }
 
     @Override
-    public UserPhoto getUserPhotoByUserId(Integer userId) throws UserNotFoundException {
+    public UserPhoto getUserPhotoByUserId(Integer userId) throws UserNotFoundException, UserPhotoNotFoundException {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        return userPhotoRepository.findByUser(user);
+        return userPhotoRepository.findByUser(user).orElseThrow(UserPhotoNotFoundException::new);
     }
 
     @Override
-    public UserPhoto saveOrUpdateUserPhoto(Integer id, Integer userId, MultipartFile image) throws IOException {
-        UserPhotoVo userPhotoVo = new UserPhotoVo(id, userId);
-        User user = userRepository.findById(userPhotoVo.getUserId()).orElseThrow(UserPhotoNotFoundException::new);
+    public UserPhoto saveOrUpdateUserPhoto(Integer userId, MultipartFile image) throws IOException, UserPhotoNotFoundException, UserNotFoundException {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        UserPhoto userPhoto;
+        try {
+             userPhoto = this.getUserPhotoByUserId(userId);
+        } catch (UserPhotoNotFoundException | UserNotFoundException e) {
+            userPhoto = new UserPhoto();
+            userPhoto.setUser(user);
+        }
+
+        Map uploadResult = saveUserToCloudinary(image, userId);
+        userPhoto.setPhotoUrl((String) uploadResult.get("url"));
+        userPhoto.setExtension(StringUtils.getFilenameExtension(image.getOriginalFilename()));
+        return userPhotoRepository.save(userPhoto);
+    }
+
+    private Map saveUserToCloudinary (MultipartFile image, Integer userId) throws IOException {
         Map uploadResult = cloudinary.uploader().upload(image.getBytes(),
-                ObjectUtils.asMap("public_id", "user_" + userPhotoVo.getUserId() + "_avatar"));
-        userPhotoVo.setPhotoUrl((String) uploadResult.get("url"));
-        userPhotoVo.setExtension(StringUtils.getFilenameExtension(image.getOriginalFilename()));
-        return userPhotoRepository.save(userPhotoVo.toModel(user));
+                ObjectUtils.asMap("public_id", "user_" + userId + "_avatar"));
+        return uploadResult;
     }
 }

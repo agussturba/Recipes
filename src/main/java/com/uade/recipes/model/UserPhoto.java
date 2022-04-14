@@ -16,4 +16,5 @@ public class UserPhoto {
     private String photoUrl;
     private String extension;
 
+
 }
