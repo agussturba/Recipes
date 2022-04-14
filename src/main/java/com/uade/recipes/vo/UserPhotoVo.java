@@ -3,8 +3,10 @@ package com.uade.recipes.vo;
 import com.uade.recipes.model.User;
 import com.uade.recipes.model.UserPhoto;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class UserPhotoVo {
      Integer id;
      Integer userId;

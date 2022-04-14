@@ -1,5 +1,6 @@
 package com.uade.recipes.model;
 
+import com.uade.recipes.vo.RecipePhotoVo;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,6 +16,15 @@ public class RecipePhoto {
     private Recipe recipe;
     private String photoUrl;
     private String extension;
+
+    public RecipePhotoVo toVO(){
+        RecipePhotoVo vo = new RecipePhotoVo();
+        vo.setRecipeId(recipe.getId());
+        vo.setPhotoUrl(photoUrl);
+        vo.setExtension(extension);
+
+        return vo;
+    }
 
 
 }

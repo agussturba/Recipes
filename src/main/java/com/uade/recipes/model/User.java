@@ -1,5 +1,6 @@
 package com.uade.recipes.model;
 
+import com.uade.recipes.vo.UserVo;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -22,6 +23,17 @@ public class User {
     private UserPhoto avatar;
     private boolean enabled;
 
+    public UserVo toVO(){
+        UserVo vo = new UserVo();
+        vo.setName(name);
+        vo.setRole(role);
+        vo.setEmail(email);
+        vo.setUserName(userName);
+        vo.setPassword(password);
+        vo.setAvatarId(avatar.getId());
+
+        return vo;
+    }
 
 }
 

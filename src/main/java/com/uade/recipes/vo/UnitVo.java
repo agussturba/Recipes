@@ -7,6 +7,7 @@ import lombok.Data;
 public class UnitVo {
      Integer id;
      String description;
+
      public Unit toModel(){
          Unit unit=new Unit();
          unit.setDescription(description);

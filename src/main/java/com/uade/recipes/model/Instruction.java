@@ -1,5 +1,6 @@
 package com.uade.recipes.model;
 
+import com.uade.recipes.vo.InstructionVo;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -17,6 +18,13 @@ public class Instruction {
     private String description;
     private Integer numberOfStep;
 
+    public InstructionVo toVO(){
+        InstructionVo vo = new InstructionVo();
+        vo.setRecipeId(recipe.getId());
+        vo.setDescription(description);
+        vo.setNumberOfStep(numberOfStep);
 
+        return vo;
+    }
 
 }
