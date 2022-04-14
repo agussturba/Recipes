@@ -3,8 +3,10 @@ package com.uade.recipes.controllers;
 import com.uade.recipes.exceptions.dishExceptions.DishNameContainsNumberException;
 import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;
 import com.uade.recipes.exceptions.dishExceptions.DishTypeContainsNumberException;
+import com.uade.recipes.model.Conversion;
 import com.uade.recipes.model.Dish;
 import com.uade.recipes.service.dish.DishService;
+import com.uade.recipes.vo.ConversionVo;
 import com.uade.recipes.vo.DishVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -13,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -32,11 +35,13 @@ public class DishController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "Type Not Found")
     })
-    public ResponseEntity<List<Dish>> getAllDishes(@RequestParam(required = false) Integer typeId) {
+    public ResponseEntity<List<DishVo>> getAllDishes(@RequestParam(required = false) Integer typeId) {
         if (typeId != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(dishService.getDishesByTypeId(typeId));
+            List<DishVo> result = transformListToVoList(dishService.getDishesByTypeId(typeId));
+            return ResponseEntity.status(HttpStatus.OK).body(result);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(dishService.getAllDishes());
+        List<DishVo> result = transformListToVoList(dishService.getAllDishes());
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping("/{id}")
@@ -47,8 +52,8 @@ public class DishController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The dish was not found")
     })
-    public ResponseEntity<Dish> getDishById(@PathVariable Integer id) throws DishNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(dishService.getDishById(id));
+    public ResponseEntity<DishVo> getDishById(@PathVariable Integer id) throws DishNotFoundException {
+        return ResponseEntity.status(HttpStatus.FOUND).body(dishService.getDishById(id).toVO());
     }
 
     @GetMapping("/name/{name}")
@@ -59,8 +64,8 @@ public class DishController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The dish was not found")
     })
-    public ResponseEntity<Dish> getDishByName(@PathVariable String name) throws DishNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(dishService.getDishByName(name));
+    public ResponseEntity<DishVo> getDishByName(@PathVariable String name) throws DishNotFoundException {
+        return ResponseEntity.status(HttpStatus.FOUND).body(dishService.getDishByName(name).toVO());
     }
 
     @PostMapping
@@ -71,8 +76,8 @@ public class DishController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The type/s for this dish was not found")
     })
-    public ResponseEntity<Dish> saveDish(@RequestBody DishVo dishVo) throws DishNameContainsNumberException, DishTypeContainsNumberException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(dishService.saveOrUpdateDish(dishVo));
+    public ResponseEntity<DishVo> saveDish(@RequestBody DishVo dishVo) throws DishNameContainsNumberException, DishTypeContainsNumberException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(dishService.saveOrUpdateDish(dishVo).toVO());
     }
 
     @PutMapping
@@ -83,8 +88,15 @@ public class DishController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The type/s for this dish was not found")
     })
-    public ResponseEntity<Dish> updateDish(@RequestBody DishVo dishVo) throws DishNameContainsNumberException, DishTypeContainsNumberException {
-        return ResponseEntity.status(HttpStatus.OK).body(dishService.saveOrUpdateDish(dishVo));
+    public ResponseEntity<DishVo> updateDish(@RequestBody DishVo dishVo) throws DishNameContainsNumberException, DishTypeContainsNumberException {
+        return ResponseEntity.status(HttpStatus.OK).body(dishService.saveOrUpdateDish(dishVo).toVO());
     }
 
+    private List<DishVo> transformListToVoList(List<Dish> list){
+        List<DishVo> result = new ArrayList<>();
+        for(Dish dish : list){
+            result.add(dish.toVO());
+        }
+        return result;
+    }
 }

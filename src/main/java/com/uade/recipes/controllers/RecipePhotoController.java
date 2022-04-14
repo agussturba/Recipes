@@ -1,8 +1,11 @@
 package com.uade.recipes.controllers;
 
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
+import com.uade.recipes.model.Recipe;
 import com.uade.recipes.model.RecipePhoto;
 import com.uade.recipes.service.recipePhoto.RecipePhotoService;
+import com.uade.recipes.vo.RecipePhotoVo;
+import com.uade.recipes.vo.RecipeVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -13,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,8 +35,9 @@ public class RecipePhotoController {
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
     })
-    public ResponseEntity<List<RecipePhoto>> getAllRecipePhotos() {
-        return ResponseEntity.status(HttpStatus.OK).body(recipePhotoService.getAllRecipePhotos());
+    public ResponseEntity<List<RecipePhotoVo>> getAllRecipePhotos() {
+        List<RecipePhotoVo> result = transformListToVoList(recipePhotoService.getAllRecipePhotos());
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping("/{id}")
@@ -44,8 +49,8 @@ public class RecipePhotoController {
             @ApiResponse(code = 404, message = "The Recipe photo was not found"),
 
     })
-    public ResponseEntity<RecipePhoto> getRecipePhotoById(@PathVariable Integer id) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(recipePhotoService.getRecipePhotoById(id));
+    public ResponseEntity<RecipePhotoVo> getRecipePhotoById(@PathVariable Integer id) {
+        return ResponseEntity.status(HttpStatus.FOUND).body(recipePhotoService.getRecipePhotoById(id).toVO());
     }
 
     @GetMapping("/recipe/{recipeId}")
@@ -57,8 +62,9 @@ public class RecipePhotoController {
             @ApiResponse(code = 404, message = "The Recipe was not found"),
 
     })
-    public ResponseEntity<List<RecipePhoto>> getRecipePhotosByRecipe(@PathVariable Integer recipeId) throws RecipeNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(recipePhotoService.getRecipePhotosByRecipeId(recipeId));
+    public ResponseEntity<List<RecipePhotoVo>> getRecipePhotosByRecipe(@PathVariable Integer recipeId) throws RecipeNotFoundException {
+        List<RecipePhotoVo> result = transformListToVoList(recipePhotoService.getRecipePhotosByRecipeId(recipeId));
+        return ResponseEntity.status(HttpStatus.FOUND).body(result);
     }
 
     @PostMapping
@@ -70,8 +76,9 @@ public class RecipePhotoController {
             @ApiResponse(code = 404, message = "The Recipe was not found"),
 
     })
-    public ResponseEntity<List<RecipePhoto>> saveRecipePhoto(@RequestParam Integer recipeId, @RequestParam List<MultipartFile> images) throws RecipeNotFoundException, IOException {
-        return ResponseEntity.status(HttpStatus.FOUND).body((List<RecipePhoto>) recipePhotoService.saveRecipePhoto(recipeId, images));
+    public ResponseEntity<List<RecipePhotoVo>> saveRecipePhoto(@RequestParam Integer recipeId, @RequestParam List<MultipartFile> images) throws RecipeNotFoundException, IOException {
+        List<RecipePhotoVo> result = transformListToVoList( (List<RecipePhoto>) recipePhotoService.saveRecipePhoto(recipeId, images));
+        return ResponseEntity.status(HttpStatus.FOUND).body(result);
     }
 
     @DeleteMapping
@@ -80,6 +87,13 @@ public class RecipePhotoController {
         return new ResponseEntity(HttpStatus.FOUND);
     }
 
+    private List<RecipePhotoVo> transformListToVoList(List<RecipePhoto> list){
+        List<RecipePhotoVo> result = new ArrayList<>();
+        for(RecipePhoto obj: list){
+            result.add(obj.toVO());
+        }
+        return result;
+    }
 //    @PutMapping
 //    @ApiOperation(value = "Updated a Recipe Photo", response = ResponseEntity.class)
 //    @ApiResponses(value = {

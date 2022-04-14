@@ -2,9 +2,11 @@ package com.uade.recipes.controllers;
 
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.exceptions.ingredientQuantityExceptions.IngredientQuantityNotFoundException;
+import com.uade.recipes.model.Ingredient;
 import com.uade.recipes.model.IngredientQuantity;
 import com.uade.recipes.service.ingredientQuantity.IngredientQuantityService;
 import com.uade.recipes.vo.IngredientQuantityVo;
+import com.uade.recipes.vo.IngredientVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -12,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,11 +34,13 @@ public class IngredientQuantityController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The Ingredient was not found")
     })
-    public ResponseEntity<List<IngredientQuantity>> getAllIngredientQuantities(@RequestParam(required = false) Integer ingredientId) throws IngredientNotFoundException {
+    public ResponseEntity<List<IngredientQuantityVo>> getAllIngredientQuantities(@RequestParam(required = false) Integer ingredientId) throws IngredientNotFoundException {
         if (ingredientId == null) {
-            return ResponseEntity.status(HttpStatus.OK).body(ingredientQuantityService.getAllIngredientQuantity());
+            List<IngredientQuantityVo> result = transformListToVoList(ingredientQuantityService.getAllIngredientQuantity());
+            return ResponseEntity.status(HttpStatus.OK).body(result);
         } else {
-            return ResponseEntity.status(HttpStatus.OK).body(ingredientQuantityService.getIngredientQuantityByIngredientId(ingredientId));
+            List<IngredientQuantityVo> result = transformListToVoList(ingredientQuantityService.getIngredientQuantityByIngredientId(ingredientId));
+            return ResponseEntity.status(HttpStatus.OK).body(result);
         }
     }
 
@@ -47,8 +52,8 @@ public class IngredientQuantityController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The ingredient quantity was not found")
     })
-    public ResponseEntity<IngredientQuantity> getIngredientQuantityById(@PathVariable Integer ingredientQuantityId) throws IngredientQuantityNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(ingredientQuantityService.getIngredientQuantityById(ingredientQuantityId));
+    public ResponseEntity<IngredientQuantityVo> getIngredientQuantityById(@PathVariable Integer ingredientQuantityId) throws IngredientQuantityNotFoundException {
+        return ResponseEntity.status(HttpStatus.FOUND).body(ingredientQuantityService.getIngredientQuantityById(ingredientQuantityId).toVO());
     }
 
     @PostMapping
@@ -59,8 +64,8 @@ public class IngredientQuantityController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The ingredient was not found")
     })
-    public ResponseEntity<IngredientQuantity> saveIngredientQuantity(@RequestBody IngredientQuantityVo ingredientQuantityVo) throws IngredientNotFoundException, IngredientQuantityNotFoundException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(ingredientQuantityService.saveOrUpdateIngredientQuantity(ingredientQuantityVo));
+    public ResponseEntity<IngredientQuantityVo> saveIngredientQuantity(@RequestBody IngredientQuantityVo ingredientQuantityVo) throws IngredientNotFoundException, IngredientQuantityNotFoundException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(ingredientQuantityService.saveOrUpdateIngredientQuantity(ingredientQuantityVo).toVO());
     }
 
     @PutMapping
@@ -71,9 +76,16 @@ public class IngredientQuantityController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The ingredient or the Ingredient quantity id was not found")
     })
-    public ResponseEntity<IngredientQuantity> updateIngredientQuantity(@RequestBody IngredientQuantityVo ingredientQuantityVo) throws IngredientNotFoundException, IngredientQuantityNotFoundException {
-        return ResponseEntity.status(HttpStatus.OK).body(ingredientQuantityService.saveOrUpdateIngredientQuantity(ingredientQuantityVo));
+    public ResponseEntity<IngredientQuantityVo> updateIngredientQuantity(@RequestBody IngredientQuantityVo ingredientQuantityVo) throws IngredientNotFoundException, IngredientQuantityNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(ingredientQuantityService.saveOrUpdateIngredientQuantity(ingredientQuantityVo).toVO());
     }
 
+    private List<IngredientQuantityVo> transformListToVoList(List<IngredientQuantity> list){
+        List<IngredientQuantityVo> result = new ArrayList<>();
+        for(IngredientQuantity ing : list){
+            result.add(ing.toVO());
+        }
+        return result;
+    }
 
 }

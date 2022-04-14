@@ -1,8 +1,10 @@
 package com.uade.recipes.controllers;
 
 import com.uade.recipes.exceptions.instructionExceptions.InstructionNotFoundException;
+import com.uade.recipes.model.Instruction;
 import com.uade.recipes.model.Multimedia;
 import com.uade.recipes.service.multimedia.MultimediaService;
+import com.uade.recipes.vo.InstructionVo;
 import com.uade.recipes.vo.MultimediaVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -32,8 +35,9 @@ public class MultimediaController {
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
     })
-    public ResponseEntity<List<Multimedia>> getAllMultimedia(){
-        return ResponseEntity.status(HttpStatus.OK).body(multimediaService.getAllMultimedia());
+    public ResponseEntity<List<MultimediaVo>> getAllMultimedia(){
+        List<MultimediaVo> result = transformListToVoList(multimediaService.getAllMultimedia());
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
     @GetMapping("/{id}")
     @ApiOperation(value = "Retrieve a multimedia (photo or video of a recipe) by its db id", response = ResponseEntity.class)
@@ -43,8 +47,8 @@ public class MultimediaController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The Multimedia was not found")
     })
-    public ResponseEntity<Multimedia> getMultimediaById(@PathVariable Integer id){
-        return ResponseEntity.status(HttpStatus.FOUND).body(multimediaService.getMultimediaById(id));
+    public ResponseEntity<MultimediaVo> getMultimediaById(@PathVariable Integer id){
+        return ResponseEntity.status(HttpStatus.FOUND).body(multimediaService.getMultimediaById(id).toVO());
     }
     @GetMapping("/instruction/{id}")
     @ApiOperation(value = "Retrieve a multimedia (photo or video of a recipe) by his recipe", response = ResponseEntity.class)
@@ -54,8 +58,8 @@ public class MultimediaController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The instruction was not found")
     })
-    public ResponseEntity<Multimedia> getMultimediaByInstructionId(@PathVariable Integer id) throws InstructionNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(multimediaService.getMultimediaByInstructionId(id));
+    public ResponseEntity<MultimediaVo> getMultimediaByInstructionId(@PathVariable Integer id) throws InstructionNotFoundException {
+        return ResponseEntity.status(HttpStatus.FOUND).body(multimediaService.getMultimediaByInstructionId(id).toVO());
     }
     @PostMapping
     @ApiOperation(value = "Create a new multimedia for a instruction", response = ResponseEntity.class)
@@ -73,6 +77,14 @@ public class MultimediaController {
     public ResponseEntity deleteMultimedia(@RequestParam Integer multimediaId) throws IOException {
         multimediaService.deleteMultimedia(multimediaId);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    private List<MultimediaVo> transformListToVoList(List<Multimedia> list){
+        List<MultimediaVo> result = new ArrayList<>();
+        for(Multimedia mult: list){
+            result.add(mult.toVO());
+        }
+        return result;
     }
 
 //    @PutMapping

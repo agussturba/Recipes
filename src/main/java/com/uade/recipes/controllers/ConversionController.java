@@ -6,10 +6,12 @@ import com.uade.recipes.vo.ConversionVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.boot.autoconfigure.data.cassandra.CassandraReactiveRepositoriesAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -30,15 +32,19 @@ public class ConversionController {
             @ApiResponse(code = 404, message = "Unit Not Found")//TODO BUSCAR COMO PONER MAS MENSAJES DE ERROR CON EL MISMO CODIGO
     }
     )
-    public ResponseEntity<List<Conversion>> getAllConversions(@RequestParam(required = false) Integer sourceUnitId, @RequestParam(required = false) Integer targetUnitId) {
+    public ResponseEntity<List<ConversionVo>> getAllConversions(@RequestParam(required = false) Integer sourceUnitId, @RequestParam(required = false) Integer targetUnitId) {
         if (sourceUnitId != null && targetUnitId == null) {
-            return ResponseEntity.status(HttpStatus.OK).body(conversionService.getConversionsBySourceUnitId(sourceUnitId));
+            List<ConversionVo> result = transformListToVoList(conversionService.getConversionsBySourceUnitId(sourceUnitId));
+            return ResponseEntity.status(HttpStatus.OK).body(result);
         } else if (sourceUnitId == null && targetUnitId != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(conversionService.getConversionsByTargetUnitId(targetUnitId));
+            List<ConversionVo> result = transformListToVoList(conversionService.getConversionsByTargetUnitId(targetUnitId));
+            return ResponseEntity.status(HttpStatus.OK).body(result);
         } else if (sourceUnitId != null && targetUnitId != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(conversionService.getConversionsBySourceUnitIdAndTargetUnitId(sourceUnitId, targetUnitId));
+            List<ConversionVo> result = transformListToVoList(conversionService.getConversionsBySourceUnitIdAndTargetUnitId(sourceUnitId, targetUnitId));
+            return ResponseEntity.status(HttpStatus.OK).body(result);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(conversionService.getAllConversions());
+        List<ConversionVo> result = transformListToVoList(conversionService.getAllConversions());
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping("/{id}")
@@ -50,8 +56,8 @@ public class ConversionController {
             @ApiResponse(code = 404, message = "Conversion Not Found"),
 
     })
-    public ResponseEntity<Conversion> getConversionById(@PathVariable Integer id) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(conversionService.getConversionById(id));
+    public ResponseEntity<ConversionVo> getConversionById(@PathVariable Integer id) {
+        return ResponseEntity.status(HttpStatus.FOUND).body(conversionService.getConversionById(id).toVO());
     }
 
     @PostMapping
@@ -63,8 +69,8 @@ public class ConversionController {
             @ApiResponse(code = 404, message = "Unit Not Found")//TODO BUSCAR COMO PONER MAS MENSAJES DE ERROR CON EL MISMO CODIGO
 
     })
-    public ResponseEntity<Conversion> saveConversion(@RequestBody ConversionVo conversionVo) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(conversionService.saveOrUpdateConversion(conversionVo));
+    public ResponseEntity<ConversionVo> saveConversion(@RequestBody ConversionVo conversionVo) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(conversionService.saveOrUpdateConversion(conversionVo).toVO());
     }
 
     @PutMapping
@@ -76,7 +82,15 @@ public class ConversionController {
             @ApiResponse(code = 404, message = "Unit Not Found")//TODO BUSCAR COMO PONER MAS MENSAJES DE ERROR CON EL MISMO CODIGO
 
     })
-    public ResponseEntity<Conversion> updateConversion(@RequestBody ConversionVo conversionVo) {
-        return ResponseEntity.status(HttpStatus.OK).body(conversionService.saveOrUpdateConversion(conversionVo));
+    public ResponseEntity<ConversionVo> updateConversion(@RequestBody ConversionVo conversionVo) {
+        return ResponseEntity.status(HttpStatus.OK).body(conversionService.saveOrUpdateConversion(conversionVo).toVO());
+    }
+
+    private List<ConversionVo> transformListToVoList(List<Conversion> list){
+        List<ConversionVo> result = new ArrayList<>();
+        for(Conversion conv : list){
+            result.add(conv.toVO());
+        }
+        return result;
     }
 }

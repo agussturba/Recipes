@@ -1,7 +1,9 @@
 package com.uade.recipes.controllers;
 
+import com.uade.recipes.model.RecipeRating;
 import com.uade.recipes.model.Type;
 import com.uade.recipes.service.type.TypeService;
+import com.uade.recipes.vo.RecipeRatingVo;
 import com.uade.recipes.vo.TypeVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -10,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -27,8 +30,9 @@ public class TypeController {
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
     })
-    public ResponseEntity<List<Type>> getAllTypes() {
-        return ResponseEntity.status(HttpStatus.OK).body(typeService.getAllTypes());
+    public ResponseEntity<List<TypeVo>> getAllTypes() {
+        List<TypeVo> result = transformListToVoList(typeService.getAllTypes());
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping("/description/{description}")
@@ -40,8 +44,8 @@ public class TypeController {
             @ApiResponse(code = 404, message = "The type was not found"),
 
     })
-    public ResponseEntity<Type> getTypeByDescription(@PathVariable String description) {
-        return ResponseEntity.status(HttpStatus.OK).body(typeService.getTypeByDescription(description));
+    public ResponseEntity<TypeVo> getTypeByDescription(@PathVariable String description) {
+        return ResponseEntity.status(HttpStatus.OK).body(typeService.getTypeByDescription(description).toVO());
     }
 
     @GetMapping("/{id}")
@@ -53,8 +57,8 @@ public class TypeController {
             @ApiResponse(code = 404, message = "The type was not found"),
 
     })
-    public ResponseEntity<Type> getTypeById(@PathVariable Integer id) {
-        return ResponseEntity.status(HttpStatus.OK).body(typeService.getTypeById(id));
+    public ResponseEntity<TypeVo> getTypeById(@PathVariable Integer id) {
+        return ResponseEntity.status(HttpStatus.OK).body(typeService.getTypeById(id).toVO());
     }
 
     @PostMapping
@@ -65,8 +69,8 @@ public class TypeController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
 
     })
-    public ResponseEntity<Type> saveUnit(@RequestBody TypeVo typeVo) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(typeService.saveOrUpdateType(typeVo));
+    public ResponseEntity<TypeVo> saveUnit(@RequestBody TypeVo typeVo) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(typeService.saveOrUpdateType(typeVo).toVO());
     }
 
     @PutMapping
@@ -77,7 +81,15 @@ public class TypeController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
 
     })
-    public ResponseEntity<Type> updateUnit(@RequestBody TypeVo typeVo) {
-        return ResponseEntity.status(HttpStatus.OK).body(typeService.saveOrUpdateType(typeVo));
+    public ResponseEntity<TypeVo> updateUnit(@RequestBody TypeVo typeVo) {
+        return ResponseEntity.status(HttpStatus.OK).body(typeService.saveOrUpdateType(typeVo).toVO());
+    }
+
+    private List<TypeVo> transformListToVoList(List<Type> list){
+        List<TypeVo> result = new ArrayList<>();
+        for(Type obj: list){
+            result.add(obj.toVO());
+        }
+        return result;
     }
 }

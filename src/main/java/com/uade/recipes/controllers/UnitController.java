@@ -1,7 +1,9 @@
 package com.uade.recipes.controllers;
 
+import com.uade.recipes.model.Type;
 import com.uade.recipes.model.Unit;
 import com.uade.recipes.service.unit.UnitService;
+import com.uade.recipes.vo.TypeVo;
 import com.uade.recipes.vo.UnitVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -10,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -29,8 +32,9 @@ public class UnitController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
 
     })
-    public ResponseEntity<List<Unit>> getAllUnits() {
-        return ResponseEntity.status(HttpStatus.OK).body(unitService.getAllUnits());
+    public ResponseEntity<List<UnitVo>> getAllUnits() {
+        List<UnitVo> result = transformListToVoList(unitService.getAllUnits());
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping("/description/{description}")
@@ -42,8 +46,8 @@ public class UnitController {
             @ApiResponse(code = 404, message = "The unit was not found")
 
     })
-    public ResponseEntity<Unit> getUnitByDescription(@PathVariable String description) {
-        return ResponseEntity.status(HttpStatus.OK).body(unitService.getUnitByDescription(description));
+    public ResponseEntity<UnitVo> getUnitByDescription(@PathVariable String description) {
+        return ResponseEntity.status(HttpStatus.OK).body(unitService.getUnitByDescription(description).toVO());
     }
 
     @GetMapping("/{id}")
@@ -55,8 +59,8 @@ public class UnitController {
             @ApiResponse(code = 404, message = "The unit was not found")
 
     })
-    public ResponseEntity<Unit> getUnitById(@PathVariable Integer id) {
-        return ResponseEntity.status(HttpStatus.OK).body(unitService.getUnitById(id));
+    public ResponseEntity<UnitVo> getUnitById(@PathVariable Integer id) {
+        return ResponseEntity.status(HttpStatus.OK).body(unitService.getUnitById(id).toVO());
     }
 
     @PostMapping
@@ -66,8 +70,8 @@ public class UnitController {
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
     })
-    public ResponseEntity<Unit> saveUnit(@RequestBody UnitVo unitVo) {
-        return ResponseEntity.status(HttpStatus.OK).body(unitService.saveOrUpdateUnit(unitVo));
+    public ResponseEntity<UnitVo> saveUnit(@RequestBody UnitVo unitVo) {
+        return ResponseEntity.status(HttpStatus.OK).body(unitService.saveOrUpdateUnit(unitVo).toVO());
     }
 
     @PutMapping
@@ -77,7 +81,15 @@ public class UnitController {
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
     })
-    public ResponseEntity<Unit> updateUnit(@RequestBody UnitVo unitVo) {
-        return ResponseEntity.status(HttpStatus.OK).body(unitService.saveOrUpdateUnit(unitVo));
+    public ResponseEntity<UnitVo> updateUnit(@RequestBody UnitVo unitVo) {
+        return ResponseEntity.status(HttpStatus.OK).body(unitService.saveOrUpdateUnit(unitVo).toVO());
+    }
+
+    private List<UnitVo> transformListToVoList(List<Unit> list){
+        List<UnitVo> result = new ArrayList<>();
+        for(Unit obj: list){
+            result.add(obj.toVO());
+        }
+        return result;
     }
 }

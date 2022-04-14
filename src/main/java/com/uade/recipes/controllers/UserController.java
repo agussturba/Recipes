@@ -3,8 +3,10 @@ package com.uade.recipes.controllers;
 
 import com.uade.recipes.exceptions.userExceptions.*;
 import com.uade.recipes.exceptions.userPhotoExceptions.UserPhotoNotFoundException;
+import com.uade.recipes.model.Unit;
 import com.uade.recipes.model.User;
 import com.uade.recipes.service.user.UserService;
+import com.uade.recipes.vo.UnitVo;
 import com.uade.recipes.vo.UserVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -13,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -32,8 +35,9 @@ public class UserController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
 
     })
-    public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
+    public ResponseEntity<List<UserVo>> getAllUsers() {
+        List<UserVo> result = transformListToVoList(userService.getAllUsers());
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping("/email/{email}")
@@ -45,8 +49,8 @@ public class UserController {
             @ApiResponse(code = 404, message = "User not Found"),
 
     })
-    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByEmail(email));
+    public ResponseEntity<UserVo> getUserByEmail(@PathVariable String email) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByEmail(email).toVO());
     }
 
     @GetMapping("/userName/{userName}")
@@ -58,8 +62,8 @@ public class UserController {
             @ApiResponse(code = 404, message = "User not Found"),
 
     })
-    public ResponseEntity<User> getUserByUserName(@PathVariable String userName) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByUserName(userName));
+    public ResponseEntity<UserVo> getUserByUserName(@PathVariable String userName) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByUserName(userName).toVO());
     }
 
     @GetMapping("/auth/")
@@ -71,8 +75,8 @@ public class UserController {
             @ApiResponse(code = 404, message = "User not Found"),
 
     })
-    public ResponseEntity<User> getUserByUserNameAndPassword(@RequestParam String userName, @RequestParam String password) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByEmailAndPassword(userName, password));
+    public ResponseEntity<UserVo> getUserByUserNameAndPassword(@RequestParam String userName, @RequestParam String password) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByUserNameAndPassword(userName, password).toVO());
     }
 
     @PostMapping
@@ -82,8 +86,8 @@ public class UserController {
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
     })
-    public ResponseEntity<User> saveUserClient(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException, UserPhotoNotFoundException {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.saveOrUpdateUser(userVo, "ROLE_CLIENT"));
+    public ResponseEntity<UserVo> saveUserClient(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException, UserPhotoNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.saveOrUpdateUser(userVo, "ROLE_CLIENT").toVO());
     }
 
     @PostMapping("/admin")
@@ -93,8 +97,8 @@ public class UserController {
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
     })
-    public ResponseEntity<User> saveUserStudent(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException, UserPhotoNotFoundException {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.saveOrUpdateUser(userVo, "ROLE_ADMIN"));
+    public ResponseEntity<UserVo> saveUserStudent(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException, UserPhotoNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.saveOrUpdateUser(userVo, "ROLE_ADMIN").toVO());
     }
 
     @PutMapping
@@ -104,7 +108,15 @@ public class UserController {
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
     })
-    public ResponseEntity<User> updateUser(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException, UserPhotoNotFoundException {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.saveOrUpdateUser(userVo, userVo.getRole()));
+    public ResponseEntity<UserVo> updateUser(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException, UserPhotoNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.saveOrUpdateUser(userVo, userVo.getRole()).toVO());
+    }
+
+    private List<UserVo> transformListToVoList(List<User> list){
+        List<UserVo> result = new ArrayList<>();
+        for(User obj: list){
+            result.add(obj.toVO());
+        }
+        return result;
     }
 }

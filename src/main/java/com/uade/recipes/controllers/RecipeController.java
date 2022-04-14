@@ -5,9 +5,11 @@ import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundExcept
 import com.uade.recipes.exceptions.instructionExceptions.InstructionNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.IngredientQuantity;
+import com.uade.recipes.model.Multimedia;
 import com.uade.recipes.model.Recipe;
 import com.uade.recipes.service.ingredientQuantity.IngredientQuantityService;
 import com.uade.recipes.service.recipe.RecipeService;
+import com.uade.recipes.vo.MultimediaVo;
 import com.uade.recipes.vo.RecipeVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -39,23 +41,31 @@ public class RecipeController {
             @ApiResponse(code = 404, message = "The user/dish/people amount was not found"),
 
     })
-    public ResponseEntity<List<Recipe>> getAllRecipes(@RequestParam(required = false) Integer userId, @RequestParam(required = false) Integer dishId, @RequestParam(required = false) Integer peopleAmount) throws DishNotFoundException, UserNotFoundException {
+    public ResponseEntity<List<RecipeVo>> getAllRecipes(@RequestParam(required = false) Integer userId, @RequestParam(required = false) Integer dishId, @RequestParam(required = false) Integer peopleAmount) throws DishNotFoundException, UserNotFoundException {
         if (userId == null && dishId == null && peopleAmount == null) {
-            return ResponseEntity.status(HttpStatus.OK).body(recipeService.getAllRecipes());
+            List<RecipeVo> result  = transformListToVoList(recipeService.getAllRecipes());
+            return ResponseEntity.status(HttpStatus.OK).body(result);
         } else if (userId != null && dishId == null && peopleAmount == null) {
-            return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByUserId(userId));
+            List<RecipeVo> result  = transformListToVoList(recipeService.getRecipesByUserId(userId));
+            return ResponseEntity.status(HttpStatus.OK).body(result);
         } else if (userId == null && dishId != null && peopleAmount == null) {
-            return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByDishId(dishId));
+            List<RecipeVo> result  = transformListToVoList(recipeService.getRecipesByDishId(dishId));
+            return ResponseEntity.status(HttpStatus.OK).body(result);
         } else if (userId != null && dishId != null && peopleAmount == null) {
-            return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByUserIdAndDishId(userId,dishId));
+            List<RecipeVo> result  = transformListToVoList(recipeService.getRecipesByUserIdAndDishId(userId,dishId));
+            return ResponseEntity.status(HttpStatus.OK).body(result);
         } else if (userId != null && dishId == null && peopleAmount != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByUserIdAndPeopleAmount(userId, peopleAmount));
+            List<RecipeVo> result  = transformListToVoList(recipeService.getRecipesByUserIdAndPeopleAmount(userId, peopleAmount));
+            return ResponseEntity.status(HttpStatus.OK).body(result);
         } else if (userId == null && dishId == null && peopleAmount != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByPeopleAmount(peopleAmount));
+            List<RecipeVo> result  = transformListToVoList(recipeService.getRecipesByPeopleAmount(peopleAmount));
+            return ResponseEntity.status(HttpStatus.OK).body(result);
         } else if (userId == null && dishId != null && peopleAmount != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByDishIdAndPeopleAmount(dishId, peopleAmount));
+            List<RecipeVo> result  = transformListToVoList(recipeService.getRecipesByDishIdAndPeopleAmount(dishId, peopleAmount));
+            return ResponseEntity.status(HttpStatus.OK).body(result);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByUserIdAndDishIdAndPeopleAmount(userId, dishId, peopleAmount));
+        List<RecipeVo> result  = transformListToVoList(recipeService.getRecipesByUserIdAndDishIdAndPeopleAmount(userId, dishId, peopleAmount));
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
 
@@ -68,8 +78,9 @@ public class RecipeController {
             @ApiResponse(code = 404, message = "The recipe was not found"),
 
     })
-    public ResponseEntity<List<Recipe>> getRecipesByName(@PathVariable String name) {
-        return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByName(name));
+    public ResponseEntity<List<RecipeVo>> getRecipesByName(@PathVariable String name) {
+        List<RecipeVo> result  = transformListToVoList(recipeService.getRecipesByName(name));
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping("/type")
@@ -81,14 +92,16 @@ public class RecipeController {
             @ApiResponse(code = 404, message = "The recipe/s were not found"),
 
     })
-    public ResponseEntity<List<Recipe>> getRecipesByTypes(@RequestBody List<Integer> typesIds) {//TODO  PUEDE SER UN REQUEST PARAM
-        return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByTypes(typesIds));
+    public ResponseEntity<List<RecipeVo>> getRecipesByTypes(@RequestBody List<Integer> typesIds) {//TODO  PUEDE SER UN REQUEST PARAM
+        List<RecipeVo> result  = transformListToVoList(recipeService.getRecipesByTypes(typesIds));
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @GetMapping("/ingredients")
-    public ResponseEntity<List<Recipe>> getRecipesByIngredient(@RequestParam Integer ingredientId) throws IngredientNotFoundException {
+    public ResponseEntity<List<RecipeVo>> getRecipesByIngredient(@RequestParam Integer ingredientId) throws IngredientNotFoundException {
        List<Recipe> result = getRecipesFromIngredientQuantity( ingredientQuantityService.getIngredientQuantityByIngredientId(ingredientId));
-       return ResponseEntity.status(HttpStatus.FOUND).body(result);
+        List<RecipeVo> resultFinal  = transformListToVoList(result);
+       return ResponseEntity.status(HttpStatus.FOUND).body(resultFinal);
     }
 
     @PostMapping
@@ -100,8 +113,8 @@ public class RecipeController {
             @ApiResponse(code = 404, message = "The user/dish/recipePhoto/type was not found"),
 
     })
-    public ResponseEntity<Recipe> saveRecipe(@RequestBody RecipeVo recipeVo) throws InstructionNotFoundException, DishNotFoundException, UserNotFoundException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.saveOrUpdateRecipe(recipeVo));
+    public ResponseEntity<RecipeVo> saveRecipe(@RequestBody RecipeVo recipeVo) throws InstructionNotFoundException, DishNotFoundException, UserNotFoundException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.saveOrUpdateRecipe(recipeVo).toVO());
     }
 
 
@@ -114,8 +127,8 @@ public class RecipeController {
             @ApiResponse(code = 404, message = "The user/dish/recipePhoto/type was not found"),
 
     })
-    public ResponseEntity<Recipe> updateRecipe(@RequestBody RecipeVo recipeVo) throws InstructionNotFoundException, DishNotFoundException, UserNotFoundException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.saveOrUpdateRecipe(recipeVo));
+    public ResponseEntity<RecipeVo> updateRecipe(@RequestBody RecipeVo recipeVo) throws InstructionNotFoundException, DishNotFoundException, UserNotFoundException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.saveOrUpdateRecipe(recipeVo).toVO());
     }
 
     private List<Recipe> getRecipesFromIngredientQuantity (List<IngredientQuantity> list){
@@ -124,5 +137,13 @@ public class RecipeController {
             resultList.add(ingredient.getRecipe());
         }
         return resultList;
+    }
+
+    private List<RecipeVo> transformListToVoList(List<Recipe> list){
+        List<RecipeVo> result = new ArrayList<>();
+        for(Recipe obj: list){
+            result.add(obj.toVO());
+        }
+        return result;
     }
 }
