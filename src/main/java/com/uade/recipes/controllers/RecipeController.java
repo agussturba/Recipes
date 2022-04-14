@@ -1,9 +1,12 @@
 package com.uade.recipes.controllers;
 
 import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;
+import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.exceptions.instructionExceptions.InstructionNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
+import com.uade.recipes.model.IngredientQuantity;
 import com.uade.recipes.model.Recipe;
+import com.uade.recipes.service.ingredientQuantity.IngredientQuantityService;
 import com.uade.recipes.service.recipe.RecipeService;
 import com.uade.recipes.vo.RecipeVo;
 import io.swagger.annotations.ApiOperation;
@@ -13,15 +16,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("api/recipes")
 public class RecipeController {
     private final RecipeService recipeService;
+    private final IngredientQuantityService ingredientQuantityService;
 
-    public RecipeController(RecipeService recipeService) {
+    public RecipeController(RecipeService recipeService, IngredientQuantityService ingredientQuantityService) {
         this.recipeService = recipeService;
+        this.ingredientQuantityService = ingredientQuantityService;
     }
 
     @GetMapping//se hace asi por standard de rest
@@ -79,6 +85,12 @@ public class RecipeController {
         return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipesByTypes(typesIds));
     }
 
+    @GetMapping("/ingredients")
+    public ResponseEntity<List<Recipe>> getRecipesByIngredient(@RequestParam Integer ingredientId) throws IngredientNotFoundException {
+       List<Recipe> result = getRecipesFromIngredientQuantity( ingredientQuantityService.getIngredientQuantityByIngredientId(ingredientId));
+       return ResponseEntity.status(HttpStatus.FOUND).body(result);
+    }
+
     @PostMapping
     @ApiOperation(value = "Create a new recipe", response = ResponseEntity.class)
     @ApiResponses(value = {
@@ -104,5 +116,13 @@ public class RecipeController {
     })
     public ResponseEntity<Recipe> updateRecipe(@RequestBody RecipeVo recipeVo) throws InstructionNotFoundException, DishNotFoundException, UserNotFoundException {
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.saveOrUpdateRecipe(recipeVo));
+    }
+
+    private List<Recipe> getRecipesFromIngredientQuantity (List<IngredientQuantity> list){
+        List<Recipe> resultList = new ArrayList<>();
+        for (IngredientQuantity ingredient : list){
+            resultList.add(ingredient.getRecipe());
+        }
+        return resultList;
     }
 }

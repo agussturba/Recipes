@@ -42,7 +42,7 @@ public class RecipeImplementation implements RecipeService {
 
     @Override
     public List<Recipe> getRecipesByName(String recipeName) {
-        return recipeRepository.findByName(recipeName);
+        return recipeRepository.findByNameOrderByName(recipeName);
     }
 
     @Override
@@ -53,13 +53,13 @@ public class RecipeImplementation implements RecipeService {
     @Override
     public List<Recipe> getRecipesByUserId(Integer userId) throws UserNotFoundException {
         User user = userService.getUserById(userId);
-        return recipeRepository.findByUser(user);
+        return recipeRepository.findByUserOrderByName(user);
     }
 
     @Override
     public List<Recipe> getRecipesByTypes(List<Integer> typesIds) {//TODO Test method
         List<Type> type = typeService.getTypesByIdList(typesIds);
-        return recipeRepository.findByTypeIn(type);
+        return recipeRepository.findByTypeInOrderByName(type);
     }
 
     @Override
