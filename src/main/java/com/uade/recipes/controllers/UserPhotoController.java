@@ -2,6 +2,7 @@ package com.uade.recipes.controllers;
 
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
+import com.uade.recipes.exceptions.userPhotoExceptions.UserPhotoNotFoundException;
 import com.uade.recipes.model.UserPhoto;
 import com.uade.recipes.service.userPhoto.UserPhotoService;
 import io.swagger.annotations.ApiOperation;
@@ -42,7 +43,7 @@ public class UserPhotoController {
             @ApiResponse(code = 404, message = "The photo was not found"),
 
     })
-    public ResponseEntity<UserPhoto> getPhotoById(@PathVariable Integer id){
+    public ResponseEntity<UserPhoto> getPhotoById(@PathVariable Integer id) throws UserPhotoNotFoundException {
         return ResponseEntity.status(HttpStatus.FOUND).body(userPhotoService.getUserPhotoById(id));
     }
     @GetMapping("/recipe/{userId}")
@@ -54,7 +55,7 @@ public class UserPhotoController {
             @ApiResponse(code = 404, message = "The user was not found"),
 
     })
-    public ResponseEntity<UserPhoto> getUserPhotoByUserId(@PathVariable Integer userId) throws RecipeNotFoundException, UserNotFoundException {
+    public ResponseEntity<UserPhoto> getUserPhotoByUserId(@PathVariable Integer userId) throws RecipeNotFoundException, UserNotFoundException, UserPhotoNotFoundException {
         return ResponseEntity.status(HttpStatus.FOUND).body(userPhotoService.getUserPhotoByUserId(userId));
     }
     @PostMapping
@@ -66,8 +67,8 @@ public class UserPhotoController {
             @ApiResponse(code = 404, message = "The user was not found"),
 
     })
-    public ResponseEntity<UserPhoto> savePhotoUser(@RequestParam Integer id, @RequestParam Integer userId, @RequestParam MultipartFile image) throws RecipeNotFoundException, IOException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(userPhotoService.saveOrUpdateUserPhoto(id, userId, image));
+    public ResponseEntity<UserPhoto> savePhotoUser(@RequestParam Integer userId, @RequestParam MultipartFile image) throws RecipeNotFoundException, IOException, UserNotFoundException, UserPhotoNotFoundException {
+        return ResponseEntity.status(HttpStatus.FOUND).body(userPhotoService.saveOrUpdateUserPhoto(userId, image));
     }
 //    @PutMapping
 //    public ResponseEntity<UserPhoto> updatePhoto(@RequestBody UserPhotoVo userPhotoVo, @RequestParam MultipartFile image) throws RecipeNotFoundException, IOException {

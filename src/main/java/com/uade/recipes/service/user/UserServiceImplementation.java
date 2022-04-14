@@ -2,6 +2,7 @@ package com.uade.recipes.service.user;
 
 
 import com.uade.recipes.exceptions.userExceptions.*;
+import com.uade.recipes.exceptions.userPhotoExceptions.UserPhotoNotFoundException;
 import com.uade.recipes.model.User;
 import com.uade.recipes.model.UserPhoto;
 import com.uade.recipes.persistance.UserRepository;
@@ -44,7 +45,7 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public User saveOrUpdateUser(UserVo user, String role) throws InvalidEmailException, InvalidPasswordException, InvalidRoleException, UserNameExistsException, EmailExistsException, UserNotFoundException {
+    public User saveOrUpdateUser(UserVo user, String role) throws InvalidEmailException, InvalidPasswordException, InvalidRoleException, UserNameExistsException, EmailExistsException, UserNotFoundException, UserPhotoNotFoundException {
         existsUser(user);
         user.setRole(role);
         UsersValidations.validateUserData(user);

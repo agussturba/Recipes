@@ -1,4 +1,4 @@
 package com.uade.recipes.exceptions.userPhotoExceptions;
 
-public class UserPhotoNotFoundException extends RuntimeException {
+public class UserPhotoNotFoundException extends Throwable {
 }
