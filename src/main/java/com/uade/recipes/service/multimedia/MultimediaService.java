@@ -3,7 +3,9 @@ package com.uade.recipes.service.multimedia;
 import com.uade.recipes.exceptions.instructionExceptions.InstructionNotFoundException;
 import com.uade.recipes.model.Multimedia;
 import com.uade.recipes.vo.MultimediaVo;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface MultimediaService {
@@ -13,5 +15,7 @@ public interface MultimediaService {
 
     Multimedia getMultimediaByInstructionId(Integer instructionId) throws InstructionNotFoundException;
 
-    Multimedia saveOrUpdateMultimedia(MultimediaVo multimediaVo) throws InstructionNotFoundException;
+    Iterable<Multimedia> saveMultimedia(Integer instructionId, List<MultipartFile> multimedia) throws InstructionNotFoundException, IOException;
+
+    void deleteMultimedia(Integer multimediaId) throws IOException;
 }
