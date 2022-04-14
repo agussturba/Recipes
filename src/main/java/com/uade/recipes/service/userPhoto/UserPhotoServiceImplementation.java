@@ -56,13 +56,13 @@ public class UserPhotoServiceImplementation implements UserPhotoService {
             userPhoto.setUser(user);
         }
 
-        Map uploadResult = saveUserToCloudinary(image, userId);
+        Map uploadResult = saveUserPhotoToCloudinary(image, userId);
         userPhoto.setPhotoUrl((String) uploadResult.get("url"));
         userPhoto.setExtension(StringUtils.getFilenameExtension(image.getOriginalFilename()));
         return userPhotoRepository.save(userPhoto);
     }
 
-    private Map saveUserToCloudinary (MultipartFile image, Integer userId) throws IOException {
+    private Map saveUserPhotoToCloudinary (MultipartFile image, Integer userId) throws IOException {
         Map uploadResult = cloudinary.uploader().upload(image.getBytes(),
                 ObjectUtils.asMap("public_id", "user_" + userId + "_avatar"));
         return uploadResult;
