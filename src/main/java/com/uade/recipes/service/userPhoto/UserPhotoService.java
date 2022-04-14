@@ -16,5 +16,7 @@ public interface UserPhotoService {
 
     UserPhoto getUserPhotoByUserId(Integer userId) throws UserNotFoundException, UserPhotoNotFoundException;
 
-    UserPhoto saveOrUpdateUserPhoto(Integer userId, MultipartFile image) throws IOException, UserPhotoNotFoundException, UserNotFoundException;
+    UserPhoto saveUserPhoto(Integer userId, MultipartFile image) throws IOException, UserPhotoNotFoundException, UserNotFoundException;
+
+    void deleteUserPhoto(Integer photoId) throws UserPhotoNotFoundException, IOException;
 }
