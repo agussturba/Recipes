@@ -16,7 +16,7 @@ public interface RecipePhotoService {
 
     Iterable<RecipePhoto> saveRecipePhoto(Integer recipeId, List<MultipartFile> images) throws RecipeNotFoundException, IOException;
 
-    void deleteRecipePhoto(Integer recipeId, Integer recipePhotoId) throws RecipeNotFoundException;
+    void deleteRecipePhoto(Integer recipeId, Integer recipePhotoId) throws RecipeNotFoundException, IOException;
 
     List<RecipePhoto> getRecipePhotosByIds(List<Integer> recipePhotoIdList);
 }

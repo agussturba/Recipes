@@ -75,7 +75,7 @@ public class RecipePhotoController {
     }
 
     @DeleteMapping
-    public ResponseEntity deleteRecipePhoto(@RequestParam Integer recipeId, @RequestParam Integer recipePhotoId) throws RecipeNotFoundException {
+    public ResponseEntity deleteRecipePhoto(@RequestParam Integer recipeId, @RequestParam Integer recipePhotoId) throws RecipeNotFoundException, IOException {
         recipePhotoService.deleteRecipePhoto(recipeId, recipePhotoId);
         return new ResponseEntity(HttpStatus.FOUND);
     }

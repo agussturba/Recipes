@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -63,9 +64,13 @@ public class RecipePhotoServiceImplementation implements RecipePhotoService {
     }
 
     @Override
-    public void deleteRecipePhoto(Integer recipeId, Integer recipePhotoId) throws RecipeNotFoundException {
+    public void deleteRecipePhoto(Integer recipeId, Integer recipePhotoId) throws RecipeNotFoundException, IOException {
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(RecipeNotFoundException::new);
         RecipePhoto recipePhoto = this.getRecipePhotoById(recipePhotoId);
+        List<String> url = Arrays.asList(recipePhoto.getPhotoUrl().split("/"));
+        String filename = url.get(url.size()-1);
+        String public_id = filename.substring(0, filename.indexOf("."));
+        cloudinary.uploader().destroy(public_id, ObjectUtils.emptyMap());
         recipePhotoRepository.delete(recipePhoto);
     }
 
