@@ -72,7 +72,7 @@ public class UserController {
 
     })
     public ResponseEntity<User> getUserByUserNameAndPassword(@RequestParam String userName, @RequestParam String password) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByUserNameAndPassword(userName, password));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByEmailAndPassword(userName, password));
     }
 
     @PostMapping

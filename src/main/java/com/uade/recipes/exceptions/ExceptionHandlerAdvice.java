@@ -13,6 +13,7 @@ import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.recipePhotoExceptions.RecipePhotoNotFoundException;
 import com.uade.recipes.exceptions.recipeRatingExceptions.RatingIsLowerThanZeroException;
 import com.uade.recipes.exceptions.recipeRatingExceptions.RatingIsNullException;
+import com.uade.recipes.exceptions.tokenExceptions.TokenNotFoundException;
 import com.uade.recipes.exceptions.typeExceptions.TypeNotFountException;
 import com.uade.recipes.exceptions.unitExceptions.UnitNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.*;
@@ -32,6 +33,11 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(TypeNotFountException.class)
     public ResponseEntity handleTypeNotFountException() {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The Type was not found");
+    }
+
+    @ExceptionHandler(TokenNotFoundException.class)
+    public ResponseEntity handleTokenNotFountException() {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The token was not found");
     }
 
     @ExceptionHandler(ConversionNotFoundException.class)

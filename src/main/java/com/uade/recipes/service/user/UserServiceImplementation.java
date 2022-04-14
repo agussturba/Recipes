@@ -6,7 +6,6 @@ import com.uade.recipes.exceptions.userPhotoExceptions.UserPhotoNotFoundExceptio
 import com.uade.recipes.model.User;
 import com.uade.recipes.model.UserPhoto;
 import com.uade.recipes.persistance.UserRepository;
-import com.uade.recipes.service.type.TypeService;
 import com.uade.recipes.service.userPhoto.UserPhotoService;
 import com.uade.recipes.validations.UsersValidations;
 import com.uade.recipes.vo.UserVo;
@@ -35,8 +34,8 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public User getUserByUserNameAndPassword(String userName, String password) {
-        return userRepository.findByUserNameAndPassword(userName,password);
+    public User getUserByEmailAndPassword(String userName, String password) {
+        return userRepository.findByEmailAndPassword(userName,password);
     }
 
     @Override
