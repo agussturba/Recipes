@@ -14,7 +14,7 @@ public class UserVo {
     String role;
     boolean enabled;
     String name;
-    String avatar;
+    Integer avatarId;
 
 
 

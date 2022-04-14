@@ -1,5 +1,6 @@
 package com.uade.recipes.model;
 
+import com.uade.recipes.vo.RecipeRatingVo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Transient;
@@ -21,6 +22,16 @@ public class RecipeRating {
     private User user;
     private String comments;
     private Double rating;
+
+    public RecipeRatingVo toVO(){
+        RecipeRatingVo vo = new RecipeRatingVo();
+        vo.setRecipeId(recipe.getId());
+        vo.setUserId(user.getId());
+        vo.setComments(comments);
+        vo.setRating(rating);
+
+        return vo;
+    }
 
 
 }

@@ -7,5 +7,6 @@ public class IngredientQuantityVo {
     Integer id;
     Integer ingredientId;
     Double quantity;
-
+    Integer recipeId;
+    String observations;
 }
