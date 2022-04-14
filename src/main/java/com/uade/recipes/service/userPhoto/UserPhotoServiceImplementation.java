@@ -4,6 +4,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.uade.recipes.exceptions.userPhotoExceptions.UserPhotoNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
+import com.uade.recipes.model.Multimedia;
 import com.uade.recipes.model.User;
 import com.uade.recipes.model.UserPhoto;
 import com.uade.recipes.persistance.UserPhotoRepository;
@@ -15,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +48,7 @@ public class UserPhotoServiceImplementation implements UserPhotoService {
     }
 
     @Override
-    public UserPhoto saveOrUpdateUserPhoto(Integer userId, MultipartFile image) throws IOException, UserPhotoNotFoundException, UserNotFoundException {
+    public UserPhoto saveUserPhoto(Integer userId, MultipartFile image) throws IOException, UserPhotoNotFoundException, UserNotFoundException {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         UserPhoto userPhoto;
         try {
@@ -61,6 +63,17 @@ public class UserPhotoServiceImplementation implements UserPhotoService {
         userPhoto.setExtension(StringUtils.getFilenameExtension(image.getOriginalFilename()));
         return userPhotoRepository.save(userPhoto);
     }
+
+    @Override
+    public void deleteUserPhoto(Integer photoId) throws UserPhotoNotFoundException, IOException {
+        UserPhoto userPhoto = this.getUserPhotoById(photoId);
+        List<String> url = Arrays.asList(userPhoto.getPhotoUrl().split("/"));
+        String filename = url.get(url.size()-1);
+        String public_id = filename.substring(0, filename.indexOf("."));
+        cloudinary.uploader().destroy(public_id, ObjectUtils.emptyMap());
+        userPhotoRepository.delete(userPhoto);
+    }
+
 
     private Map saveUserPhotoToCloudinary (MultipartFile image, Integer userId) throws IOException {
         Map uploadResult = cloudinary.uploader().upload(image.getBytes(),

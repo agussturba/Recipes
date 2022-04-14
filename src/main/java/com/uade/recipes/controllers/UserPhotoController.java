@@ -68,7 +68,12 @@ public class UserPhotoController {
 
     })
     public ResponseEntity<UserPhoto> savePhotoUser(@RequestParam Integer userId, @RequestParam MultipartFile image) throws RecipeNotFoundException, IOException, UserNotFoundException, UserPhotoNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(userPhotoService.saveOrUpdateUserPhoto(userId, image));
+        return ResponseEntity.status(HttpStatus.FOUND).body(userPhotoService.saveUserPhoto(userId, image));
     }
 
+    @DeleteMapping
+    public ResponseEntity deleteUserPhoto(@RequestParam Integer photoId) throws IOException, UserPhotoNotFoundException {
+        userPhotoService.deleteUserPhoto(photoId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }
