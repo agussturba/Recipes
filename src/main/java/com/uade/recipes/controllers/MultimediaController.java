@@ -10,7 +10,9 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -63,18 +65,25 @@ public class MultimediaController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The instruction was not found")
     })
-    public ResponseEntity<Multimedia> saveMultimedia(@RequestBody MultimediaVo multimediaVo) throws InstructionNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(multimediaService.saveOrUpdateMultimedia(multimediaVo));
+    public ResponseEntity<List<Multimedia>> saveMultimedia(@RequestParam Integer instructionId, @RequestParam List<MultipartFile> multimedia) throws InstructionNotFoundException, IOException {
+        return ResponseEntity.status(HttpStatus.FOUND).body((List<Multimedia>) multimediaService.saveMultimedia(instructionId, multimedia));
     }
-    @PutMapping
-    @ApiOperation(value = "Update a multimedia of an instruction", response = ResponseEntity.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully updated a multimedia"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The instruction/multimedia was not found")
-    })
-    public ResponseEntity<Multimedia> updateMultimedia(@RequestBody MultimediaVo multimediaVo) throws InstructionNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(multimediaService.saveOrUpdateMultimedia(multimediaVo));
+
+    @DeleteMapping
+    public ResponseEntity deleteMultimedia(@RequestParam Integer multimediaId) throws IOException {
+        multimediaService.deleteMultimedia(multimediaId);
+        return new ResponseEntity(HttpStatus.OK);
     }
+
+//    @PutMapping
+//    @ApiOperation(value = "Update a multimedia of an instruction", response = ResponseEntity.class)
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "Successfully updated a multimedia"),
+//            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+//            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+//            @ApiResponse(code = 404, message = "The instruction/multimedia was not found")
+//    })
+//    public ResponseEntity<Multimedia> updateMultimedia(@RequestBody MultimediaVo multimediaVo) throws InstructionNotFoundException {
+//        return ResponseEntity.status(HttpStatus.FOUND).body(multimediaService.saveMultimedia(, multimediaVo, ));
+//    }
 }
