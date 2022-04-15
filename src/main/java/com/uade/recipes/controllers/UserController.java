@@ -66,19 +66,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByUserName(userName).toVO());
     }
 
-    @GetMapping("/auth/")
-    @ApiOperation(value = "Get a user by his userName and password", response = ResponseEntity.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 302, message = "Successfully retrieved the user by his username and password"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "User not Found"),
-
-    })
-    public ResponseEntity<UserVo> getUserByUserNameAndPassword(@RequestParam String userName, @RequestParam String password) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByUserNameAndPassword(userName, password).toVO());
-    }
-
     @PostMapping
     @ApiOperation(value = "Create a new user ", response = ResponseEntity.class)
     @ApiResponses(value = {

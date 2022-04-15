@@ -4,6 +4,7 @@ import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.User;
 import com.uade.recipes.service.token.TokenService;
 import com.uade.recipes.service.user.UserService;
+import com.uade.recipes.vo.UserVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -34,8 +35,8 @@ public class AuthenticationController {
             @ApiResponse(code = 404, message = "User not Found"),
 
     })
-    public ResponseEntity<User> login(@RequestParam String email, @RequestParam String password) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByEmailAndPassword(email, password));
+    public ResponseEntity<UserVo> login(@RequestParam String email, @RequestParam String password) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByEmailAndPassword(email, password).toVO());
     }
 
     @GetMapping("/test")

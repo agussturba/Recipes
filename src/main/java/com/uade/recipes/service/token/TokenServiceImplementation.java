@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 public class TokenServiceImplementation implements TokenService {
@@ -27,7 +27,7 @@ public class TokenServiceImplementation implements TokenService {
     public boolean isTokenValid(Integer token, Integer userId) throws UserNotFoundException {
         User user = userService.getUserById(userId);
         try {
-            Token tokenElem = tokenRepository.findByUserAndTimestampGreaterThanEqualAndTimestampLessThanEqual(user, Timestamp.valueOf(String.valueOf(LocalDate.now().minusDays(1))), Timestamp.from(Instant.now())).orElseThrow(TokenNotFoundException::new);
+            Token tokenElem = tokenRepository.findByUserAndTimestampGreaterThanEqualAndTimestampLessThanEqual(user, Timestamp.valueOf(LocalDateTime.now().minusDays(1)), Timestamp.from(Instant.now())).orElseThrow(TokenNotFoundException::new);
             return true;
         } catch (TokenNotFoundException e) {
             return false;
