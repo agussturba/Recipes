@@ -6,10 +6,13 @@ import com.uade.recipes.model.Conversion;
 import com.uade.recipes.model.Unit;
 import com.uade.recipes.persistance.ConversionsRepository;
 import com.uade.recipes.persistance.UnitRepository;
+import com.uade.recipes.validations.ConversionValidations;
 import com.uade.recipes.vo.ConversionVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.uade.recipes.validations.ConversionValidations.validateConversionData;
 
 @Service
 public class ConversionServiceImplementation implements ConversionService {
@@ -51,7 +54,8 @@ public class ConversionServiceImplementation implements ConversionService {
     }
 
     @Override
-    public Conversion saveOrUpdateConversion(ConversionVo conversionVo) {//TODO ADD VALIDATIONS
+    public Conversion saveOrUpdateConversion(ConversionVo conversionVo) {
+        validateConversionData(conversionVo);
         Unit targetUnit = unitRepository.findById(conversionVo.getTargetUnitId()).orElseThrow(UnitNotFoundException::new);
         Unit sourceUnit = unitRepository.findById(conversionVo.getSourceUnitId()).orElseThrow(UnitNotFoundException::new);
         return conversionsRepository.save(conversionVo.toModel(sourceUnit, targetUnit));

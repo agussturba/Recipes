@@ -21,6 +21,7 @@ public class RecipeRating {
     @OneToOne
     private User user;
     private String comments;
+    @Column(nullable = false)
     private Double rating;
 
     public RecipeRatingVo toVO(){

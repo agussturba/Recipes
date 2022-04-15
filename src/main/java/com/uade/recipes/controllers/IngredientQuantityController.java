@@ -2,6 +2,7 @@ package com.uade.recipes.controllers;
 
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.exceptions.ingredientQuantityExceptions.IngredientQuantityNotFoundException;
+import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.model.Ingredient;
 import com.uade.recipes.model.IngredientQuantity;
 import com.uade.recipes.service.ingredientQuantity.IngredientQuantityService;
@@ -64,7 +65,7 @@ public class IngredientQuantityController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The ingredient was not found")
     })
-    public ResponseEntity<IngredientQuantityVo> saveIngredientQuantity(@RequestBody IngredientQuantityVo ingredientQuantityVo) throws IngredientNotFoundException, IngredientQuantityNotFoundException {
+    public ResponseEntity<IngredientQuantityVo> saveIngredientQuantity(@RequestBody IngredientQuantityVo ingredientQuantityVo) throws IngredientNotFoundException, IngredientQuantityNotFoundException, RecipeNotFoundException {
         return ResponseEntity.status(HttpStatus.CREATED).body(ingredientQuantityService.saveOrUpdateIngredientQuantity(ingredientQuantityVo).toVO());
     }
 
@@ -76,7 +77,7 @@ public class IngredientQuantityController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The ingredient or the Ingredient quantity id was not found")
     })
-    public ResponseEntity<IngredientQuantityVo> updateIngredientQuantity(@RequestBody IngredientQuantityVo ingredientQuantityVo) throws IngredientNotFoundException, IngredientQuantityNotFoundException {
+    public ResponseEntity<IngredientQuantityVo> updateIngredientQuantity(@RequestBody IngredientQuantityVo ingredientQuantityVo) throws IngredientNotFoundException, IngredientQuantityNotFoundException, RecipeNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(ingredientQuantityService.saveOrUpdateIngredientQuantity(ingredientQuantityVo).toVO());
     }
 

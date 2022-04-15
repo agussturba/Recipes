@@ -2,6 +2,7 @@ package com.uade.recipes.service.ingredientQuantity;
 
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.exceptions.ingredientQuantityExceptions.IngredientQuantityNotFoundException;
+import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.model.Ingredient;
 import com.uade.recipes.model.IngredientQuantity;
 import com.uade.recipes.vo.IngredientQuantityVo;
@@ -17,5 +18,5 @@ public interface IngredientQuantityService {
 
     IngredientQuantity getIngredientQuantityByIngredientAndQuantity(Ingredient ingredient, Double quantity) throws IngredientQuantityNotFoundException;
 
-    IngredientQuantity saveOrUpdateIngredientQuantity(IngredientQuantityVo ingredientQuantityVo) throws IngredientNotFoundException, IngredientQuantityNotFoundException;
+    IngredientQuantity saveOrUpdateIngredientQuantity(IngredientQuantityVo ingredientQuantityVo) throws IngredientNotFoundException, IngredientQuantityNotFoundException, RecipeNotFoundException;
 }

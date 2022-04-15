@@ -16,7 +16,9 @@ public class Token {
     private Integer id;
     @ManyToOne
     private User user;
+    @Column(nullable = false)
     private Integer code;
+    @Column(nullable = false)
     private Timestamp timestamp;
 
     public Token(User user) {

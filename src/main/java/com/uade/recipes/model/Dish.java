@@ -15,6 +15,7 @@ public class Dish {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
+    @Column(nullable = false)
     private String name;
     @OneToMany
     private Set<Type> types;

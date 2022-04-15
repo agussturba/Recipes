@@ -9,10 +9,13 @@ import com.uade.recipes.service.dish.DishService;
 import com.uade.recipes.service.recipePhoto.RecipePhotoService;
 import com.uade.recipes.service.type.TypeService;
 import com.uade.recipes.service.user.UserService;
+import com.uade.recipes.validations.RecipeValidations;
 import com.uade.recipes.vo.RecipeVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.uade.recipes.validations.RecipeValidations.validateRecipeData;
 
 @Service
 public class RecipeImplementation implements RecipeService {
@@ -110,6 +113,7 @@ public class RecipeImplementation implements RecipeService {
 
     @Override
     public Recipe saveOrUpdateRecipe(RecipeVo recipeVo) throws DishNotFoundException, UserNotFoundException {//TODO THE VALIDATIONS
+        validateRecipeData(recipeVo);
         User user = userService.getUserById(recipeVo.getUserId());
         Dish dish = dishService.getDishById(recipeVo.getDishId());
         List<RecipePhoto> recipePhotoList = recipePhotoService.getRecipePhotosByIds(recipeVo.getRecipePhotosIds());
