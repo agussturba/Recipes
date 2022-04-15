@@ -15,3 +15,14 @@ spring:
     url: "jdbc:sqlserver://uade-recipes-trident.database.windows.net;databaseName=RecipesUade"
     username: TridentAdmin
     password: Tridente+1
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: tasty.hub2022@gmail.com
+    password: cassjpajwurqukbl
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

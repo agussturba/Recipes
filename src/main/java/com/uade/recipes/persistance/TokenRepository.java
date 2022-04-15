@@ -12,5 +12,7 @@ import java.util.Optional;
 @Repository
 public interface TokenRepository extends CrudRepository<Token, Integer> {
 
-    Optional<Token> findByUserAndTimestampGreaterThanEqualAndTimestampLessThanEqual(User user, Timestamp yesterday, Timestamp now);
+    Optional<Token> findByUserAndCodeAndTimestampGreaterThanEqualAndTimestampLessThanEqual(User user, Integer code, Timestamp yesterday, Timestamp now);
+
+    Optional<Token> findFirstByUserAndTimestampGreaterThanEqualAndTimestampLessThanEqualOrderByTimestampDesc(User user, Timestamp yesterday, Timestamp now);
 }

@@ -1,5 +1,6 @@
 package com.uade.recipes.controllers;
 
+import com.uade.recipes.exceptions.tokenExceptions.TokenCantBeGeneratedException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.User;
 import com.uade.recipes.service.token.TokenService;
@@ -39,8 +40,8 @@ public class AuthenticationController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByEmailAndPassword(email, password).toVO());
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<Integer> getCode(@RequestParam Integer userId) throws UserNotFoundException {
+    @GetMapping("/token")
+    public ResponseEntity<Integer> getCode(@RequestParam Integer userId) throws UserNotFoundException, TokenCantBeGeneratedException {
         return ResponseEntity.status(HttpStatus.OK).body(tokenService.generateToken(userId));
     }
 
@@ -48,5 +49,4 @@ public class AuthenticationController {
     public ResponseEntity<Boolean> isValid(@RequestParam Integer code, @RequestParam Integer userId) throws UserNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(tokenService.isTokenValid(code, userId));
     }
-
 }
