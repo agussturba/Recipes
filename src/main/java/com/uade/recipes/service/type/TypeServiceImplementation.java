@@ -1,6 +1,6 @@
 package com.uade.recipes.service.type;
 
-import com.uade.recipes.exceptions.typeExceptions.TypeNotFountException;
+import com.uade.recipes.exceptions.typeExceptions.TypeNotFoundException;
 import com.uade.recipes.model.Type;
 import com.uade.recipes.persistance.TypeRepository;
 import com.uade.recipes.vo.TypeVo;
@@ -28,7 +28,7 @@ public class TypeServiceImplementation implements TypeService {
 
     @Override
     public Type getTypeById(Integer idType) {
-        return typeRepository.findById(idType).orElseThrow(TypeNotFountException::new);
+        return typeRepository.findById(idType).orElseThrow(TypeNotFoundException::new);
     }
 
     @Override
