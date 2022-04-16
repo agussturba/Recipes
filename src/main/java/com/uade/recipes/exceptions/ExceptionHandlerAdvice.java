@@ -43,7 +43,7 @@ public class ExceptionHandlerAdvice {
 
     @ExceptionHandler(TokenCantBeGeneratedException.class)
     public ResponseEntity handleTokenCantBeGeneratedException() {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("There is currently another valid token for this user");
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("There is currently another valid token for this user");
     }
 
     @ExceptionHandler(ConversionNotFoundException.class)

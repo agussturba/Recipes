@@ -28,9 +28,9 @@ public class UserController {
     }
 
     @GetMapping
-    @ApiOperation(value = "Get a list of users", response = ResponseEntity.class)
+    @ApiOperation(value = "Obtener una lista de todos los usuarios", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved a list of users"),
+            @ApiResponse(code = 200, message = "Se obtuvo exitosamente la lista de usuarios"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
 
@@ -41,25 +41,25 @@ public class UserController {
     }
 
     @GetMapping("/email/{email}")
-    @ApiOperation(value = "Get a user by his email", response = ResponseEntity.class)
+    @ApiOperation(value = "Obtener un usuario en base a su email", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 302, message = "Successfully retrieved the user by his email"),
+            @ApiResponse(code = 200 /*302*/, message = "El usuario fue encontrado"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "User not Found"),
+            @ApiResponse(code = 404, message = "Usuario no encontrado"),
 
     })
-    public ResponseEntity<UserVo> getUserByEmail(@PathVariable String email) {
+    public ResponseEntity<UserVo> getUserByEmail(@PathVariable String email) throws UserNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByEmail(email).toVO());
     }
 
     @GetMapping("/userName/{userName}")
-    @ApiOperation(value = "Get a user by his userName", response = ResponseEntity.class)
+    @ApiOperation(value = "Obtener un usuario en base a su alias", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 302, message = "Successfully retrieved the user by his username"),
+            @ApiResponse(code = 200 /*302*/, message = "El usuario fue encontrado"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "User not Found"),
+            @ApiResponse(code = 404, message = "Usuario no encontrado"),
 
     })
     public ResponseEntity<UserVo> getUserByUserName(@PathVariable String userName) {
@@ -67,41 +67,46 @@ public class UserController {
     }
 
     @PostMapping
-    @ApiOperation(value = "Create a new user ", response = ResponseEntity.class)
+    @ApiOperation(value = "Crear un nuevo usuario", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully created a new user"),
+            @ApiResponse(code = 201, message = "Usuario creado con éxito"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 409, message = "El nombre de usuario ya existe o La contraseña no se valida o el rol no es valido o el email ya existe") //TODO CHEQUEAR
     })
     public ResponseEntity<UserVo> saveUserClient(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException, UserPhotoNotFoundException {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.saveOrUpdateUser(userVo, "ROLE_CLIENT").toVO());
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveOrUpdateUser(userVo, "ROLE_CLIENT").toVO());
     }
 
     @PostMapping("/admin")
-    @ApiOperation(value = "Create a new user admin", response = ResponseEntity.class)
+    @ApiOperation(value = "Crear un nuevo usuario admin", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully created a new user admin"),
+            @ApiResponse(code = 201, message = "Usuario admin creado con éxito"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 409, message = "El nombre de usuario ya existe o La contraseña no se valida o el rol no es valido o el email ya existe") //TODO CHEQUEAR
+
     })
     public ResponseEntity<UserVo> saveUserStudent(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException, UserPhotoNotFoundException {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.saveOrUpdateUser(userVo, "ROLE_ADMIN").toVO());
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveOrUpdateUser(userVo, "ROLE_ADMIN").toVO());
     }
 
     @PutMapping
-    @ApiOperation(value = "Update a user", response = ResponseEntity.class)
+    @ApiOperation(value = "Actualizar datos de un usuario", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully updated a user"),
+            @ApiResponse(code = 201, message = "Usuario actualizado con éxito"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 409, message = "El nombre de usuario ya existe o La contraseña no se valida o el rol no es valido o el email ya existe") //TODO CHEQUEAR
+
     })
     public ResponseEntity<UserVo> updateUser(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException, UserPhotoNotFoundException {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.saveOrUpdateUser(userVo, userVo.getRole()).toVO());
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveOrUpdateUser(userVo, userVo.getRole()).toVO());
     }
 
-    private List<UserVo> transformListToVoList(List<User> list){
+    private List<UserVo> transformListToVoList(List<User> list) {
         List<UserVo> result = new ArrayList<>();
-        for(User obj: list){
+        for (User obj : list) {
             result.add(obj.toVO());
         }
         return result;

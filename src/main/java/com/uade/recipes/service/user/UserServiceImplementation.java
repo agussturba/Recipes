@@ -29,13 +29,13 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public User getUserByEmail(String email) throws UserNotFoundException {
+        return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
     }
 
     @Override
-    public User getUserByEmailAndPassword(String userName, String password) {
-        return userRepository.findByEmailAndPassword(userName,password);
+    public User getUserByEmailAndPassword(String userName, String password) throws UserNotFoundException {
+        return userRepository.findByEmailAndPassword(userName,password).orElseThrow(UserNotFoundException::new);
     }
 
     @Override
@@ -53,11 +53,18 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
+    public void changePassword(String email, String password) throws UserNotFoundException {
+        User user = this.getUserByEmail(email);
+        user.setPassword(password);
+        userRepository.save(user);
+    }
+
+    @Override
     public User getUserById(Integer idUser) throws UserNotFoundException {
         return userRepository.findById(idUser).orElseThrow(UserNotFoundException::new);
     }
 
-    private void existsUser(UserVo userVo) throws UserNameExistsException, EmailExistsException {
+    private void existsUser(UserVo userVo) throws UserNameExistsException, EmailExistsException, UserNotFoundException {
         if (this.getUserByUserName(userVo.getUserName()) != null) {
             throw new UserNameExistsException();
         }
