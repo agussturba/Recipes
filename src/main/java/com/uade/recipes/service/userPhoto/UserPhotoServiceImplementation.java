@@ -22,12 +22,12 @@ import java.util.Map;
 @Service
 public class UserPhotoServiceImplementation implements UserPhotoService {
     private final UserPhotoRepository userPhotoRepository;
-    private final UserService userService;
+    private final UserRepository userRepository;
     private final Cloudinary cloudinary = CloudinaryUtil.getInstance();
 
-    public UserPhotoServiceImplementation(UserPhotoRepository userPhotoRepository, UserRepository userRepository, UserService userService) {
+    public UserPhotoServiceImplementation(UserPhotoRepository userPhotoRepository, UserRepository userRepository) {
         this.userPhotoRepository = userPhotoRepository;
-        this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class UserPhotoServiceImplementation implements UserPhotoService {
 
     @Override
     public UserPhoto getUserPhotoByUserId(Integer userId) throws UserNotFoundException, UserPhotoNotFoundException {
-        User user = this.userService.getUserById(userId);
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         return userPhotoRepository.findByUser(user).orElseThrow(UserPhotoNotFoundException::new);
     }
 
@@ -74,7 +74,7 @@ public class UserPhotoServiceImplementation implements UserPhotoService {
 
     private UserPhoto getOrCreateUserPhotoByUserId(Integer userId) throws UserNotFoundException {
         UserPhoto userPhoto;
-        User user = userService.getUserById(userId);
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         try {
             userPhoto = this.getUserPhotoByUserId(userId);
         } catch (UserPhotoNotFoundException | UserNotFoundException e) {
