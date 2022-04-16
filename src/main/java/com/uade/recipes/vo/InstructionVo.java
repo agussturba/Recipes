@@ -8,15 +8,14 @@ import lombok.Data;
 public class InstructionVo {
     Integer id;
     String description;
-    Integer numberOfStep;
     Integer recipeId;
+    Integer numberOfStep;
 
-
-    public Instruction toModel(Recipe recipe){
+    public Instruction toModel(Recipe recipe,Integer numberOfStep){
         Instruction instruction = new Instruction();
         instruction.setId(this.getId());
         instruction.setDescription(this.getDescription());
-        instruction.setNumberOfStep(this.numberOfStep);
+        instruction.setNumberOfStep(numberOfStep);
         instruction.setRecipe(recipe);
         return instruction;
     }

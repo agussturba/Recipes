@@ -1,7 +1,9 @@
 package com.uade.recipes.model;
 
+import com.sun.istack.NotNull;
 import com.uade.recipes.vo.ConversionVo;
 import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
@@ -15,9 +17,10 @@ public class Conversion {
     private Unit sourceUnit;
     @OneToOne
     private Unit targetUnit;
+    @Column(nullable = false)
     private double conversionFactor; // Estara bien?
 
-    public ConversionVo toVO (){
+    public ConversionVo toVO() {
         ConversionVo vo = new ConversionVo();
         vo.setSourceUnitId(sourceUnit.getId());
         vo.setTargetUnitId(targetUnit.getId());

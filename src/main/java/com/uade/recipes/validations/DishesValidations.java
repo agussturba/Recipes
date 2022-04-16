@@ -6,9 +6,11 @@ import com.uade.recipes.vo.DishVo;
 
 public class DishesValidations {
     public static void validateDishData(DishVo dishVo) throws DishNameContainsNumberException, DishTypeContainsNumberException {
-        if (GeneralValidations.containsNumber(dishVo.getName())){
+        if (GeneralValidations.containsNumber(dishVo.getName())) {
             throw new DishNameContainsNumberException();
         }
-
+        for (Integer idType : dishVo.getTypesIdList()) {
+                IdValidations.validateTypeId(idType);
+        }
     }
 }

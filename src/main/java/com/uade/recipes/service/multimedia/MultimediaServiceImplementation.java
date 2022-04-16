@@ -2,13 +2,10 @@ package com.uade.recipes.service.multimedia;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.uade.recipes.exceptions.MultimediaNotFoundException;
+import com.uade.recipes.exceptions.multimediaExceptions.MultimediaNotFoundException;
 import com.uade.recipes.exceptions.instructionExceptions.InstructionNotFoundException;
-import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.model.Instruction;
 import com.uade.recipes.model.Multimedia;
-import com.uade.recipes.model.Recipe;
-import com.uade.recipes.model.RecipePhoto;
 import com.uade.recipes.persistance.MultimediaRepository;
 import com.uade.recipes.service.instruction.InstructionService;
 import com.uade.recipes.utilities.CloudinaryUtil;

@@ -14,6 +14,6 @@ public interface RecipeRatingService {
 
     Double getAverageOfRecipeRatingsByRecipeId(Integer recipeId) throws RecipeNotFoundException;
 
-    RecipeRating saveOrUpdateRecipeRating(RecipeRatingVo recipeRatingVo) throws UserNotFoundException, RecipeNotFoundException;
+    RecipeRating saveOrUpdateRecipeRating(RecipeRatingVo recipeRatingVo) throws UserNotFoundException, RecipeNotFoundException, RatingIsLowerThanZeroException, RatingIsNullException;
 
 }

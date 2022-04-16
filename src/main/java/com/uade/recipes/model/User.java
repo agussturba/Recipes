@@ -15,15 +15,18 @@ public class User {
     @Column(name = "id", nullable = false)
     private Integer id;
     private String role;
+    @Column(nullable = false, unique = true)
     private String email;
+    @Column(nullable = false, unique = true)
     private String userName;
+    @Column(nullable = false)
     private String password;
     private String name;
     @OneToOne
     private UserPhoto avatar;
     private boolean enabled;
 
-    public UserVo toVO(){
+    public UserVo toVO() {
         UserVo vo = new UserVo();
         vo.setName(name);
         vo.setRole(role);

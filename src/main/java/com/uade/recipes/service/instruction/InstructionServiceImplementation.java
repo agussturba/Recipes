@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.uade.recipes.validations.InstructionValidations.validateInstructionData;
+
 @Service
 public class InstructionServiceImplementation implements InstructionService {
     private final InstructionRepository instructionRepository;
@@ -33,15 +35,17 @@ public class InstructionServiceImplementation implements InstructionService {
     }
 
     @Override
-    public List<Instruction> getInstructionsByRecipeId(Integer recipeId) {
-        //return instructionRepository.findByRecipe(recipe);
-        return null;
+    public List<Instruction> getInstructionsByRecipeId(Integer recipeId) throws RecipeNotFoundException {
+        Recipe recipe = recipeService.getRecipeById(recipeId);
+        return instructionRepository.findByRecipe(recipe);
     }
 
     @Override
     public Instruction saveOrUpdateInstruction(InstructionVo instructionVo) throws RecipeNotFoundException {
+        validateInstructionData(instructionVo);
         Recipe recipe = recipeService.getRecipeById(instructionVo.getRecipeId());
-        return instructionRepository.save(instructionVo.toModel(recipe));
+        Integer nextStep = getLastStepByRecipe(recipe) + 1;
+        return instructionRepository.save(instructionVo.toModel(recipe, nextStep));
     }
 
     private List<Instruction> getInstructionsByIds(List<Integer> instructionIdList) throws InstructionNotFoundException {
@@ -51,6 +55,10 @@ public class InstructionServiceImplementation implements InstructionService {
             instructions.add(instruction);
         }
         return instructions;
+    }
+
+    private Integer getLastStepByRecipe(Recipe recipe) {
+        return instructionRepository.findFirstByRecipeOrderByNumberOfStepDesc(recipe).getNumberOfStep();
     }
 }
 

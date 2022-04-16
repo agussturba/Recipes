@@ -3,10 +3,7 @@ package com.uade.recipes.model;
 import com.uade.recipes.vo.MultimediaVo;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 @Data

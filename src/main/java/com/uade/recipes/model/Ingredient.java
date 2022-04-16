@@ -13,6 +13,7 @@ public class Ingredient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
+    @Column(nullable = false)
     private String name;
     @OneToOne
     private Type type;

@@ -15,7 +15,9 @@ public class Instruction {
     private Integer id;
     @ManyToOne
     private Recipe recipe;
+    @Column(nullable = false)
     private String description;
+    @Column(nullable = false)
     private Integer numberOfStep;
 
     public InstructionVo toVO(){

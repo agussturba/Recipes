@@ -36,9 +36,9 @@ public class IngredientController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The type was not found")
     })
-    public ResponseEntity<List<IngredientVo>> getAllIngredients(@RequestParam(required = false) String type) {
-        if (type != null) {
-            List<IngredientVo> result = transformListToVoList(ingredientService.getIngredientsByType(type));
+    public ResponseEntity<List<IngredientVo>> getAllIngredients(@RequestParam(required = false) Integer typeId) {
+        if (typeId != null) {
+            List<IngredientVo> result = transformListToVoList(ingredientService.getIngredientsByTypeId(typeId));
             return ResponseEntity.status(HttpStatus.OK).body(result);
         }
         List<IngredientVo> result = transformListToVoList(ingredientService.getAllIngredients());

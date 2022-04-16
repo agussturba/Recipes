@@ -14,6 +14,7 @@ public class Recipe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
+    @Column(nullable = false)
     private String name;
     private String description;
     @OneToMany
@@ -22,7 +23,9 @@ public class Recipe {
     private Dish dish;
     @OneToOne
     private User user;
+    @Column(nullable = false)
     private Integer peopleAmount;
+    @Column(nullable = false)
     private Double portions;
     @OneToMany
     private List<Type> type;

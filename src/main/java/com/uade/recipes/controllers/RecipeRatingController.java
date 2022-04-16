@@ -75,7 +75,7 @@ public class RecipeRatingController {
             @ApiResponse(code = 404, message = "The Recipe/User was not found"),
 
     })
-    public ResponseEntity<RecipeRatingVo> saveRecipeRating(@RequestBody RecipeRatingVo recipeRatingVo) throws UserNotFoundException, RecipeNotFoundException {
+    public ResponseEntity<RecipeRatingVo> saveRecipeRating(@RequestBody RecipeRatingVo recipeRatingVo) throws UserNotFoundException, RecipeNotFoundException, RatingIsLowerThanZeroException, RatingIsNullException {
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeRatingService.saveOrUpdateRecipeRating(recipeRatingVo).toVO());
     }
     @PutMapping
@@ -87,7 +87,7 @@ public class RecipeRatingController {
             @ApiResponse(code = 404, message = "The Recipe/rating/user was not found"),
 
     })
-    public ResponseEntity<RecipeRatingVo> updateRecipeRating(@RequestBody RecipeRatingVo recipeRatingVo) throws UserNotFoundException, RecipeNotFoundException {
+    public ResponseEntity<RecipeRatingVo> updateRecipeRating(@RequestBody RecipeRatingVo recipeRatingVo) throws UserNotFoundException, RecipeNotFoundException, RatingIsLowerThanZeroException, RatingIsNullException {
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeRatingService.saveOrUpdateRecipeRating(recipeRatingVo).toVO());
     }
 

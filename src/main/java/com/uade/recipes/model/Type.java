@@ -13,12 +13,12 @@ public class Type {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
+    @Column(nullable = false,unique = true)
     private String description;
 
     public TypeVo toVO(){
         TypeVo vo = new TypeVo();
         vo.setDescription(description);
-
         return vo;
     }
 

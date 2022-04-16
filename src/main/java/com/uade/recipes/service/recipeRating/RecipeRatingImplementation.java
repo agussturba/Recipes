@@ -1,6 +1,8 @@
 package com.uade.recipes.service.recipeRating;
 
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
+import com.uade.recipes.exceptions.recipeRatingExceptions.RatingIsLowerThanZeroException;
+import com.uade.recipes.exceptions.recipeRatingExceptions.RatingIsNullException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.Recipe;
 import com.uade.recipes.model.RecipeRating;
@@ -8,10 +10,14 @@ import com.uade.recipes.model.User;
 import com.uade.recipes.persistance.RecipeRatingRepository;
 import com.uade.recipes.service.recipe.RecipeService;
 import com.uade.recipes.service.user.UserService;
+import com.uade.recipes.validations.RatingValidations;
+import com.uade.recipes.validations.RecipeValidations;
 import com.uade.recipes.vo.RecipeRatingVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.uade.recipes.validations.RatingValidations.validateRatingData;
 
 @Service
 public class RecipeRatingImplementation implements RecipeRatingService {
@@ -40,20 +46,25 @@ public class RecipeRatingImplementation implements RecipeRatingService {
     @Override
     public Double getAverageOfRecipeRatingsByRecipeId(Integer recipeId) throws RecipeNotFoundException {
         List<RecipeRating> recipeRatingList = (List<RecipeRating>) getRecipeRatingByRecipeId(recipeId);
-        Double totalRating = 0D;
+        Double totalRating = getTotalRating(recipeRatingList);
         Integer amountOfRatings = getAmountOfRatingsByRecipeId(recipeId);
-        for (RecipeRating recipeRating :
-                recipeRatingList) {
-            totalRating += recipeRating.getRating();
-        }
         return totalRating / amountOfRatings;
     }
 
     @Override
-    public RecipeRating saveOrUpdateRecipeRating(RecipeRatingVo recipeRatingVo) throws UserNotFoundException, RecipeNotFoundException {
+    public RecipeRating saveOrUpdateRecipeRating(RecipeRatingVo recipeRatingVo) throws UserNotFoundException, RecipeNotFoundException, RatingIsLowerThanZeroException, RatingIsNullException {
+        validateRatingData(recipeRatingVo);
         User user = userService.getUserById(recipeRatingVo.getUserId());
         Recipe recipe = recipeService.getRecipeById(recipeRatingVo.getRecipeId());
         return recipeRatingRepository.save(recipeRatingVo.toModel(recipe, user));
+    }
+    private Double getTotalRating(List<RecipeRating> ratingList){
+        Double totalRating = 0D;
+        for (RecipeRating recipeRating :
+                ratingList) {
+            totalRating += recipeRating.getRating();
+        }
+        return totalRating;
     }
 
 

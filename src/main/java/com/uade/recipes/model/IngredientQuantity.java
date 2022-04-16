@@ -20,18 +20,14 @@ public class IngredientQuantity {
     private Ingredient ingredient;
     @ManyToOne
     private Recipe recipe;
+    @Column(nullable = false)
     private Double quantity;
     @OneToOne
     private Unit unit;
     private String observations;
 
 
-    public IngredientQuantity(Ingredient ingredient, Double quantity) {
-        this.ingredient = ingredient;
-        this.quantity = quantity;
-    }
-
-    public IngredientQuantityVo toVO(){
+    public IngredientQuantityVo toVO() {
         IngredientQuantityVo vo = new IngredientQuantityVo();
         vo.setIngredientId(ingredient.getId());
         vo.setRecipeId(recipe.getId());
