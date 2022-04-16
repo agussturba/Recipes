@@ -39,7 +39,7 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public User getUserByUserName(String userName) {
+    public User getUserByAlias(String userName) {
         return userRepository.findByUserName(userName);
     }
 
@@ -65,7 +65,7 @@ public class UserServiceImplementation implements UserService {
     }
 
     private void existsUser(UserVo userVo) throws UserNameExistsException, EmailExistsException, UserNotFoundException {
-        if (this.getUserByUserName(userVo.getUserName()) != null) {
+        if (this.getUserByAlias(userVo.getUserName()) != null) {
             throw new UserNameExistsException();
         }
         if (this.getUserByEmail(userVo.getEmail()) != null) {

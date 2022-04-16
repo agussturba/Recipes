@@ -3,10 +3,8 @@ package com.uade.recipes.controllers;
 
 import com.uade.recipes.exceptions.userExceptions.*;
 import com.uade.recipes.exceptions.userPhotoExceptions.UserPhotoNotFoundException;
-import com.uade.recipes.model.Unit;
 import com.uade.recipes.model.User;
 import com.uade.recipes.service.user.UserService;
-import com.uade.recipes.vo.UnitVo;
 import com.uade.recipes.vo.UserVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -53,7 +51,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByEmail(email).toVO());
     }
 
-    @GetMapping("/userName/{userName}")
+    @GetMapping("/username/{userName}")
     @ApiOperation(value = "Obtener un usuario en base a su alias", response = ResponseEntity.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200 /*302*/, message = "El usuario fue encontrado"),
@@ -62,8 +60,8 @@ public class UserController {
             @ApiResponse(code = 404, message = "Usuario no encontrado"),
 
     })
-    public ResponseEntity<UserVo> getUserByUserName(@PathVariable String userName) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByUserName(userName).toVO());
+    public ResponseEntity<UserVo> getUserByAlias(@PathVariable String userName) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByAlias(userName).toVO());
     }
 
     @PostMapping

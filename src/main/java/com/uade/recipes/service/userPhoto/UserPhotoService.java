@@ -2,6 +2,7 @@ package com.uade.recipes.service.userPhoto;
 
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.exceptions.userPhotoExceptions.UserPhotoNotFoundException;
+import com.uade.recipes.model.User;
 import com.uade.recipes.model.UserPhoto;
 import com.uade.recipes.vo.UserPhotoVo;
 import org.springframework.web.multipart.MultipartFile;
