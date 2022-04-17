@@ -42,9 +42,10 @@ public class DishServiceImplementation implements DishService {
     }
 
     @Override
-    public List<Dish> getDishesByTypeId(Integer typeId) {
-        Type type = typeService.getTypeById(typeId);
-        return dishRepository.findByTypes(type);
+    public List<Dish> getDishesByTypeId(List<Integer> typeIdList) {
+        List<Type> types = typeService.getTypesByIdList(typeIdList);
+        List<Dish> candidateDishes = dishRepository.findByTypesIsIn(types);
+        return filterDishesByTypesIdList(candidateDishes,typeIdList);
     }
 
     @Override
@@ -53,12 +54,24 @@ public class DishServiceImplementation implements DishService {
         Set<Type> types = getListOfTypes(dishVo.getTypesIdList());
         return dishRepository.save(dishVo.toModel(types));
     }
-    private Set<Type> getListOfTypes(List<Integer> typesIdList){
+
+    private Set<Type> getListOfTypes(List<Integer> typesIdList) {
         Set<Type> types = new HashSet<>();
-        for (Integer typeId:
+        for (Integer typeId :
                 typesIdList) {
             types.add(typeService.getTypeById(typeId));
         }
         return types;
+    }
+    private List<Dish> filterDishesByTypesIdList(List<Dish> candidateDishes, List<Integer> typeIdList){
+        for (Dish dish : candidateDishes) {
+            for (Type type : dish.getTypes()) {
+                if (!typeIdList.contains(type.getId())){
+                    candidateDishes.remove(dish);
+                    break;
+                }
+            }
+        }
+        return candidateDishes;
     }
 }

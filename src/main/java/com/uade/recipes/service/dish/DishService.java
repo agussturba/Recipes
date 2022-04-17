@@ -15,7 +15,7 @@ public interface DishService {
 
     Dish getDishByName(String dishName) throws DishNotFoundException;
 
-    List<Dish> getDishesByTypeId(Integer dishId);
+    List<Dish> getDishesByTypeId(List<Integer> typeIdList);
 
     Dish saveOrUpdateDish(DishVo DishVo) throws DishNameContainsNumberException, DishTypeContainsNumberException;
 }

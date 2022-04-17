@@ -12,7 +12,7 @@ public class UserPhoto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-    @OneToOne(optional = true)
+    @OneToOne
     private User user;
     private String photoUrl;
     private String extension;

@@ -17,8 +17,6 @@ public class Recipe {
     @Column(nullable = false)
     private String name;
     private String description;
-    @OneToMany
-    private List<RecipePhoto> recipePhotos;
     @OneToOne
     private Dish dish;
     @OneToOne
@@ -30,7 +28,7 @@ public class Recipe {
     @OneToMany
     private List<Type> type;
 
-    public RecipeVo toVO(){
+    public RecipeVo toVO() {
         RecipeVo vo = new RecipeVo();
         vo.setName(name);
         vo.setDescription(description);
@@ -39,21 +37,14 @@ public class Recipe {
         vo.setPeopleAmount(peopleAmount);
         vo.setPortions(portions);
 
-        List<Integer> listRecipePhotos = new ArrayList<>();
-        for(RecipePhoto rp : recipePhotos){
-            listRecipePhotos.add(rp.getId());
-        }
-        vo.setRecipePhotosIds(listRecipePhotos);
-
         List<Integer> listRecipeTypes = new ArrayList<>();
-        for(Type t : type){
+        for (Type t : type) {
             listRecipeTypes.add(t.getId());
         }
         vo.setTypeIdList(listRecipeTypes);
 
         return vo;
     }
-
 
 
 }
