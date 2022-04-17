@@ -2,6 +2,7 @@ package com.uade.recipes.model;
 
 import com.uade.recipes.vo.DishVo;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.Set;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class Dish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,11 +22,16 @@ public class Dish {
     @OneToMany
     private Set<Type> types;
 
-    public DishVo toVO(){
+    public Dish(String name, Set<Type> typesTest) {
+        this.name = name;
+        this.types = typesTest;
+    }
+
+    public DishVo toVO() {
         DishVo vo = new DishVo();
         vo.setName(name);
         List<Integer> list = new ArrayList<>();
-        for (Type type : types){
+        for (Type type : types) {
             list.add(type.getId());
         }
         vo.setTypesIdList(list);

@@ -44,12 +44,10 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public User saveOrUpdateUser(UserVo user, String role) throws InvalidEmailException, InvalidPasswordException, InvalidRoleException, UserNameExistsException, EmailExistsException, UserNotFoundException, UserPhotoNotFoundException {
+    public User saveOrUpdateUser(UserVo user, String role) throws UserNameExistsException, EmailExistsException, UserNotFoundException {
         existsUser(user);
         user.setRole(role);
-        UsersValidations.validateUserData(user);
-        UserPhoto userPhoto = userPhotoService.getUserPhotoByUserId(user.getIdUser());
-        return userRepository.save(user.toModel(userPhoto));
+        return userRepository.save(user.toModel());
     }
 
     @Override

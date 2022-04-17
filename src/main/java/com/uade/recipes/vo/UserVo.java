@@ -18,7 +18,7 @@ public class UserVo {
 
 
 
-    public User toModel(UserPhoto userPhoto) {
+    public User toModel() {
         User user = new User();
         user.setId(idUser);
         user.setEmail(email);
@@ -27,7 +27,7 @@ public class UserVo {
         user.setRole(role);
         user.setEnabled(enabled);
         user.setName(name);
-        user.setAvatar(userPhoto);
+        user.setAvatar(null);
         return user;
     }
 }

@@ -6,8 +6,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RecipeRatingRepository extends CrudRepository<RecipeRating,Integer> {
+public interface RecipeRatingRepository extends CrudRepository<RecipeRating, Integer> {
     RecipeRating findByRecipe(Recipe recipe);
-    Integer countRecipeRatingByRecipe(Recipe recipe);//TODO TEST
 
+    Integer countRecipeRatingByRecipe(Recipe recipe);//TODO TEST
 }

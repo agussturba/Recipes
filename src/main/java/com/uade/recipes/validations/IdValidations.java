@@ -14,6 +14,7 @@ import com.uade.recipes.exceptions.userExceptions.UserIdLowerEqualThanZeroExcept
 import com.uade.recipes.exceptions.userExceptions.UserIdNullException;
 
 public class IdValidations {
+
     public static void validateRecipeId(Integer recipeId) {
         if (recipeId == null) {
             throw new RecipeIdNullException();

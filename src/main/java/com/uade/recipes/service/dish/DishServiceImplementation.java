@@ -17,11 +17,11 @@ import java.util.Set;
 import static com.uade.recipes.validations.DishesValidations.validateDishData;
 
 @Service
-public class DishImplementation implements DishService {
+public class DishServiceImplementation implements DishService {
     private final DishRepository dishRepository;
     private final TypeService typeService;
 
-    public DishImplementation(DishRepository dishRepository, TypeService typeService) {
+    public DishServiceImplementation(DishRepository dishRepository, TypeService typeService) {
         this.dishRepository = dishRepository;
         this.typeService = typeService;
     }
