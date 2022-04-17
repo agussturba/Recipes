@@ -47,12 +47,19 @@ public class UserPhotoServiceImplementation implements UserPhotoService {
     }
 
     @Override
-    public UserPhoto saveUserPhoto(Integer userId, MultipartFile image) throws IOException, UserNotFoundException {
-        UserPhoto userPhoto = getOrCreateUserPhotoByUserId(userId);
+    public UserPhoto saveUserPhoto(Integer userId, MultipartFile image) throws IOException, UserNotFoundException {//TODO CLEAN CODE
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        UserPhoto userPhoto = getOrCreateUserPhotoByUserId(user);
+
         Map uploadResult = saveUserPhotoToCloudinary(image, userId);
         userPhoto.setPhotoUrl((String) uploadResult.get("url"));
         userPhoto.setExtension(StringUtils.getFilenameExtension(image.getOriginalFilename()));
-        return userPhotoRepository.save(userPhoto);
+
+        UserPhoto photo = userPhotoRepository.save(userPhoto);
+        user.setAvatar(photo);
+        userRepository.save(user);
+        return photo;
+
     }
 
     @Override
@@ -72,15 +79,13 @@ public class UserPhotoServiceImplementation implements UserPhotoService {
         return uploadResult;
     }
 
-    private UserPhoto getOrCreateUserPhotoByUserId(Integer userId) throws UserNotFoundException {
-        UserPhoto userPhoto;
-        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        try {
-            userPhoto = this.getUserPhotoByUserId(userId);
-        } catch (UserPhotoNotFoundException | UserNotFoundException e) {
-            userPhoto = new UserPhoto();
+    private UserPhoto getOrCreateUserPhotoByUserId(User user) {
+        if (user.getAvatar() == null) {
+            UserPhoto userPhoto = new UserPhoto();
             userPhoto.setUser(user);
+            return userPhoto;
+        } else {
+            return user.getAvatar();
         }
-        return userPhoto;
     }
 }
