@@ -20,6 +20,7 @@ public class RecipeVo {
     Integer userId;
     Integer peopleAmount;
     Double portions;
+    Integer duration;
 
 
     public Recipe toModel(User user, Dish dish, List<RecipePhoto> recipePhotos) {
@@ -33,6 +34,7 @@ public class RecipeVo {
         recipe.setPeopleAmount(peopleAmount);
         recipe.setType((List<Type>) dish.getTypes());
         recipe.setPortions(portions);
+        recipe.setDuration(duration);
         return recipe;
     }
 }

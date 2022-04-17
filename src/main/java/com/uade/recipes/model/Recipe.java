@@ -17,6 +17,7 @@ public class Recipe {
     @Column(nullable = false)
     private String name;
     private String description;
+    private Integer duration;
     @OneToMany
     private List<RecipePhoto> recipePhotos;
     @OneToOne
@@ -38,6 +39,7 @@ public class Recipe {
         vo.setUserId(user.getId());
         vo.setPeopleAmount(peopleAmount);
         vo.setPortions(portions);
+        vo.setDuration(duration);
 
         List<Integer> listRecipePhotos = new ArrayList<>();
         for(RecipePhoto rp : recipePhotos){
