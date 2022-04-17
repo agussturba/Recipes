@@ -16,7 +16,7 @@ public interface UserService {
 
     User getUserByAlias(String userName);
 
-    User getUserById(Integer idClient) throws UserNotFoundException;
+    User getUserById(Integer userId) throws UserNotFoundException;
 
     User saveOrUpdateUser(UserVo user, String role) throws InvalidEmailException, InvalidPasswordException, InvalidRoleException, UserNameExistsException, EmailExistsException, UserNotFoundException, UserPhotoNotFoundException;
 

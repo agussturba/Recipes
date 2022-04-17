@@ -7,6 +7,7 @@ import lombok.Data;
 
 @Data
 public class UserVo {
+    Integer id;
     Integer idUser;
     String userName;
     String password;
@@ -25,7 +26,7 @@ public class UserVo {
         user.setPassword(password);
         user.setUserName(userName);
         user.setRole(role);
-        user.setEnabled(enabled);
+        user.setEnabled(true);
         user.setName(name);
         user.setAvatar(null);
         return user;

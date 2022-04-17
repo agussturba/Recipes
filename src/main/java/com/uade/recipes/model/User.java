@@ -28,13 +28,17 @@ public class User {
 
     public UserVo toVO() {
         UserVo vo = new UserVo();
+        vo.setId(id);
         vo.setName(name);
         vo.setRole(role);
         vo.setEmail(email);
         vo.setUserName(userName);
         vo.setPassword(password);
-        vo.setAvatarId(avatar.getId());
-
+        if (this.avatar == null) {
+            vo.setAvatarId(null);
+        } else {
+            vo.setAvatarId(avatar.getId());
+        }
         return vo;
     }
 
