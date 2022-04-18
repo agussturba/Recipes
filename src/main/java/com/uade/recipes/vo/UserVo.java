@@ -2,10 +2,11 @@ package com.uade.recipes.vo;
 
 
 import com.uade.recipes.model.User;
-import com.uade.recipes.model.UserPhoto;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class UserVo {
     Integer id;
     Integer idUser;

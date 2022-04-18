@@ -3,13 +3,14 @@ package com.uade.recipes.service.recipe;
 import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
-import com.uade.recipes.model.*;
+import com.uade.recipes.model.Dish;
+import com.uade.recipes.model.Recipe;
+import com.uade.recipes.model.Type;
+import com.uade.recipes.model.User;
 import com.uade.recipes.persistance.RecipeRepository;
 import com.uade.recipes.service.dish.DishService;
-import com.uade.recipes.service.recipePhoto.RecipePhotoService;
 import com.uade.recipes.service.type.TypeService;
 import com.uade.recipes.service.user.UserService;
-import com.uade.recipes.validations.RecipeValidations;
 import com.uade.recipes.vo.RecipeVo;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class RecipeImplementation implements RecipeService {
     private final DishService dishService;
     private final TypeService typeService;
 
-    public RecipeImplementation(RecipeRepository recipeRepository, UserService userService, DishService dishService, RecipePhotoService recipePhotoService, TypeService typeService) {
+    public RecipeImplementation(RecipeRepository recipeRepository, UserService userService, DishService dishService, TypeService typeService) {
         this.recipeRepository = recipeRepository;
         this.userService = userService;
         this.dishService = dishService;
@@ -90,7 +91,7 @@ public class RecipeImplementation implements RecipeService {
     }
 
     @Override
-    public List<Recipe> getRecipesByPeopleAmountAndTypeIds(Integer peopleAmount, List<Integer> typeIdList) throws UserNotFoundException {
+    public List<Recipe> getRecipesByPeopleAmountAndTypeIds(Integer peopleAmount, List<Integer> typeIdList)  {
         List<Type> types = typeService.getTypesByIdList(typeIdList);
         return recipeRepository.findByPeopleAmountAndTypeIsIn(peopleAmount, types);
     }

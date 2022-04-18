@@ -67,7 +67,7 @@ public class ConversionServiceImplementation implements ConversionService {
         try {
            this.getConversionBySourceUnitIdAndTargetUnitId(conversionVo.getSourceUnitId(),conversionVo.getTargetUnitId());
            throw new ConversionExistsException();
-        } catch (ConversionNotFoundException e) {
+        } catch (ConversionNotFoundException ignored) {
 
         }
     }

@@ -2,9 +2,11 @@ package com.uade.recipes.vo;
 
 import com.uade.recipes.model.Instruction;
 import com.uade.recipes.model.Recipe;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class InstructionVo {
     Integer id;
     String description;

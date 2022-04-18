@@ -3,9 +3,11 @@ package com.uade.recipes.vo;
 import com.uade.recipes.model.Recipe;
 import com.uade.recipes.model.RecipeRating;
 import com.uade.recipes.model.User;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class RecipeRatingVo {
     Integer id;
     Integer recipeId;

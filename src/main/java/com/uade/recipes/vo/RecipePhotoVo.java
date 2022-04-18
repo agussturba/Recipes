@@ -1,10 +1,12 @@
 package com.uade.recipes.vo;
 
-import com.uade.recipes.model.RecipePhoto;
 import com.uade.recipes.model.Recipe;
-import lombok.Data;
+import com.uade.recipes.model.RecipePhoto;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class RecipePhotoVo {
      Integer id;
      Integer recipeId;

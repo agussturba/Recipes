@@ -10,8 +10,6 @@ import com.uade.recipes.model.User;
 import com.uade.recipes.persistance.RecipeRatingRepository;
 import com.uade.recipes.service.recipe.RecipeService;
 import com.uade.recipes.service.user.UserService;
-import com.uade.recipes.validations.RatingValidations;
-import com.uade.recipes.validations.RecipeValidations;
 import com.uade.recipes.vo.RecipeRatingVo;
 import org.springframework.stereotype.Service;
 

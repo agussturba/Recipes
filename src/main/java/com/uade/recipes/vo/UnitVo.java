@@ -1,9 +1,11 @@
 package com.uade.recipes.vo;
 
 import com.uade.recipes.model.Unit;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class UnitVo {
      Integer id;
      String description;

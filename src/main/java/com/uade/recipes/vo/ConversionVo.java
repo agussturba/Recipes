@@ -2,9 +2,11 @@ package com.uade.recipes.vo;
 
 import com.uade.recipes.model.Conversion;
 import com.uade.recipes.model.Unit;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class ConversionVo {
     Integer id;
     Integer sourceUnitId;

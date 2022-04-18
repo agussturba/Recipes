@@ -84,7 +84,7 @@ public class DishServiceImplementation implements DishService {
         try {
             this.getDishByName(dishVo.getName());
             throw new DishNameExistsException();
-        } catch (DishNotFoundException e) {
+        } catch (DishNotFoundException ignored) {
         }
     }
 }

@@ -44,7 +44,7 @@ public class UnitServiceImplementation implements UnitService {
         try {
             this.getUnitByDescription(unitVo.getDescription());
             throw new UnitDescriptionExistsException();
-        } catch (UnitNotFoundException e) {
+        } catch (UnitNotFoundException ignored) {
         }
     }
 }

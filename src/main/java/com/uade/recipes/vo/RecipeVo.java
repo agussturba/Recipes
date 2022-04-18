@@ -2,14 +2,15 @@ package com.uade.recipes.vo;
 
 import com.uade.recipes.model.Dish;
 import com.uade.recipes.model.Recipe;
-import com.uade.recipes.model.RecipePhoto;
 import com.uade.recipes.model.Type;
 import com.uade.recipes.model.User;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 public class RecipeVo {
     Integer id;
     String name;

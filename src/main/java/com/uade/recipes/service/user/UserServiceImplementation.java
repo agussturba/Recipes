@@ -1,13 +1,11 @@
 package com.uade.recipes.service.user;
 
 
-import com.uade.recipes.exceptions.userExceptions.*;
-import com.uade.recipes.exceptions.userPhotoExceptions.UserPhotoNotFoundException;
+import com.uade.recipes.exceptions.userExceptions.EmailExistsException;
+import com.uade.recipes.exceptions.userExceptions.UserNameExistsException;
+import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.User;
-import com.uade.recipes.model.UserPhoto;
 import com.uade.recipes.persistance.UserRepository;
-import com.uade.recipes.service.userPhoto.UserPhotoService;
-import com.uade.recipes.validations.UsersValidations;
 import com.uade.recipes.vo.UserVo;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +13,9 @@ import java.util.List;
 
 @Service
 public class UserServiceImplementation implements UserService {
-    private final UserPhotoService userPhotoService;
     private final UserRepository userRepository;
 
-    public UserServiceImplementation(UserPhotoService userPhotoService, UserRepository userRepository) {
-        this.userPhotoService = userPhotoService;
+    public UserServiceImplementation(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -44,14 +40,14 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public User saveOrUpdateUser(UserVo user, String role) throws UserNameExistsException, EmailExistsException, UserNotFoundException {
+    public User saveOrUpdateUser(UserVo user, String role) throws UserNameExistsException, EmailExistsException {
         existsUser(user);
         user.setRole(role);
         return userRepository.save(user.toModel());
     }
 
     @Override
-    public void changePassword(String email, String password) throws UserNotFoundException {
+    public void changePassword(String email, String password) {
         User user = this.getUserByEmail(email);
         user.setPassword(password);
         userRepository.save(user);

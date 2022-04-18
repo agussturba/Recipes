@@ -12,7 +12,7 @@ public class GeneralValidations {
         return matcher.matches();
     }
     private static final String PASSWORD_PATTERN =
-            "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
+            "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–{}:;',?/*~$^+=<>]).{8,20}$";
 
     private static final Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
 

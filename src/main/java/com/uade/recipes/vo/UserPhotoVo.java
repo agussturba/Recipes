@@ -2,10 +2,12 @@ package com.uade.recipes.vo;
 
 import com.uade.recipes.model.User;
 import com.uade.recipes.model.UserPhoto;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class UserPhotoVo {
      Integer id;
@@ -13,12 +15,6 @@ public class UserPhotoVo {
      String photoUrl;
      String extension;
 
-     public UserPhotoVo (Integer id, Integer userId) {
-         this.id = id;
-         this.userId = userId;
-         photoUrl = "";
-         extension = "";
-     }
 
      public UserPhoto toModel(User user){
          UserPhoto userPhoto = new UserPhoto();

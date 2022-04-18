@@ -60,7 +60,7 @@ public class IngredientServiceImplementation implements IngredientService {
         try {
             this.getIngredientByName(ingredientVo.getName());
             throw new IngredientNameExistsException();
-        } catch (IngredientNotFoundException e) {
+        } catch (IngredientNotFoundException ignored) {
         }
     }
 
