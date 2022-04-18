@@ -1,15 +1,16 @@
 package com.uade.recipes.model;
 
 import com.uade.recipes.vo.RecipeRatingVo;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Transient;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 public class RecipeRating {
     @Id
@@ -35,5 +36,16 @@ public class RecipeRating {
         return vo;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        RecipeRating that = (RecipeRating) o;
+        return id != null && Objects.equals(id, that.id);
+    }
 
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

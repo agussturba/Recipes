@@ -1,12 +1,16 @@
 package com.uade.recipes.model;
 
 import com.uade.recipes.vo.ConversionVo;
-import lombok.Data;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 public class Conversion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,4 +33,16 @@ public class Conversion {
         return vo;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Conversion that = (Conversion) o;
+        return id != null && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

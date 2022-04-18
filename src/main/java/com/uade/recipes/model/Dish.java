@@ -1,16 +1,19 @@
 package com.uade.recipes.model;
 
 import com.uade.recipes.vo.DishVo;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 public class Dish {
     @Id
@@ -20,6 +23,7 @@ public class Dish {
     @Column(nullable = false,unique = true)
     private String name;
     @ManyToMany
+    @ToString.Exclude
     private Set<Type> types;
 
     public Dish(String name, Set<Type> typesTest) {
@@ -40,4 +44,16 @@ public class Dish {
         return vo;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Dish dish = (Dish) o;
+        return id != null && Objects.equals(id, dish.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

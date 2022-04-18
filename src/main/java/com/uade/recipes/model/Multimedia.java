@@ -1,12 +1,19 @@
 package com.uade.recipes.model;
 
 import com.uade.recipes.vo.MultimediaVo;
-import lombok.Data;
+import lombok.*;
+import org.hibernate.Hibernate;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 public class Multimedia {
     @Id
     @GeneratedValue
@@ -26,5 +33,18 @@ public class Multimedia {
         vo.setExtension(extension);
 
         return vo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Multimedia that = (Multimedia) o;
+        return id != null && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

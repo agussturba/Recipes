@@ -1,14 +1,17 @@
 package com.uade.recipes.model;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 public class Token {
     @Id
@@ -25,5 +28,18 @@ public class Token {
         this.user = user;
         this.timestamp = Timestamp.from(Instant.now());
         this.code = (int) (Math.random() * (900000) + 100000);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Token token = (Token) o;
+        return id != null && Objects.equals(id, token.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
