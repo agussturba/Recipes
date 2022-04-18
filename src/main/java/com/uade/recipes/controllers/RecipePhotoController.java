@@ -29,11 +29,11 @@ public class RecipePhotoController {
     }
 
     @GetMapping
-    @ApiOperation(value = "Get a list of Recipe Photos", response = Iterable.class)
+    @ApiOperation(value = "Obtener una lista de todas las fotos de recetas", response = Iterable.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved a list Recipe Photo"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 201, message = "Lista de fotos retornada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
     })
     public ResponseEntity<List<RecipePhotoVo>> getAllRecipePhotos() {
         List<RecipePhotoVo> result = transformListToVoList(recipePhotoService.getAllRecipePhotos());
@@ -41,12 +41,12 @@ public class RecipePhotoController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Get a Recipe Photos by its db id", response = ResponseEntity.class)
+    @ApiOperation(value = "Obtener una foto de receta por ID", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 302, message = "Successfully retrieved a Recipe Photo"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The Recipe photo was not found"),
+            @ApiResponse(code = 302, message = "Foto de receta retornada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "La foto de receta no fue encontrada"),
 
     })
     public ResponseEntity<RecipePhotoVo> getRecipePhotoById(@PathVariable Integer id) {
@@ -54,12 +54,12 @@ public class RecipePhotoController {
     }
 
     @GetMapping("/recipe/{recipeId}")
-    @ApiOperation(value = "Get a list of Recipe Photos by a recipe", response = Iterable.class)
+    @ApiOperation(value = "Obtener fotos de receta por receta", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved a list Recipe Photo"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The Recipe was not found"),
+            @ApiResponse(code = 302, message = "Foto de receta retornada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "La receta no fue encontrada"),
 
     })
     public ResponseEntity<List<RecipePhotoVo>> getRecipePhotosByRecipe(@PathVariable Integer recipeId) throws RecipeNotFoundException {
@@ -68,12 +68,12 @@ public class RecipePhotoController {
     }
 
     @PostMapping
-    @ApiOperation(value = "Create a new Recipe Photo", response = ResponseEntity.class)
+    @ApiOperation(value = "Crear una nueva foto de receta", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully created a new Recipe Photo"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The Recipe was not found"),
+            @ApiResponse(code = 302, message = "Foto de receta creada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "La receta no fue encontrada"),
 
     })
     public ResponseEntity<List<RecipePhotoVo>> saveRecipePhoto(@RequestParam Integer recipeId, @RequestParam List<MultipartFile> images) throws RecipeNotFoundException, IOException {

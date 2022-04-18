@@ -32,14 +32,13 @@ public class RecipeController {
         this.ingredientQuantityService = ingredientQuantityService;
     }
 
-    @GetMapping//se hace asi por standard de rest
-    @ApiOperation(value = "Retrieve a list of recipes", response = Iterable.class)
+    @GetMapping
+    @ApiOperation(value = "Retornar una lista de todas las recetas", response = Iterable.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved a list of recipes"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The user/dish/people amount was not found"),
-
+            @ApiResponse(code = 200, message = "Lista de recetas retornada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "El plato/usuario no fue encontrado")
     })
     public ResponseEntity<List<RecipeVo>> getAllRecipes(@RequestParam(required = false) Integer userId, @RequestParam(required = false) Integer dishId, @RequestParam(required = false) Integer peopleAmount) throws DishNotFoundException, UserNotFoundException {
         if (userId == null && dishId == null && peopleAmount == null) {
@@ -70,12 +69,12 @@ public class RecipeController {
 
 
     @GetMapping("/name/{name}")
-    @ApiOperation(value = "Retrieve one or more recipes by its name", response = Iterable.class)
+    @ApiOperation(value = "Retornar recetas por nombre", response = Iterable.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved one or more recipes by its name"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The recipe was not found"),
+            @ApiResponse(code = 200, message = "Lista de recetas por su nombre retornada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "No existen recetas con dicho nombre")
 
     })
     public ResponseEntity<List<RecipeVo>> getRecipesByName(@PathVariable String name) {
@@ -84,12 +83,12 @@ public class RecipeController {
     }
 
     @GetMapping("/type")
-    @ApiOperation(value = "Retrieve one or more recipes by its type/s", response = Iterable.class)
+    @ApiOperation(value = "Retornar recetas por su tipo", response = Iterable.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved one or more recipes by their type"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The recipe/s were not found"),
+            @ApiResponse(code = 200, message = "Lista de recetas por su tipo retornada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "No existen recetas con dicho tipo")
 
     })
     public ResponseEntity<List<RecipeVo>> getRecipesByTypes(@RequestBody List<Integer> typesIds) {//TODO  PUEDE SER UN REQUEST PARAM
@@ -105,12 +104,12 @@ public class RecipeController {
     }
 
     @PostMapping
-    @ApiOperation(value = "Create a new recipe", response = ResponseEntity.class)
+    @ApiOperation(value = "Crear una nueva receta", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully created a new recipe"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The user/dish/recipePhoto/type was not found"),
+            @ApiResponse(code = 201, message = "Receta creada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "El usuario/plato/tipo/foto de receta no fueron encontrados"),
 
     })
     public ResponseEntity<RecipeVo> saveRecipe(@RequestBody RecipeVo recipeVo) throws InstructionNotFoundException, DishNotFoundException, UserNotFoundException {
@@ -119,12 +118,12 @@ public class RecipeController {
 
 
     @PutMapping
-    @ApiOperation(value = "Updated a recipe", response = ResponseEntity.class)
+    @ApiOperation(value = "Actualizar una receta", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully updated a recipe"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The user/dish/recipePhoto/type was not found"),
+            @ApiResponse(code = 201, message = "Receta actualizada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "El usuario/plato/tipo/foto de receta no fueron encontrados"),
 
     })
     public ResponseEntity<RecipeVo> updateRecipe(@RequestBody RecipeVo recipeVo) throws InstructionNotFoundException, DishNotFoundException, UserNotFoundException {

@@ -28,12 +28,12 @@ public class DishController {
     }
 
     @GetMapping
-    @ApiOperation(value = "Get a list of dishes", response = Iterable.class)
+    @ApiOperation(value = "Obtener una lista de todos los platos ", response = Iterable.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved all Dishes"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "Type Not Found")
+            @ApiResponse(code = 200, message = "Lista de platos retornados satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Tipo no encontrado")
     })
     public ResponseEntity<List<DishVo>> getAllDishes(@RequestParam(required = false) Integer typeId) {
         if (typeId != null) {
@@ -45,48 +45,48 @@ public class DishController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Get a dish by his db Id", response = ResponseEntity.class)
+    @ApiOperation(value = "Obtener un plato por su ID en base de datos", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 302, message = "Successfully retrieved the Dish"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The dish was not found")
+            @ApiResponse(code = 302, message = "Plato retornado satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Plato no encontrado")
     })
     public ResponseEntity<DishVo> getDishById(@PathVariable Integer id) throws DishNotFoundException {
         return ResponseEntity.status(HttpStatus.FOUND).body(dishService.getDishById(id).toVO());
     }
 
     @GetMapping("/name/{name}")
-    @ApiOperation(value = "Get a dish by name", response = ResponseEntity.class)
+    @ApiOperation(value = "Obtener un plato por su nombre", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 302, message = "Successfully retrieved the Dish"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The dish was not found")
+            @ApiResponse(code = 302, message = "Plato retornado satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Plato no encontrado")
     })
     public ResponseEntity<DishVo> getDishByName(@PathVariable String name) throws DishNotFoundException {
         return ResponseEntity.status(HttpStatus.FOUND).body(dishService.getDishByName(name).toVO());
     }
 
     @PostMapping
-    @ApiOperation(value = "Create a new dish", response = ResponseEntity.class)
+    @ApiOperation(value = "Crear un nuevo plato", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully created a new Dish"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The type/s for this dish was not found")
+            @ApiResponse(code = 201, message = "Plato creado satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Tipo de plato no encontrado")
     })
     public ResponseEntity<DishVo> saveDish(@RequestBody DishVo dishVo) throws DishNameContainsNumberException, DishTypeContainsNumberException {
         return ResponseEntity.status(HttpStatus.CREATED).body(dishService.saveOrUpdateDish(dishVo).toVO());
     }
 
     @PutMapping
-    @ApiOperation(value = "Update a dish", response = ResponseEntity.class)
+    @ApiOperation(value = "Actualizar un plato", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully updated a Dish"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The type/s for this dish was not found")
+            @ApiResponse(code = 201, message = "Plato actualizado satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Tipo de plato no encontrado")
     })
     public ResponseEntity<DishVo> updateDish(@RequestBody DishVo dishVo) throws DishNameContainsNumberException, DishTypeContainsNumberException {
         return ResponseEntity.status(HttpStatus.OK).body(dishService.saveOrUpdateDish(dishVo).toVO());

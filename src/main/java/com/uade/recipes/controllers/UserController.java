@@ -26,11 +26,11 @@ public class UserController {
     }
 
     @GetMapping
-    @ApiOperation(value = "Obtener una lista de todos los usuarios", response = ResponseEntity.class)
+    @ApiOperation(value = "Obtener una lista de todos las usuarios", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Se obtuvo exitosamente la lista de usuarios"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 200, message = "Lista de usuarios retornada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
 
     })
     public ResponseEntity<List<UserVo>> getAllUsers() {
@@ -42,8 +42,8 @@ public class UserController {
     @ApiOperation(value = "Obtener un usuario en base a su email", response = ResponseEntity.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200 /*302*/, message = "El usuario fue encontrado"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "Usuario no encontrado"),
 
     })
@@ -55,8 +55,8 @@ public class UserController {
     @ApiOperation(value = "Obtener un usuario en base a su alias", response = ResponseEntity.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200 /*302*/, message = "El usuario fue encontrado"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "Usuario no encontrado"),
 
     })
@@ -68,8 +68,8 @@ public class UserController {
     @ApiOperation(value = "Crear un nuevo usuario", response = ResponseEntity.class)
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Usuario creado con éxito"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 409, message = "El nombre de usuario ya existe o La contraseña no se valida o el rol no es valido o el email ya existe") //TODO CHEQUEAR
     })
     public ResponseEntity<UserVo> saveUser(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException, UserPhotoNotFoundException {
@@ -93,8 +93,8 @@ public class UserController {
     @ApiOperation(value = "Actualizar datos de un usuario", response = ResponseEntity.class)
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Usuario actualizado con éxito"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 409, message = "El nombre de usuario ya existe o La contraseña no se valida o el rol no es valido o el email ya existe") //TODO CHEQUEAR
 
     })

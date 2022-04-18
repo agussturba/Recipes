@@ -29,47 +29,47 @@ public class UserPhotoController {
         this.userPhotoService = userPhotoService;
     }
     @GetMapping
-    @ApiOperation(value = "Get a list of photos from a user", response = ResponseEntity.class)
+    @ApiOperation(value = "Obtener una lista de fotos de usuario", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully Retrieved all user photos"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 200, message = "Lista de fotos de usuario retornada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
     })
     public ResponseEntity<List<UserPhotoVo>> getAllUserPhotos(){
         List<UserPhotoVo> result = transformListToVoList(userPhotoService.getAllUserPhotos());
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
     @GetMapping("/{id}")
-    @ApiOperation(value = "Get a photo from a user by his db id", response = ResponseEntity.class)
+    @ApiOperation(value = "Obtener una foto de usuario por ID", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 302, message = "Successfully Retrieved the user photos"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The photo was not found"),
+            @ApiResponse(code = 200, message = "Foto de usuario retornada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "La foto de usuario no fue encontrada"),
 
     })
     public ResponseEntity<UserPhotoVo> getPhotoById(@PathVariable Integer id) throws UserPhotoNotFoundException {
         return ResponseEntity.status(HttpStatus.FOUND).body(userPhotoService.getUserPhotoById(id).toVO());
     }
     @GetMapping("/recipe/{userId}")
-    @ApiOperation(value = "Get a photo from a user by the user", response = ResponseEntity.class)
+    @ApiOperation(value = "Obtener una foto de usuario por usuario", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 302, message = "Successfully Retrieved the user photo"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The user was not found"),
+            @ApiResponse(code = 200, message = "Foto de usuario retornada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "La foto de usuario no fue encontrada"),
 
     })
     public ResponseEntity<UserPhotoVo> getUserPhotoByUserId(@PathVariable Integer userId) throws RecipeNotFoundException, UserNotFoundException, UserPhotoNotFoundException {
         return ResponseEntity.status(HttpStatus.FOUND).body(userPhotoService.getUserPhotoByUserId(userId).toVO());
     }
     @PostMapping
-    @ApiOperation(value = "Create a new photo user", response = ResponseEntity.class)
+    @ApiOperation(value = "Crear una foto de usuario", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully created the user photo"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The user was not found"),
+            @ApiResponse(code = 201, message = "Foto de usuario creada exitosamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "El usuario no fue encontrado"),
 
     })
     public ResponseEntity<UserPhotoVo> savePhotoUser(@RequestParam Integer userId, @RequestParam MultipartFile image) throws RecipeNotFoundException, IOException, UserNotFoundException, UserPhotoNotFoundException {

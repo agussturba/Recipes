@@ -25,11 +25,11 @@ public class UnitController {
     }
 
     @GetMapping
-    @ApiOperation(value = "Get a list of units", response = ResponseEntity.class)
+    @ApiOperation(value = "Obtener una lista de todas las unidades", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved a list of units"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 200, message = "Lista de unidades retornada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
 
     })
     public ResponseEntity<List<UnitVo>> getAllUnits() {
@@ -38,12 +38,12 @@ public class UnitController {
     }
 
     @GetMapping("/description/{description}")
-    @ApiOperation(value = "Get a unit by his description", response = ResponseEntity.class)
+    @ApiOperation(value = "Obtener una unidad por su descripcion", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 302, message = "Successfully retrieved a unit by his description"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The unit was not found")
+            @ApiResponse(code = 200, message = "Unidad retornada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Unidad no encontrada")
 
     })
     public ResponseEntity<UnitVo> getUnitByDescription(@PathVariable String description) {
@@ -51,12 +51,12 @@ public class UnitController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Get a unit by his db id", response = ResponseEntity.class)
+    @ApiOperation(value = "Obtener una unidad por su ID", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 302, message = "Successfully retrieved a unit by his db id"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The unit was not found")
+            @ApiResponse(code = 200, message = "Unidad retornada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Unidad no encontrada")
 
     })
     public ResponseEntity<UnitVo> getUnitById(@PathVariable Integer id) {
@@ -64,22 +64,22 @@ public class UnitController {
     }
 
     @PostMapping
-    @ApiOperation(value = "Create a unit", response = ResponseEntity.class)
+    @ApiOperation(value = "Crear una unidad", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully created a unit"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 201, message = "Unidad creada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
     })
     public ResponseEntity<UnitVo> saveUnit(@RequestBody UnitVo unitVo) {
         return ResponseEntity.status(HttpStatus.OK).body(unitService.saveOrUpdateUnit(unitVo).toVO());
     }
 
     @PutMapping
-    @ApiOperation(value = "Update a unit", response = ResponseEntity.class)
+    @ApiOperation(value = "Actualizar una unidad ", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully updated a unit"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 201, message = "Unidad actualizada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
     })
     public ResponseEntity<UnitVo> updateUnit(@RequestBody UnitVo unitVo) {
         return ResponseEntity.status(HttpStatus.OK).body(unitService.saveOrUpdateUnit(unitVo).toVO());

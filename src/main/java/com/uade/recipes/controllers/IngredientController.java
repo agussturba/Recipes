@@ -29,12 +29,12 @@ public class IngredientController {
     }
 
     @GetMapping
-    @ApiOperation(value = "Get a list of ingredients", response = Iterable.class)
+    @ApiOperation(value = "Obtener una lista de todos los ingredientes", response = Iterable.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved a list of ingredients"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The type was not found")
+            @ApiResponse(code = 200, message = "Lista de ingredientes retornada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Tipo de ingrediente no encontrado")
     })
     public ResponseEntity<List<IngredientVo>> getAllIngredients(@RequestParam(required = false) Integer typeId) {
         if (typeId != null) {
@@ -46,48 +46,48 @@ public class IngredientController {
     }
 
     @PostMapping
-    @ApiOperation(value = "Creat a new ingredient", response = Iterable.class)
+    @ApiOperation(value = "Crear un nuevo ingrediente", response = Iterable.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully created a new ingredient"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The type was not found")
+            @ApiResponse(code = 200, message = "Ingrediente creado satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Tipo de ingrediente no encontrado")
     })
     public ResponseEntity<IngredientVo> saveIngredient(@RequestBody IngredientVo ingredientVo) throws IngredientTypeContainsNumberException, IngredientNameContainsNumberException {
         return ResponseEntity.status(HttpStatus.CREATED).body(ingredientService.saveOrUpdateIngredient(ingredientVo).toVO());
     }
 
     @PutMapping
-    @ApiOperation(value = "Update an ingredient", response = Iterable.class)
+    @ApiOperation(value = "Actualizar un ingrediente", response = Iterable.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully updated an ingredient"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The type was not found")
+            @ApiResponse(code = 200, message = "Ingrediente actualizado satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Tipo de ingrediente no encontrado")
     })
     public ResponseEntity<IngredientVo> updateIngredient(@RequestBody IngredientVo ingredientVo) throws IngredientTypeContainsNumberException, IngredientNameContainsNumberException {
         return ResponseEntity.status(HttpStatus.OK).body(ingredientService.saveOrUpdateIngredient(ingredientVo).toVO());
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Get an ingredient by its db Id", response = Iterable.class)
+    @ApiOperation(value = "Obtener un ingrediente por su ID", response = Iterable.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 302 , message = "Successfully retrieved an ingredient by its id"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The ingredient was not found")
+            @ApiResponse(code = 200, message = "Ingrediente retornado satisfactoriamente por su ID"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Ingrediente no encontrado")
     })
     public ResponseEntity<IngredientVo> getIngredientById(@PathVariable Integer id) throws IngredientNotFoundException {
         return ResponseEntity.status(HttpStatus.FOUND).body(ingredientService.getIngredientById(id).toVO());
     }
 
     @GetMapping("/name/{name}")
-    @ApiOperation(value = "Get an ingredient by its name", response = Iterable.class)
+    @ApiOperation(value = "Obtener un ingrediente por su nombre", response = Iterable.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 302 , message = "Successfully retrieved an ingredient by its name"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The ingredient was not found")
+            @ApiResponse(code = 200, message = "Ingrediente retornado satisfactoriamente por su nombre"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Ingrediente no encontrado")
     })
     public ResponseEntity<IngredientVo> getIngredientByName(@PathVariable String name) throws IngredientNotFoundException {
         return ResponseEntity.status(HttpStatus.FOUND).body(ingredientService.getIngredientByName(name).toVO());

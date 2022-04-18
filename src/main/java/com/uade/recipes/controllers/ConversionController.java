@@ -24,12 +24,12 @@ public class ConversionController {
     }
 
     @GetMapping
-    @ApiOperation(value = "Get a list of all conversions", response = Iterable.class)
+    @ApiOperation(value = "Obtener una lista de todas las conversiones", response = Iterable.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved all conversions"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "Unit Not Found")//TODO BUSCAR COMO PONER MAS MENSAJES DE ERROR CON EL MISMO CODIGO
+            @ApiResponse(code = 200, message = "Conversiones retornadas exitosamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Conversion no encontrada")//TODO BUSCAR COMO PONER MAS MENSAJES DE ERROR CON EL MISMO CODIGO
     }
     )
     public ResponseEntity<List<ConversionVo>> getAllConversions(@RequestParam(required = false) Integer sourceUnitId, @RequestParam(required = false) Integer targetUnitId) {
@@ -48,12 +48,12 @@ public class ConversionController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Get a conversion base on his db id", response = ResponseStatus.class)
+    @ApiOperation(value = "Obtener una conversion por su ID en la base de datos", response = ResponseStatus.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 302, message = "Successfully retrieved the conversion"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "Conversion Not Found"),
+            @ApiResponse(code = 302, message = "Conversion retornada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Conversion no encontrada"),
 
     })
     public ResponseEntity<ConversionVo> getConversionById(@PathVariable Integer id) {
@@ -61,12 +61,12 @@ public class ConversionController {
     }
 
     @PostMapping
-    @ApiOperation(value = "Save a new conversion between two different units ", response = ResponseStatus.class)
+    @ApiOperation(value = "Guardar una conversion entre dos unidades", response = ResponseStatus.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully created a new conversion"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "Unit Not Found")//TODO BUSCAR COMO PONER MAS MENSAJES DE ERROR CON EL MISMO CODIGO
+            @ApiResponse(code = 201, message = "Conversion guardada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Conversion no encontrada")//TODO BUSCAR COMO PONER MAS MENSAJES DE ERROR CON EL MISMO CODIGO
 
     })
     public ResponseEntity<ConversionVo> saveConversion(@RequestBody ConversionVo conversionVo) {
@@ -74,12 +74,12 @@ public class ConversionController {
     }
 
     @PutMapping
-    @ApiOperation(value = "Update an already existing conversion between two different units ", response = ResponseStatus.class)
+    @ApiOperation(value = "Actualizar una conversion existente ", response = ResponseStatus.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully updated a new conversion"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "Unit Not Found")//TODO BUSCAR COMO PONER MAS MENSAJES DE ERROR CON EL MISMO CODIGO
+            @ApiResponse(code = 201, message = "Actualizacion satisfactoria"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Conversion no encontrada")//TODO BUSCAR COMO PONER MAS MENSAJES DE ERROR CON EL MISMO CODIGO
 
     })
     public ResponseEntity<ConversionVo> updateConversion(@RequestBody ConversionVo conversionVo) {

@@ -28,12 +28,12 @@ public class IngredientQuantityController {
     }
 
     @GetMapping
-    @ApiOperation(value = "Retrieve a list of ingredient quantity", response = Iterable.class)
+    @ApiOperation(value = "Recuperar una lista de cantidad de ingrediente", response = Iterable.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved the list of ingredient quantity"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The Ingredient was not found")
+            @ApiResponse(code = 200, message = "Lista de cantidad de ingrediente devuelta satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Ingrediente no encontrado")
     })
     public ResponseEntity<List<IngredientQuantityVo>> getAllIngredientQuantities(@RequestParam(required = false) Integer ingredientId) throws IngredientNotFoundException {
         if (ingredientId == null) {
@@ -46,36 +46,36 @@ public class IngredientQuantityController {
     }
 
     @GetMapping("/{ingredientQuantityId}")
-    @ApiOperation(value = "Retrieve a ingredient quantity by its db id", response = Iterable.class)
+    @ApiOperation(value = "Obtener una cantidad de ingrediente por ID", response = Iterable.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 302, message = "Successfully retrieved a ingredient quantity"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The ingredient quantity was not found")
+            @ApiResponse(code = 200, message = "Cantidad de ingrediente devuelta satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Ingrediente no encontrado")
     })
     public ResponseEntity<IngredientQuantityVo> getIngredientQuantityById(@PathVariable Integer ingredientQuantityId) throws IngredientQuantityNotFoundException {
         return ResponseEntity.status(HttpStatus.FOUND).body(ingredientQuantityService.getIngredientQuantityById(ingredientQuantityId).toVO());
     }
 
     @PostMapping
-    @ApiOperation(value = "Create a new ingredient quantity", response = Iterable.class)
+    @ApiOperation(value = "Crear una nueva cantidad de ingrediente", response = Iterable.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully created a new ingredient quantity"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The ingredient was not found")
+            @ApiResponse(code = 200, message = "Cantidad de ingrediente creada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Ingrediente no encontrado")
     })
     public ResponseEntity<IngredientQuantityVo> saveIngredientQuantity(@RequestBody IngredientQuantityVo ingredientQuantityVo) throws IngredientNotFoundException, IngredientQuantityNotFoundException, RecipeNotFoundException {
         return ResponseEntity.status(HttpStatus.CREATED).body(ingredientQuantityService.saveOrUpdateIngredientQuantity(ingredientQuantityVo).toVO());
     }
 
     @PutMapping
-    @ApiOperation(value = "Updated an ingredient quantity", response = Iterable.class)
+    @ApiOperation(value = "Actualizar una cantidad de ingrediente", response = Iterable.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully updated an ingredient quantity"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The ingredient or the Ingredient quantity id was not found")
+            @ApiResponse(code = 200, message = "Cantidad de ingrediente actualizada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Ingrediente no encontrado")
     })
     public ResponseEntity<IngredientQuantityVo> updateIngredientQuantity(@RequestBody IngredientQuantityVo ingredientQuantityVo) throws IngredientNotFoundException, IngredientQuantityNotFoundException, RecipeNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(ingredientQuantityService.saveOrUpdateIngredientQuantity(ingredientQuantityVo).toVO());

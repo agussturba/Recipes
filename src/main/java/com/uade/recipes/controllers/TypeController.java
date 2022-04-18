@@ -24,11 +24,11 @@ public class TypeController {
         this.typeService = typeService;
     }
 
-    @ApiOperation(value = "Get a list of types", response = Iterable.class)
+    @ApiOperation(value = "Obtener una lista de todos los tipos", response = Iterable.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Successfully retrieved a list of types"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 200, message = "Lista de tipos retornada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
     })
     public ResponseEntity<List<TypeVo>> getAllTypes() {
         List<TypeVo> result = transformListToVoList(typeService.getAllTypes());
@@ -36,12 +36,12 @@ public class TypeController {
     }
 
     @GetMapping("/description/{description}")
-    @ApiOperation(value = "Get a type by his description", response = ResponseEntity.class)
+    @ApiOperation(value = "Obtener un tipo por su descripcion", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 302, message = "Successfully retrieved the type"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The type was not found"),
+            @ApiResponse(code = 200, message = "Tipo retornado satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "El tipo no fue encontrado"),
 
     })
     public ResponseEntity<TypeVo> getTypeByDescription(@PathVariable String description) {
@@ -49,12 +49,12 @@ public class TypeController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Get a type by his db id", response = ResponseEntity.class)
+    @ApiOperation(value = "Obtener un tipo por su ID", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 302, message = "Successfully retrieved the type"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-            @ApiResponse(code = 404, message = "The type was not found"),
+            @ApiResponse(code = 200, message = "Tipo retornado satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "El tipo no fue encontrado"),
 
     })
     public ResponseEntity<TypeVo> getTypeById(@PathVariable Integer id) {
@@ -62,11 +62,11 @@ public class TypeController {
     }
 
     @PostMapping
-    @ApiOperation(value = "Created a new type", response = ResponseEntity.class)
+    @ApiOperation(value = "Crear un nuevo tipo", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully created the type"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 200, message = "Tipo creado satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
 
     })
     public ResponseEntity<TypeVo> saveUnit(@RequestBody TypeVo typeVo) {
@@ -74,11 +74,11 @@ public class TypeController {
     }
 
     @PutMapping
-    @ApiOperation(value = "Updated a  type", response = ResponseEntity.class)
+    @ApiOperation(value = "Actualizar un tipo", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Successfully updated the type"),
-            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 200, message = "Tipo actualizado satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
 
     })
     public ResponseEntity<TypeVo> updateUnit(@RequestBody TypeVo typeVo) {
