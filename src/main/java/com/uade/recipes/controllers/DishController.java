@@ -3,10 +3,8 @@ package com.uade.recipes.controllers;
 import com.uade.recipes.exceptions.dishExceptions.DishNameContainsNumberException;
 import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;
 import com.uade.recipes.exceptions.dishExceptions.DishTypeContainsNumberException;
-import com.uade.recipes.model.Conversion;
 import com.uade.recipes.model.Dish;
 import com.uade.recipes.service.dish.DishService;
-import com.uade.recipes.vo.ConversionVo;
 import com.uade.recipes.vo.DishVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -37,7 +35,7 @@ public class DishController {
     })
     public ResponseEntity<List<DishVo>> getAllDishes(@RequestParam(required = false) List<Integer> typeIds) {
         if (typeIds != null) {
-            List<DishVo> result = transformListToVoList(dishService.getDishesByTypeId(typeIds));
+            List<DishVo> result = transformListToVoList(dishService.getDishesByTypeIdList(typeIds));
             return ResponseEntity.status(HttpStatus.OK).body(result);
         }
         List<DishVo> result = transformListToVoList(dishService.getAllDishes());

@@ -21,6 +21,7 @@ public class Conversion {
 
     public ConversionVo toVO() {
         ConversionVo vo = new ConversionVo();
+        vo.setId(id);
         vo.setSourceUnitId(sourceUnit.getId());
         vo.setTargetUnitId(targetUnit.getId());
         vo.setConversionFactor(conversionFactor);

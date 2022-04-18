@@ -19,6 +19,7 @@ public class RecipePhoto {
 
     public RecipePhotoVo toVO(){
         RecipePhotoVo vo = new RecipePhotoVo();
+        vo.setId(id);
         vo.setRecipeId(recipe.getId());
         vo.setPhotoUrl(photoUrl);
         vo.setExtension(extension);

@@ -1,7 +1,6 @@
 package com.uade.recipes.model;
 
 import com.uade.recipes.vo.IngredientQuantityVo;
-import com.uade.recipes.vo.IngredientVo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

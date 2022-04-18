@@ -1,6 +1,7 @@
 package com.uade.recipes.service.dish;
 
 import com.uade.recipes.exceptions.dishExceptions.DishNameContainsNumberException;
+import com.uade.recipes.exceptions.dishExceptions.DishNameExistsException;
 import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;
 import com.uade.recipes.exceptions.dishExceptions.DishTypeContainsNumberException;
 import com.uade.recipes.model.Dish;
@@ -42,14 +43,17 @@ public class DishServiceImplementation implements DishService {
     }
 
     @Override
-    public List<Dish> getDishesByTypeId(List<Integer> typeIdList) {
+    public List<Dish> getDishesByTypeIdList(List<Integer> typeIdList) {
         List<Type> types = typeService.getTypesByIdList(typeIdList);
         List<Dish> candidateDishes = dishRepository.findByTypesIsIn(types);
-        return filterDishesByTypesIdList(candidateDishes,typeIdList);
+        return filterDishesByTypesIdList(candidateDishes, typeIdList);
     }
 
     @Override
     public Dish saveOrUpdateDish(DishVo dishVo) throws DishNameContainsNumberException, DishTypeContainsNumberException {
+        if (dishVo.getId() == null) {
+            dishExists(dishVo);
+        }
         validateDishData(dishVo);
         Set<Type> types = getListOfTypes(dishVo.getTypesIdList());
         return dishRepository.save(dishVo.toModel(types));
@@ -63,15 +67,24 @@ public class DishServiceImplementation implements DishService {
         }
         return types;
     }
-    private List<Dish> filterDishesByTypesIdList(List<Dish> candidateDishes, List<Integer> typeIdList){
+
+    private List<Dish> filterDishesByTypesIdList(List<Dish> candidateDishes, List<Integer> typeIdList) {
         for (Dish dish : candidateDishes) {
             for (Type type : dish.getTypes()) {
-                if (!typeIdList.contains(type.getId())){
+                if (!typeIdList.contains(type.getId())) {
                     candidateDishes.remove(dish);
                     break;
                 }
             }
         }
         return candidateDishes;
+    }
+
+    private void dishExists(DishVo dishVo) {
+        try {
+            this.getDishByName(dishVo.getName());
+            throw new DishNameExistsException();
+        } catch (DishNotFoundException e) {
+        }
     }
 }

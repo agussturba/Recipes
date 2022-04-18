@@ -26,6 +26,7 @@ public class RecipeRating {
 
     public RecipeRatingVo toVO(){
         RecipeRatingVo vo = new RecipeRatingVo();
+        vo.setId(id);
         vo.setRecipeId(recipe.getId());
         vo.setUserId(user.getId());
         vo.setComments(comments);

@@ -1,5 +1,6 @@
 package com.uade.recipes.exceptions.ExceptionHandlers;
 
+import com.uade.recipes.exceptions.unitExceptions.UnitDescriptionExistsException;
 import com.uade.recipes.exceptions.unitExceptions.UnitIdLowerEqualThanZeroException;
 import com.uade.recipes.exceptions.unitExceptions.UnitIdNullException;
 import com.uade.recipes.exceptions.unitExceptions.UnitNotFoundException;
@@ -24,5 +25,9 @@ public class UnitExceptionHandlerAdvice {
     @ExceptionHandler(UnitIdLowerEqualThanZeroException.class)
     public ResponseEntity handleUnitIdLowerEqualThanZeroException() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The unit id cant be lower or equal to zero");
+    }
+    @ExceptionHandler(UnitDescriptionExistsException.class)
+    public ResponseEntity handleUnitDescriptionExistsException() {
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("The unit description already exists");
     }
 }

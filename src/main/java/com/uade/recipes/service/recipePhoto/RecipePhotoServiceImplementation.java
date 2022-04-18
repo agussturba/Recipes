@@ -2,8 +2,8 @@ package com.uade.recipes.service.recipePhoto;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.uade.recipes.exceptions.recipePhotoExceptions.RecipePhotoNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
+import com.uade.recipes.exceptions.recipePhotoExceptions.RecipePhotoNotFoundException;
 import com.uade.recipes.model.Recipe;
 import com.uade.recipes.model.RecipePhoto;
 import com.uade.recipes.persistance.RecipePhotoRepository;
@@ -65,10 +65,9 @@ public class RecipePhotoServiceImplementation implements RecipePhotoService {
 
     @Override
     public void deleteRecipePhoto(Integer recipeId, Integer recipePhotoId) throws RecipeNotFoundException, IOException {
-        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(RecipeNotFoundException::new);
         RecipePhoto recipePhoto = this.getRecipePhotoById(recipePhotoId);
         List<String> url = Arrays.asList(recipePhoto.getPhotoUrl().split("/"));
-        String filename = url.get(url.size()-1);
+        String filename = url.get(url.size() - 1);
         String public_id = filename.substring(0, filename.indexOf("."));
         cloudinary.uploader().destroy(public_id, ObjectUtils.emptyMap());
         recipePhotoRepository.delete(recipePhoto);

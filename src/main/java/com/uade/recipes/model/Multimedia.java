@@ -19,6 +19,7 @@ public class Multimedia {
 
     public MultimediaVo toVO(){
         MultimediaVo vo = new MultimediaVo();
+        vo.setId(id);
         vo.setInstructionId(instruction.getId());
         vo.setTypeContent(typeContent);
         vo.setUrlContent(urlContent);

@@ -31,4 +31,8 @@ public class IngredientExceptionHandlerAdvice {
     public ResponseEntity handleIngredientTypeContainsNumberException() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The ingredient type cant contain numbers");
     }
+    @ExceptionHandler(IngredientNameExistsException.class)
+    public ResponseEntity handleIngredientNameExistsException() {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The ingredient name already exists");
+    }
 }

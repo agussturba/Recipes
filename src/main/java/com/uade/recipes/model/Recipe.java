@@ -18,8 +18,6 @@ public class Recipe {
     private String name;
     private String description;
     private Integer duration;
-    @OneToMany
-    private List<RecipePhoto> recipePhotos;
     @OneToOne
     private Dish dish;
     @OneToOne
@@ -33,6 +31,7 @@ public class Recipe {
 
     public RecipeVo toVO() {
         RecipeVo vo = new RecipeVo();
+        vo.setId(id);
         vo.setName(name);
         vo.setDescription(description);
         vo.setDishId(dish.getId());

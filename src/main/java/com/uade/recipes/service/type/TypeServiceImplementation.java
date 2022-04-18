@@ -1,5 +1,6 @@
 package com.uade.recipes.service.type;
 
+import com.uade.recipes.exceptions.typeExceptions.TypeDescriptionExistsException;
 import com.uade.recipes.exceptions.typeExceptions.TypeNotFoundException;
 import com.uade.recipes.model.Type;
 import com.uade.recipes.persistance.TypeRepository;
@@ -23,7 +24,7 @@ public class TypeServiceImplementation implements TypeService {
 
     @Override
     public Type getTypeByDescription(String description) {
-        return typeRepository.findByDescription(description);
+        return typeRepository.findByDescription(description).orElseThrow(TypeNotFoundException::new);
     }
 
     @Override
@@ -33,6 +34,9 @@ public class TypeServiceImplementation implements TypeService {
 
     @Override
     public Type saveOrUpdateType(TypeVo typeVo) {
+        if (typeVo.getId() == null){
+            typeExists(typeVo);
+        }
         return typeRepository.save(typeVo.toModel());
     }
 
@@ -40,4 +44,13 @@ public class TypeServiceImplementation implements TypeService {
     public List<Type> getTypesByIdList(List<Integer> types) {
         return (List<Type>) typeRepository.findAllById(types);
     }
+
+    private void typeExists(TypeVo typeVo) {
+        try {
+            this.getTypeByDescription(typeVo.getDescription());
+            throw new TypeDescriptionExistsException();
+        } catch (TypeNotFoundException e) {
+        }
+    }
 }
+

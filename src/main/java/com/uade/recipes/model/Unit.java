@@ -16,6 +16,7 @@ public class Unit {
 
     public UnitVo toVO(){
         UnitVo vo = new UnitVo();
+        vo.setId(id);
         vo.setDescription(description);
 
         return vo;

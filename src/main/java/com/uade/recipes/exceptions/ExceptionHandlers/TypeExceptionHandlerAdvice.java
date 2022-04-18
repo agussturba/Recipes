@@ -1,5 +1,6 @@
 package com.uade.recipes.exceptions.ExceptionHandlers;
 
+import com.uade.recipes.exceptions.typeExceptions.TypeDescriptionExistsException;
 import com.uade.recipes.exceptions.typeExceptions.TypeIdLowerEqualThanZeroException;
 import com.uade.recipes.exceptions.typeExceptions.TypeIdNullException;
 import com.uade.recipes.exceptions.typeExceptions.TypeNotFoundException;
@@ -23,5 +24,9 @@ public class TypeExceptionHandlerAdvice {
     @ExceptionHandler(TypeNotFoundException.class)
     public ResponseEntity handleTypeNotFountException() {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The Type was not found");
+    }
+    @ExceptionHandler(TypeDescriptionExistsException.class)
+    public ResponseEntity handleTypeDescriptionExistsException() {
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("The Type description already exists");
     }
 }

@@ -17,9 +17,9 @@ public class Dish {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String name;
-    @OneToMany
+    @ManyToMany
     private Set<Type> types;
 
     public Dish(String name, Set<Type> typesTest) {
@@ -29,6 +29,7 @@ public class Dish {
 
     public DishVo toVO() {
         DishVo vo = new DishVo();
+        vo.setId(id);
         vo.setName(name);
         List<Integer> list = new ArrayList<>();
         for (Type type : types) {

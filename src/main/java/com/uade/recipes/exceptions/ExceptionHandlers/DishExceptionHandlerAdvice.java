@@ -32,5 +32,10 @@ public class DishExceptionHandlerAdvice {
     public ResponseEntity handleDishTypeContainsNumberException() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The dish type cant contain numbers");
     }
+    @ExceptionHandler(DishNameExistsException.class)
+    public ResponseEntity handleDishNameExistsException() {
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("The dish name already exists");
+    }
+
 
 }

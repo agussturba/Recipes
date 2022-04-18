@@ -20,6 +20,7 @@ public class Ingredient {
 
     public IngredientVo toVO(){
         IngredientVo vo = new IngredientVo();
+        vo.setId(id);
         vo.setName(name);
         vo.setTypeId(type.getId());
 

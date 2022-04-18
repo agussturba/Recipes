@@ -24,6 +24,7 @@ public class Type {
 
     public TypeVo toVO() {
         TypeVo vo = new TypeVo();
+        vo.setId(id);
         vo.setDescription(description);
         return vo;
     }

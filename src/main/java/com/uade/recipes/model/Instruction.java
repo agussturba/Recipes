@@ -22,6 +22,7 @@ public class Instruction {
 
     public InstructionVo toVO(){
         InstructionVo vo = new InstructionVo();
+        vo.setId(id);
         vo.setRecipeId(recipe.getId());
         vo.setDescription(description);
         vo.setNumberOfStep(numberOfStep);

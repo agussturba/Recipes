@@ -4,8 +4,10 @@ import com.uade.recipes.model.Unit;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 
 public interface UnitRepository extends CrudRepository<Unit,Integer> {
-    Unit findByDescription(String description);
+    Optional<Unit> findByDescription(String description);
 }

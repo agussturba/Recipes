@@ -1,9 +1,6 @@
 package com.uade.recipes.exceptions.ExceptionHandlers;
 
-import com.uade.recipes.exceptions.conversionExceptions.ConversionFactorLessThanZeroException;
-import com.uade.recipes.exceptions.conversionExceptions.ConversionNotFoundException;
-import com.uade.recipes.exceptions.conversionExceptions.SourceUnitIdLessOrEqualToZeroException;
-import com.uade.recipes.exceptions.conversionExceptions.TargetUnitIdLessOrEqualToZeroException;
+import com.uade.recipes.exceptions.conversionExceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -26,5 +23,9 @@ public class ConversionExceptionHandlerAdvice {
     @ExceptionHandler(TargetUnitIdLessOrEqualToZeroException.class)
     public ResponseEntity handleTargetUnitIdLessOrEqualToZeroException() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The targetUnit Id cant be lower or equal to zero");
+    }
+    @ExceptionHandler(ConversionExistsException.class)
+    public ResponseEntity handleConversionExistsException() {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The conversion has been already created");
     }
 }

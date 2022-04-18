@@ -1,9 +1,7 @@
 package com.uade.recipes.controllers;
 
-import com.uade.recipes.model.RecipeRating;
 import com.uade.recipes.model.Type;
 import com.uade.recipes.service.type.TypeService;
-import com.uade.recipes.vo.RecipeRatingVo;
 import com.uade.recipes.vo.TypeVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -23,7 +21,7 @@ public class TypeController {
     public TypeController(TypeService typeService) {
         this.typeService = typeService;
     }
-
+    @GetMapping
     @ApiOperation(value = "Obtener una lista de todos los tipos", response = Iterable.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Lista de tipos retornada satisfactoriamente"),

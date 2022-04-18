@@ -19,6 +19,7 @@ public class UserPhoto {
 
     public UserPhotoVo toVO(){
         UserPhotoVo vo = new UserPhotoVo();
+        vo.setId(id);
         vo.setUserId(user.getId());
         vo.setPhotoUrl(photoUrl);
         vo.setExtension(extension);

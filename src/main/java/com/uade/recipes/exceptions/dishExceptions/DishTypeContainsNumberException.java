@@ -1,4 +1,4 @@
 package com.uade.recipes.exceptions.dishExceptions;
 
-public class DishTypeContainsNumberException extends Exception {
+public class DishTypeContainsNumberException extends RuntimeException {
 }

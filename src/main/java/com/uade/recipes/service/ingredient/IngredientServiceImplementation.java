@@ -1,5 +1,6 @@
 package com.uade.recipes.service.ingredient;
 
+import com.uade.recipes.exceptions.ingredientExceptions.IngredientNameExistsException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNameContainsNumberException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientTypeContainsNumberException;
@@ -48,9 +49,19 @@ public class IngredientServiceImplementation implements IngredientService {
     @Override
     public Ingredient saveOrUpdateIngredient(IngredientVo ingredientVo) throws IngredientTypeContainsNumberException, IngredientNameContainsNumberException {
         validateIngredientData(ingredientVo);
+        if (ingredientVo.getId() == null) {
+            ingredientExists(ingredientVo);
+        }
         Type type = typeService.getTypeById(ingredientVo.getTypeId());
         return ingredientRepository.save(ingredientVo.toModel(type));
     }
 
+    private void ingredientExists(IngredientVo ingredientVo) {
+        try {
+            this.getIngredientByName(ingredientVo.getName());
+            throw new IngredientNameExistsException();
+        } catch (IngredientNotFoundException e) {
+        }
+    }
 
 }
