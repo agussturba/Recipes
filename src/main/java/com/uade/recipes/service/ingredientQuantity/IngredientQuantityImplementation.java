@@ -3,15 +3,12 @@ package com.uade.recipes.service.ingredientQuantity;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.exceptions.ingredientQuantityExceptions.IngredientQuantityNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
-import com.uade.recipes.model.Ingredient;
-import com.uade.recipes.model.IngredientQuantity;
-import com.uade.recipes.model.Recipe;
-import com.uade.recipes.model.Unit;
+import com.uade.recipes.model.*;
 import com.uade.recipes.persistance.IngredientQuantityRepository;
 import com.uade.recipes.persistance.IngredientRepository;
+import com.uade.recipes.service.conversion.ConversionService;
 import com.uade.recipes.service.recipe.RecipeService;
 import com.uade.recipes.service.unit.UnitService;
-import com.uade.recipes.validations.IngredientQuantityValidations;
 import com.uade.recipes.vo.IngredientQuantityVo;
 import org.springframework.stereotype.Service;
 
@@ -26,12 +23,14 @@ public class IngredientQuantityImplementation implements IngredientQuantityServi
     private final IngredientRepository ingredientRepository;
     private final UnitService unitService;
     private final RecipeService recipeService;
+    private final ConversionService conversionService;
 
-    public IngredientQuantityImplementation(IngredientQuantityRepository ingredientQuantityRepository, IngredientRepository ingredientRepository, UnitService unitService, RecipeService recipeService) {
+    public IngredientQuantityImplementation(IngredientQuantityRepository ingredientQuantityRepository, IngredientRepository ingredientRepository, UnitService unitService, RecipeService recipeService, ConversionService conversionService) {
         this.ingredientQuantityRepository = ingredientQuantityRepository;
         this.ingredientRepository = ingredientRepository;
         this.unitService = unitService;
         this.recipeService = recipeService;
+        this.conversionService = conversionService;
     }
 
     @Override
@@ -62,5 +61,12 @@ public class IngredientQuantityImplementation implements IngredientQuantityServi
         Unit unit = unitService.getUnitById(ingredientQuantityVo.getUnitId());
         Recipe recipe = recipeService.getRecipeById(ingredientQuantityVo.getRecipeId());
         return ingredientQuantityRepository.save(ingredientQuantityVo.toModel(recipe,ingredient,unit));
+    }
+    @Override
+    public IngredientQuantityVo convertIngredientQuantityUnitByTargetUnitId(IngredientQuantityVo ingredientQuantityVo,Integer targetUnitId){
+        Conversion conversion = conversionService.getConversionBySourceUnitIdAndTargetUnitId(ingredientQuantityVo.getUnitId(),targetUnitId);
+        ingredientQuantityVo.setUnitId(targetUnitId);
+        ingredientQuantityVo.setQuantity(ingredientQuantityVo.getQuantity()*conversion.getConversionFactor());
+        return ingredientQuantityVo;
     }
 }

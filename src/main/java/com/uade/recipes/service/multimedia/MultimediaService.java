@@ -2,7 +2,6 @@ package com.uade.recipes.service.multimedia;
 
 import com.uade.recipes.exceptions.instructionExceptions.InstructionNotFoundException;
 import com.uade.recipes.model.Multimedia;
-import com.uade.recipes.vo.MultimediaVo;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

@@ -41,10 +41,10 @@ public class ConversionServiceImplementation implements ConversionService {
     }
 
     @Override
-    public List<Conversion> getConversionsBySourceUnitIdAndTargetUnitId(Integer sourceUnitId, Integer targetUnitId) {
+    public Conversion getConversionBySourceUnitIdAndTargetUnitId(Integer sourceUnitId, Integer targetUnitId) {
         Unit targetUnit = unitService.getUnitById(targetUnitId);
         Unit sourceUnit = unitService.getUnitById(sourceUnitId);
-        return (List<Conversion>) conversionsRepository.findByTargetUnitAndSourceUnit(targetUnit, sourceUnit);
+        return conversionsRepository.findByTargetUnitAndSourceUnit(targetUnit, sourceUnit).orElseThrow(ConversionNotFoundException::new);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class ConversionServiceImplementation implements ConversionService {
 
     private void conversionExists(ConversionVo conversionVo) {
         try {
-           this.getConversionsBySourceUnitIdAndTargetUnitId(conversionVo.getSourceUnitId(),conversionVo.getTargetUnitId());
+           this.getConversionBySourceUnitIdAndTargetUnitId(conversionVo.getSourceUnitId(),conversionVo.getTargetUnitId());
            throw new ConversionExistsException();
         } catch (ConversionNotFoundException e) {
 

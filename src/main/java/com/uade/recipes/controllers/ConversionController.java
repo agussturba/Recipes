@@ -6,7 +6,6 @@ import com.uade.recipes.vo.ConversionVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.springframework.boot.autoconfigure.data.cassandra.CassandraReactiveRepositoriesAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +39,7 @@ public class ConversionController {
             List<ConversionVo> result = transformListToVoList(conversionService.getConversionsByTargetUnitId(targetUnitId));
             return ResponseEntity.status(HttpStatus.OK).body(result);
         } else if (sourceUnitId != null && targetUnitId != null) {
-            List<ConversionVo> result = transformListToVoList(conversionService.getConversionsBySourceUnitIdAndTargetUnitId(sourceUnitId, targetUnitId));
+            List<ConversionVo> result = transformListToVoList((List<Conversion>) conversionService.getConversionBySourceUnitIdAndTargetUnitId(sourceUnitId, targetUnitId));
             return ResponseEntity.status(HttpStatus.OK).body(result);
         }
         List<ConversionVo> result = transformListToVoList(conversionService.getAllConversions());

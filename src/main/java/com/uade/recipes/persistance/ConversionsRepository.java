@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ConversionsRepository extends CrudRepository<Conversion, Integer> {
@@ -13,6 +14,6 @@ public interface ConversionsRepository extends CrudRepository<Conversion, Intege
 
     List<Conversion> findByTargetUnit(Unit targetUnit);
 
-    Conversion findByTargetUnitAndSourceUnit(Unit targetUnit, Unit sourceUnit);
+    Optional<Conversion> findByTargetUnitAndSourceUnit(Unit targetUnit, Unit sourceUnit);
 
 }

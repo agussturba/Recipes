@@ -12,7 +12,7 @@ public interface ConversionService {
 
     List<Conversion> getConversionsByTargetUnitId(Integer targetUnitId);
 
-    List<Conversion> getConversionsBySourceUnitIdAndTargetUnitId(Integer sourceUnitId, Integer targetUnitId);
+    Conversion getConversionBySourceUnitIdAndTargetUnitId(Integer sourceUnitId, Integer targetUnitId);
 
     Conversion getConversionById(Integer conversionId);
 

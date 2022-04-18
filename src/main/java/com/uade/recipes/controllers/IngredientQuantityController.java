@@ -56,6 +56,17 @@ public class IngredientQuantityController {
     public ResponseEntity<IngredientQuantityVo> getIngredientQuantityById(@PathVariable Integer ingredientQuantityId) throws IngredientQuantityNotFoundException {
         return ResponseEntity.status(HttpStatus.FOUND).body(ingredientQuantityService.getIngredientQuantityById(ingredientQuantityId).toVO());
     }
+    @GetMapping("/convert")
+    @ApiOperation(value = "Convertir la relacion ingrediente cantidad dependiendo de la unidad que se le pase ", response = Iterable.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Conversion realizada"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Conversion no encontrada")
+    })
+    public ResponseEntity<IngredientQuantityVo> convertIngredientQuantityUnitByTargetUnitId(@RequestBody IngredientQuantityVo ingredientQuantityVo, @RequestParam Integer targetUnitId) {
+        return ResponseEntity.status(HttpStatus.OK).body(ingredientQuantityService.convertIngredientQuantityUnitByTargetUnitId(ingredientQuantityVo,targetUnitId));
+    }
 
     @PostMapping
     @ApiOperation(value = "Crear una nueva cantidad de ingrediente", response = Iterable.class)
