@@ -14,7 +14,6 @@ public class RecipeVo {
     Integer id;
     String name;
     String description;
-    List<Integer> recipePhotosIds;
     List<Integer> typeIdList;
     Integer dishId;
     Integer userId;
@@ -23,12 +22,11 @@ public class RecipeVo {
     Integer duration;
 
 
-    public Recipe toModel(User user, Dish dish, List<RecipePhoto> recipePhotos) {
+    public Recipe toModel(User user, Dish dish) {
         Recipe recipe = new Recipe();
         recipe.setId(getId());
         recipe.setName(getName());
         recipe.setDescription(getDescription());
-        recipe.setRecipePhotos(recipePhotos);
         recipe.setDish(dish);
         recipe.setUser(user);
         recipe.setPeopleAmount(peopleAmount);

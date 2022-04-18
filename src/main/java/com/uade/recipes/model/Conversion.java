@@ -1,6 +1,5 @@
 package com.uade.recipes.model;
 
-import com.sun.istack.NotNull;
 import com.uade.recipes.vo.ConversionVo;
 import lombok.Data;
 

@@ -35,9 +35,9 @@ public class DishController {
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "Tipo no encontrado")
     })
-    public ResponseEntity<List<DishVo>> getAllDishes(@RequestParam(required = false) Integer typeId) {
-        if (typeId != null) {
-            List<DishVo> result = transformListToVoList(dishService.getDishesByTypeId(typeId));
+    public ResponseEntity<List<DishVo>> getAllDishes(@RequestParam(required = false) List<Integer> typeIds) {
+        if (typeIds != null) {
+            List<DishVo> result = transformListToVoList(dishService.getDishesByTypeId(typeIds));
             return ResponseEntity.status(HttpStatus.OK).body(result);
         }
         List<DishVo> result = transformListToVoList(dishService.getAllDishes());

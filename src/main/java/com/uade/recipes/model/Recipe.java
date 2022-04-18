@@ -31,7 +31,7 @@ public class Recipe {
     @OneToMany
     private List<Type> type;
 
-    public RecipeVo toVO(){
+    public RecipeVo toVO() {
         RecipeVo vo = new RecipeVo();
         vo.setName(name);
         vo.setDescription(description);
@@ -39,16 +39,9 @@ public class Recipe {
         vo.setUserId(user.getId());
         vo.setPeopleAmount(peopleAmount);
         vo.setPortions(portions);
-        vo.setDuration(duration);
-
-        List<Integer> listRecipePhotos = new ArrayList<>();
-        for(RecipePhoto rp : recipePhotos){
-            listRecipePhotos.add(rp.getId());
-        }
-        vo.setRecipePhotosIds(listRecipePhotos);
 
         List<Integer> listRecipeTypes = new ArrayList<>();
-        for(Type t : type){
+        for (Type t : type) {
             listRecipeTypes.add(t.getId());
         }
         vo.setTypeIdList(listRecipeTypes);

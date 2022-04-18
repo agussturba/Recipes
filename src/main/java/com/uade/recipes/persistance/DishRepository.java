@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface DishRepository extends CrudRepository<Dish, Integer> {
     Optional<Dish> findByName(String name);
 
-    List<Dish> findByTypes(Type type);
+    List<Dish> findByTypesIsIn(List<Type> type);
 }

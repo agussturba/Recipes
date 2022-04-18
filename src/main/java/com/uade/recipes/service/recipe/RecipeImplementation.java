@@ -112,12 +112,11 @@ public class RecipeImplementation implements RecipeService {
 
 
     @Override
-    public Recipe saveOrUpdateRecipe(RecipeVo recipeVo) throws DishNotFoundException, UserNotFoundException {//TODO THE VALIDATIONS
+    public Recipe saveOrUpdateRecipe(RecipeVo recipeVo) throws DishNotFoundException, UserNotFoundException {
         validateRecipeData(recipeVo);
         User user = userService.getUserById(recipeVo.getUserId());
         Dish dish = dishService.getDishById(recipeVo.getDishId());
-        List<RecipePhoto> recipePhotoList = recipePhotoService.getRecipePhotosByIds(recipeVo.getRecipePhotosIds());
-        return recipeVo.toModel(user, dish, recipePhotoList);
+        return recipeVo.toModel(user, dish);
     }
 
 
