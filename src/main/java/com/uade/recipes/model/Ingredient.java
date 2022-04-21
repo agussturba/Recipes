@@ -1,7 +1,9 @@
 package com.uade.recipes.model;
 
 import com.uade.recipes.vo.IngredientVo;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -21,8 +23,14 @@ public class Ingredient {
     private String name;
     @OneToOne
     private Type type;
+    /**
+     * Atributo para verificar que el ingrediento puede ser divisible.Que el ingrediente puede ser la mitadd
+     * de dicho elemento.IE un tomate es divisble porque podes trabajar con medio tomate pero un huevo no es
+     * divisible.
+     */
+    private boolean dividable;
 
-    public IngredientVo toVO(){
+    public IngredientVo toVO() {
         IngredientVo vo = new IngredientVo();
         vo.setId(id);
         vo.setName(name);

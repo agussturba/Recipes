@@ -21,7 +21,7 @@ public class Conversion {
     @OneToOne
     private Unit targetUnit;
     @Column(nullable = false)
-    private double conversionFactor; // Estara bien?
+    private double conversionFactor;
 
     public ConversionVo toVO() {
         ConversionVo vo = new ConversionVo();

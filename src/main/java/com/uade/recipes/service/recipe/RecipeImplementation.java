@@ -1,14 +1,14 @@
 package com.uade.recipes.service.recipe;
 
 import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;
+import com.uade.recipes.exceptions.ingredientExceptions.CannotDivideTheIngredientException;
+import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
-import com.uade.recipes.model.Dish;
-import com.uade.recipes.model.Recipe;
-import com.uade.recipes.model.Type;
-import com.uade.recipes.model.User;
+import com.uade.recipes.model.*;
 import com.uade.recipes.persistance.RecipeRepository;
 import com.uade.recipes.service.dish.DishService;
+import com.uade.recipes.service.ingredientQuantity.IngredientQuantityService;
 import com.uade.recipes.service.type.TypeService;
 import com.uade.recipes.service.user.UserService;
 import com.uade.recipes.vo.RecipeVo;
@@ -24,12 +24,14 @@ public class RecipeImplementation implements RecipeService {
     private final UserService userService;
     private final DishService dishService;
     private final TypeService typeService;
+    private final IngredientQuantityService ingredientQuantityService;
 
-    public RecipeImplementation(RecipeRepository recipeRepository, UserService userService, DishService dishService, TypeService typeService) {
+    public RecipeImplementation(RecipeRepository recipeRepository, UserService userService, DishService dishService, TypeService typeService, IngredientQuantityService ingredientQuantityService) {
         this.recipeRepository = recipeRepository;
         this.userService = userService;
         this.dishService = dishService;
         this.typeService = typeService;
+        this.ingredientQuantityService = ingredientQuantityService;
     }
 
     @Override
@@ -91,7 +93,7 @@ public class RecipeImplementation implements RecipeService {
     }
 
     @Override
-    public List<Recipe> getRecipesByPeopleAmountAndTypeIds(Integer peopleAmount, List<Integer> typeIdList)  {
+    public List<Recipe> getRecipesByPeopleAmountAndTypeIds(Integer peopleAmount, List<Integer> typeIdList) {
         List<Type> types = typeService.getTypesByIdList(typeIdList);
         return recipeRepository.findByPeopleAmountAndTypeIsIn(peopleAmount, types);
     }
@@ -116,6 +118,23 @@ public class RecipeImplementation implements RecipeService {
         User user = userService.getUserById(recipeVo.getUserId());
         Dish dish = dishService.getDishById(recipeVo.getDishId());
         return recipeVo.toModel(user, dish);
+    }
+
+    @Override
+    public List<IngredientQuantity> convertRecipeIngredientQuantityByIngredientIdAndRecipeIdAndNewQuantity(Integer ingredientId, Double newQuantity, Integer recipeId) throws IngredientNotFoundException, RecipeNotFoundException, CannotDivideTheIngredientException {
+        IngredientQuantity ingredientQuantity = ingredientQuantityService.getIngredientQuantityByIngredientIdAndRecipeId(ingredientId, recipeId);
+        Double conversionFactor = getConversionFactor(ingredientQuantity.getQuantity(), newQuantity);
+        return ingredientQuantityService.getConvertedIngredientQuantityListByRecipeIdAndConversionFactor(recipeId, conversionFactor);
+    }
+
+    @Override
+    public List<IngredientQuantity> convertRecipeIngredientQuantityByConversionFactor(Integer recipeId, Double conversionFactor) throws RecipeNotFoundException, CannotDivideTheIngredientException {
+        return ingredientQuantityService.getConvertedIngredientQuantityListByRecipeIdAndConversionFactor(recipeId, conversionFactor);
+
+    }
+
+    private Double getConversionFactor(Double oldQuantity, Double newQuantity) {
+        return newQuantity / oldQuantity;
     }
 
 

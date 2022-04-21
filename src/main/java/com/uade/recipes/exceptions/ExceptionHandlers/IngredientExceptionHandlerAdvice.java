@@ -35,4 +35,8 @@ public class IngredientExceptionHandlerAdvice {
     public ResponseEntity handleIngredientNameExistsException() {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The ingredient name already exists");
     }
+    @ExceptionHandler(CannotDivideTheIngredientException.class)
+    public ResponseEntity handleCannotDivideTheIngredientException(){
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("The ingredient cannot be divided to have a fractional amount");
+    }
 }
