@@ -1,14 +1,15 @@
 package com.uade.recipes.model;
 
 import com.uade.recipes.vo.DishVo;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -20,27 +21,24 @@ public class Dish {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false, unique = true)
     private String name;
-    @ManyToMany
-    @ToString.Exclude
-    private Set<Type> types;
+    @ManyToOne
+    private Type type;
+    @OneToMany
+    private List<Recipe> recipes;
 
-    public Dish(String name, Set<Type> typesTest) {
+    public Dish(String name, Type type) {
         this.name = name;
-        this.types = typesTest;
+        this.type = type;
     }
+
 
     public DishVo toVO() {
         DishVo vo = new DishVo();
         vo.setId(id);
         vo.setName(name);
-        List<Integer> list = new ArrayList<>();
-        for (Type type : types) {
-            list.add(type.getId());
-        }
-        vo.setTypesIdList(list);
-
+        vo.setTypeId(type.getId());
         return vo;
     }
 

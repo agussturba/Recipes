@@ -4,16 +4,17 @@ import com.uade.recipes.exceptions.dishExceptions.DishNameContainsNumberExceptio
 import com.uade.recipes.exceptions.dishExceptions.DishNameExistsException;
 import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;
 import com.uade.recipes.exceptions.dishExceptions.DishTypeContainsNumberException;
+import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.model.Dish;
+import com.uade.recipes.model.Recipe;
 import com.uade.recipes.model.Type;
 import com.uade.recipes.persistance.DishRepository;
+import com.uade.recipes.persistance.RecipeRepository;
 import com.uade.recipes.service.type.TypeService;
 import com.uade.recipes.vo.DishVo;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static com.uade.recipes.validations.DishesValidations.validateDishData;
 
@@ -21,10 +22,12 @@ import static com.uade.recipes.validations.DishesValidations.validateDishData;
 public class DishServiceImplementation implements DishService {
     private final DishRepository dishRepository;
     private final TypeService typeService;
+    private final RecipeRepository recipeRepository;
 
-    public DishServiceImplementation(DishRepository dishRepository, TypeService typeService) {
+    public DishServiceImplementation(DishRepository dishRepository, TypeService typeService, RecipeRepository recipeRepository) {
         this.dishRepository = dishRepository;
         this.typeService = typeService;
+        this.recipeRepository = recipeRepository;
     }
 
     @Override
@@ -43,9 +46,15 @@ public class DishServiceImplementation implements DishService {
     }
 
     @Override
+    public Dish getDishByRecipeId(Integer recipeId) throws RecipeNotFoundException {
+        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(RecipeNotFoundException::new);
+        return dishRepository.findByRecipes(recipe);
+    }
+
+    @Override
     public List<Dish> getDishesByTypeIdList(List<Integer> typeIdList) {
         List<Type> types = typeService.getTypesByIdList(typeIdList);
-        List<Dish> candidateDishes = dishRepository.findByTypesIsIn(types);
+        List<Dish> candidateDishes = dishRepository.findByTypeIsIn(types);
         return filterDishesByTypesIdList(candidateDishes, typeIdList);
     }
 
@@ -55,28 +64,17 @@ public class DishServiceImplementation implements DishService {
             dishExists(dishVo);
         }
         validateDishData(dishVo);
-        Set<Type> types = getListOfTypes(dishVo.getTypesIdList());
-        return dishRepository.save(dishVo.toModel(types));
+        Type type = typeService.getTypeById(dishVo.getTypeId());
+        return dishRepository.save(dishVo.toModel(type));
     }
 
-    private Set<Type> getListOfTypes(List<Integer> typesIdList) {
-        Set<Type> types = new HashSet<>();
-        for (Integer typeId :
-                typesIdList) {
-            types.add(typeService.getTypeById(typeId));
-        }
-        return types;
-    }
 
     private List<Dish> filterDishesByTypesIdList(List<Dish> candidateDishes, List<Integer> typeIdList) {
         for (Dish dish : candidateDishes) {
-            for (Type type : dish.getTypes()) {
-                if (!typeIdList.contains(type.getId())) {
+                if (!typeIdList.contains(dish.getType().getId())) {
                     candidateDishes.remove(dish);
-                    break;
                 }
             }
-        }
         return candidateDishes;
     }
 

@@ -10,6 +10,7 @@ import com.uade.recipes.persistance.IngredientQuantityRepository;
 import com.uade.recipes.persistance.IngredientRepository;
 import com.uade.recipes.persistance.RecipeRepository;
 import com.uade.recipes.service.conversion.ConversionService;
+import com.uade.recipes.service.ingredient.IngredientService;
 import com.uade.recipes.service.unit.UnitService;
 import com.uade.recipes.vo.IngredientQuantityVo;
 import org.springframework.stereotype.Service;
@@ -23,14 +24,14 @@ import static com.uade.recipes.validations.IngredientQuantityValidations.validat
 public class IngredientQuantityImplementation implements IngredientQuantityService {
 
     private final IngredientQuantityRepository ingredientQuantityRepository;
-    private final IngredientRepository ingredientRepository;
+    private final IngredientService ingredientService;
     private final UnitService unitService;
     private final RecipeRepository recipeRepository;
     private final ConversionService conversionService;
 
-    public IngredientQuantityImplementation(IngredientQuantityRepository ingredientQuantityRepository, IngredientRepository ingredientRepository, UnitService unitService, RecipeRepository recipeRepository, ConversionService conversionService) {
+    public IngredientQuantityImplementation(IngredientQuantityRepository ingredientQuantityRepository, IngredientRepository ingredientRepository, IngredientService ingredientService, UnitService unitService, RecipeRepository recipeRepository, ConversionService conversionService) {
         this.ingredientQuantityRepository = ingredientQuantityRepository;
-        this.ingredientRepository = ingredientRepository;
+        this.ingredientService = ingredientService;
         this.unitService = unitService;
         this.recipeRepository = recipeRepository;
         this.conversionService = conversionService;
@@ -48,7 +49,7 @@ public class IngredientQuantityImplementation implements IngredientQuantityServi
     }
 
     @Override
-    public List<IngredientQuantity> getConvertedIngredientQuantityListByRecipeIdAndConversionFactor(Integer recipeId, Double conversionFactor) throws RecipeNotFoundException, CannotDivideTheIngredientException {
+    public List<IngredientQuantity> getConvertedIngredientQuantityListByRecipeIdAndConversionFactor(Integer recipeId, Double conversionFactor) throws RecipeNotFoundException, CannotDivideTheIngredientException, IngredientNotFoundException {
         List<IngredientQuantity> ingredientQuantityList = this.getIngredientQuantityByRecipeId(recipeId);
         List<IngredientQuantity> convertedIngredientQuantityList = new ArrayList<>();
         for (IngredientQuantity ingredientQuantity : ingredientQuantityList) {
@@ -64,7 +65,7 @@ public class IngredientQuantityImplementation implements IngredientQuantityServi
 
     @Override
     public List<IngredientQuantity> getIngredientQuantityByIngredientId(Integer ingredientId) throws IngredientNotFoundException {
-        Ingredient ingredient = ingredientRepository.findById(ingredientId).orElseThrow(IngredientNotFoundException::new);
+        Ingredient ingredient = ingredientService.getIngredientById(ingredientId).getIngredient();
         return ingredientQuantityRepository.findByIngredient(ingredient);
     }
 
@@ -76,13 +77,14 @@ public class IngredientQuantityImplementation implements IngredientQuantityServi
     @Override
     public IngredientQuantity saveOrUpdateIngredientQuantity(IngredientQuantityVo ingredientQuantityVo) throws IngredientNotFoundException, RecipeNotFoundException {
         validateIngredientQuantityData(ingredientQuantityVo);
-        Ingredient ingredient = ingredientRepository.findById(ingredientQuantityVo.getIngredientId()).orElseThrow(IngredientNotFoundException::new);
-        if (!isAcceptableQuantity(ingredient,ingredientQuantityVo.getQuantity())){
+        Ingredient_Addition ingredientAddition = ingredientService.getIngredientById(ingredientQuantityVo.getIngredientId());
+
+       if (!isAcceptableQuantity(ingredientAddition,ingredientQuantityVo.getQuantity())){
             throw new UnacceptableQuantityException();
         }
         Unit unit = unitService.getUnitById(ingredientQuantityVo.getUnitId());
         Recipe recipe = recipeRepository.findById(ingredientQuantityVo.getRecipeId()).orElseThrow(RecipeNotFoundException::new);
-        return ingredientQuantityRepository.save(ingredientQuantityVo.toModel(recipe, ingredient, unit));
+        return ingredientQuantityRepository.save(ingredientQuantityVo.toModel(recipe, ingredientAddition.getIngredient(), unit));
     }
 
     @Override
@@ -95,23 +97,28 @@ public class IngredientQuantityImplementation implements IngredientQuantityServi
 
     @Override
     public IngredientQuantity getIngredientQuantityByIngredientIdAndRecipeId(Integer ingredientId, Integer recipeId) throws IngredientNotFoundException, RecipeNotFoundException {
-        Ingredient ingredient = ingredientRepository.findById(ingredientId).orElseThrow(IngredientNotFoundException::new);
+        Ingredient_Addition ingredient = ingredientService.getIngredientById(ingredientId);
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(RecipeNotFoundException::new);
-        return ingredientQuantityRepository.findByRecipeAndIngredient(recipe, ingredient);
+        return ingredientQuantityRepository.findByRecipeAndIngredient(recipe, ingredient.getIngredient());
     }
 
-    private IngredientQuantity convertIngredientQuantity(IngredientQuantity ingredientQuantity, Double conversionFactor) throws CannotDivideTheIngredientException {
+    private IngredientQuantity convertIngredientQuantity(IngredientQuantity ingredientQuantity, Double conversionFactor) throws CannotDivideTheIngredientException, IngredientNotFoundException {
         Double quantity = ingredientQuantity.getQuantity();
         Double newQuantity = quantity * conversionFactor;
-        if (isAcceptableQuantity(ingredientQuantity.getIngredient(),newQuantity)) {
+        Ingredient_Addition ingredient = ingredientService.getIngredientById(ingredientQuantity.getIngredient().getId());
+        if (isAcceptableQuantity(ingredient, newQuantity)) {
             ingredientQuantity.setQuantity(newQuantity);
             return ingredientQuantity;
         } else {
             throw new CannotDivideTheIngredientException();
         }
     }
-    private boolean isAcceptableQuantity(Ingredient ingredient,Double quantity){
-        return ingredient.isDividable() || quantity % 1 == 0;
+
+    private boolean isAcceptableQuantity(Ingredient_Addition addition, Double newQuantity) {
+        if (addition.isDividable() || newQuantity % 1 == 0) {
+            return true;
+        }
+        return false;
     }
 
 

@@ -1,7 +1,6 @@
 package com.uade.recipes.vo;
 
 import com.uade.recipes.model.Ingredient;
-import com.uade.recipes.model.Type;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,14 +9,11 @@ import lombok.Setter;
 public class IngredientVo {
     Integer id;
     String name;
-    Integer typeId;
 
-
-    public Ingredient toModel(Type type) {
+    public Ingredient toModel() {
         Ingredient ingredient = new Ingredient();
         ingredient.setId(this.getId());
         ingredient.setName(this.getName());
-        ingredient.setType(type);
         return ingredient;
     }
 }

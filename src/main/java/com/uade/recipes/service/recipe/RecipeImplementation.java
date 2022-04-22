@@ -15,6 +15,8 @@ import com.uade.recipes.vo.RecipeVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static com.uade.recipes.validations.RecipeValidations.validateRecipeData;
 
@@ -61,7 +63,7 @@ public class RecipeImplementation implements RecipeService {
     }
 
     @Override
-    public List<Recipe> getRecipesByTypes(List<Integer> typesIds) {//TODO Test method
+    public List<Recipe> getRecipesByTypes(List<Integer> typesIds) {
         List<Type> type = typeService.getTypesByIdList(typesIds);
         return recipeRepository.findByTypeInOrderByName(type);
     }
@@ -73,16 +75,23 @@ public class RecipeImplementation implements RecipeService {
     }
 
     @Override
-    public List<Recipe> getRecipesByUserIdAndDishIdAndPeopleAmount(Integer userId, Integer dishId, Integer peopleAmount) throws UserNotFoundException, DishNotFoundException {
-        User user = userService.getUserById(userId);
+    public List<Recipe> getRecipesByUserIdAndDishIdAndPeopleAmount(Integer userId, Integer dishId, Integer peopleAmount) throws DishNotFoundException {
         Dish dish = dishService.getDishById(dishId);
-        return recipeRepository.findByDishAndUserAndPeopleAmount(dish, user, peopleAmount);
+        List<Recipe> recipes = dish.getRecipes();
+        return recipes.stream()
+                .filter(recipe -> Objects.equals(recipe.getPeopleAmount(), peopleAmount) && Objects.equals(recipe.getUserId(), userId))
+                .collect(Collectors.toList());
+
     }
 
     @Override
     public List<Recipe> getRecipesByDishIdAndPeopleAmount(Integer dishId, Integer peopleAmount) throws DishNotFoundException {
         Dish dish = dishService.getDishById(dishId);
-        return recipeRepository.findByDishAndPeopleAmount(dish, peopleAmount);
+        List<Recipe> recipes = dish.getRecipes();
+        return recipes.stream()
+                .filter(recipe -> Objects.equals(recipe.getPeopleAmount(), peopleAmount))
+                .collect(Collectors.toList());
+
     }
 
     @Override
@@ -99,16 +108,20 @@ public class RecipeImplementation implements RecipeService {
     }
 
     @Override
-    public List<Recipe> getRecipesByUserIdAndDishId(Integer userId, Integer dishId) throws DishNotFoundException, UserNotFoundException {
-        User user = userService.getUserById(userId);
+    public List<Recipe> getRecipesByUserIdAndDishId(Integer userId, Integer dishId) throws DishNotFoundException {
         Dish dish = dishService.getDishById(dishId);
-        return recipeRepository.findByUserAndDish(user, dish);
+        List<Recipe> recipes = dish.getRecipes();
+        return recipes.stream()
+                .filter(recipe -> Objects.equals(recipe.getUserId(), userId))
+                .collect(Collectors.toList());
+
+
     }
 
     @Override
     public List<Recipe> getRecipesByDishId(Integer dishId) throws DishNotFoundException {
         Dish dish = dishService.getDishById(dishId);
-        return recipeRepository.findByDish(dish);
+        return dish.getRecipes();
     }
 
 
@@ -116,8 +129,7 @@ public class RecipeImplementation implements RecipeService {
     public Recipe saveOrUpdateRecipe(RecipeVo recipeVo) throws DishNotFoundException, UserNotFoundException {
         validateRecipeData(recipeVo);
         User user = userService.getUserById(recipeVo.getUserId());
-        Dish dish = dishService.getDishById(recipeVo.getDishId());
-        return recipeVo.toModel(user, dish);
+        return recipeVo.toModel(user);
     }
 
     @Override
@@ -128,7 +140,7 @@ public class RecipeImplementation implements RecipeService {
     }
 
     @Override
-    public List<IngredientQuantity> convertRecipeIngredientQuantityByConversionFactor(Integer recipeId, Double conversionFactor) throws RecipeNotFoundException, CannotDivideTheIngredientException {
+    public List<IngredientQuantity> convertRecipeIngredientQuantityByConversionFactor(Integer recipeId, Double conversionFactor) throws RecipeNotFoundException, CannotDivideTheIngredientException, IngredientNotFoundException {
         return ingredientQuantityService.getConvertedIngredientQuantityListByRecipeIdAndConversionFactor(recipeId, conversionFactor);
 
     }

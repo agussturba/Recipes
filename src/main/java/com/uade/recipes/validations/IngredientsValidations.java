@@ -12,6 +12,5 @@ public class IngredientsValidations {
         if (GeneralValidations.containsNumber(ingredientVo.getName())){
             throw new IngredientNameContainsNumberException();
         }
-        validateTypeId(ingredientVo.getTypeId());
     }
 }

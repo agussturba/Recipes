@@ -21,21 +21,12 @@ public class Ingredient {
     private Integer id;
     @Column(nullable = false)
     private String name;
-    @OneToOne
-    private Type type;
-    /**
-     * Atributo para verificar que el ingrediento puede ser divisible.Que el ingrediente puede ser la mitadd
-     * de dicho elemento.IE un tomate es divisble porque podes trabajar con medio tomate pero un huevo no es
-     * divisible.
-     */
-    private boolean dividable;
+
 
     public IngredientVo toVO() {
         IngredientVo vo = new IngredientVo();
         vo.setId(id);
         vo.setName(name);
-        vo.setTypeId(type.getId());
-
         return vo;
     }
 

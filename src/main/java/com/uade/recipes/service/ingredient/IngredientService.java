@@ -4,7 +4,7 @@ import com.uade.recipes.exceptions.ingredientExceptions.IngredientNameContainsNu
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientTypeContainsNumberException;
 import com.uade.recipes.model.Ingredient;
-import com.uade.recipes.model.Type;
+import com.uade.recipes.model.Ingredient_Addition;
 import com.uade.recipes.vo.IngredientVo;
 
 import java.util.List;
@@ -12,11 +12,11 @@ import java.util.List;
 public interface IngredientService {
     List<Ingredient> getAllIngredients();
 
-    Ingredient getIngredientById(Integer ingredientId) throws IngredientNotFoundException;
+    Ingredient_Addition getIngredientById(Integer ingredientId) throws IngredientNotFoundException;
 
-    Ingredient getIngredientByName(String ingredientName) throws IngredientNotFoundException;
+    Ingredient_Addition getIngredientByName(String ingredientName) throws IngredientNotFoundException;
 
     List<Ingredient> getIngredientsByTypeId(Integer ingredientTypeId);
 
-    Ingredient saveOrUpdateIngredient(IngredientVo ingredientVo) throws IngredientTypeContainsNumberException, IngredientNameContainsNumberException;
+    Ingredient saveOrUpdateIngredient(IngredientVo ingredientVo,boolean dividable,Integer typeId) throws IngredientTypeContainsNumberException, IngredientNameContainsNumberException;
 }

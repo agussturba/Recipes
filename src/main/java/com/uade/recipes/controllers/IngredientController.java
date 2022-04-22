@@ -4,10 +4,8 @@ package com.uade.recipes.controllers;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNameContainsNumberException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientTypeContainsNumberException;
-import com.uade.recipes.model.Dish;
 import com.uade.recipes.model.Ingredient;
 import com.uade.recipes.service.ingredient.IngredientService;
-import com.uade.recipes.vo.DishVo;
 import com.uade.recipes.vo.IngredientVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -53,20 +51,8 @@ public class IngredientController {
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "Tipo de ingrediente no encontrado")
     })
-    public ResponseEntity<IngredientVo> saveIngredient(@RequestBody IngredientVo ingredientVo) throws IngredientTypeContainsNumberException, IngredientNameContainsNumberException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(ingredientService.saveOrUpdateIngredient(ingredientVo).toVO());
-    }
-
-    @PutMapping
-    @ApiOperation(value = "Actualizar un ingrediente", response = Iterable.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Ingrediente actualizado satisfactoriamente"),
-            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
-            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
-            @ApiResponse(code = 404, message = "Tipo de ingrediente no encontrado")
-    })
-    public ResponseEntity<IngredientVo> updateIngredient(@RequestBody IngredientVo ingredientVo) throws IngredientTypeContainsNumberException, IngredientNameContainsNumberException {
-        return ResponseEntity.status(HttpStatus.OK).body(ingredientService.saveOrUpdateIngredient(ingredientVo).toVO());
+    public ResponseEntity<IngredientVo> saveIngredient(@RequestBody IngredientVo ingredientVo,@RequestParam boolean dividable,@RequestParam Integer typeId) throws IngredientTypeContainsNumberException, IngredientNameContainsNumberException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(ingredientService.saveOrUpdateIngredient(ingredientVo,dividable,typeId).toVO());
     }
 
     @GetMapping("/{id}")
@@ -78,7 +64,7 @@ public class IngredientController {
             @ApiResponse(code = 404, message = "Ingrediente no encontrado")
     })
     public ResponseEntity<IngredientVo> getIngredientById(@PathVariable Integer id) throws IngredientNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(ingredientService.getIngredientById(id).toVO());
+        return ResponseEntity.status(HttpStatus.FOUND).body(ingredientService.getIngredientById(id).getIngredient().toVO());
     }
 
     @GetMapping("/name/{name}")
@@ -90,7 +76,7 @@ public class IngredientController {
             @ApiResponse(code = 404, message = "Ingrediente no encontrado")
     })
     public ResponseEntity<IngredientVo> getIngredientByName(@PathVariable String name) throws IngredientNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(ingredientService.getIngredientByName(name).toVO());
+        return ResponseEntity.status(HttpStatus.FOUND).body(ingredientService.getIngredientByName(name).getIngredient().toVO());
     }
 
     private List<IngredientVo> transformListToVoList(List<Ingredient> list){

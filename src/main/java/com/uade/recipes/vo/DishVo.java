@@ -5,22 +5,19 @@ import com.uade.recipes.model.Type;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-import java.util.Set;
-
 @Getter
 @Setter
 public class DishVo {
     Integer id;
     String name;
-    List<Integer> typesIdList;
+    Integer typeId;
 
 
-    public Dish toModel(Set<Type> types) {
+    public Dish toModel(Type type) {
         Dish dish = new Dish();
         dish.setId(getId());
         dish.setName(this.getName());
-        dish.setTypes(types);
+        dish.setType(type);
         return dish;
     }
 

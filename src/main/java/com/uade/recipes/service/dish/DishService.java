@@ -3,6 +3,7 @@ package com.uade.recipes.service.dish;
 import com.uade.recipes.exceptions.dishExceptions.DishNameContainsNumberException;
 import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;
 import com.uade.recipes.exceptions.dishExceptions.DishTypeContainsNumberException;
+import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.model.Dish;
 import com.uade.recipes.vo.DishVo;
 
@@ -15,7 +16,10 @@ public interface DishService {
 
     Dish getDishByName(String dishName) throws DishNotFoundException;
 
+    Dish getDishByRecipeId(Integer recipeId) throws RecipeNotFoundException;
+
     List<Dish> getDishesByTypeIdList(List<Integer> typeIdList);
+
 
     Dish saveOrUpdateDish(DishVo DishVo) throws DishNameContainsNumberException, DishTypeContainsNumberException;
 }

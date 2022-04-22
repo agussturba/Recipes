@@ -1,8 +1,6 @@
 package com.uade.recipes.service.dish;
 
-import com.uade.recipes.exceptions.dishExceptions.DishNameContainsNumberException;
 import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;
-import com.uade.recipes.exceptions.dishExceptions.DishTypeContainsNumberException;
 import com.uade.recipes.model.Dish;
 import com.uade.recipes.model.Type;
 import com.uade.recipes.persistance.DishRepository;
@@ -15,7 +13,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -36,19 +36,13 @@ class DishServiceImplementationTest {
     private Dish testDish;
     private Type testType;
     private List<Dish> dishTestList;
-    private Set<Type> typeTestSet;
-    private List<Type> typeTestList;
 
     @BeforeEach
     void setUp() {
         dishTestList = new ArrayList<>();
-        typeTestList = new ArrayList<>();
-        typeTestSet = new HashSet<>();
         testType = new Type("Italiana");
         testType.setId(1);
-        typeTestSet.add(testType);
-        typeTestList.add(testType);
-        testDish = new Dish("Pizza", typeTestSet);
+        testDish = new Dish("Pizza", testType);
         dishTestList.add(testDish);
     }
 
@@ -57,7 +51,7 @@ class DishServiceImplementationTest {
         when(dishRepository.findAll()).thenReturn(dishTestList);
         List<Dish> result = dishServiceImplementation.getAllDishes();
         assertNotNull(result);
-        assertEquals(1,result.size());
+        assertEquals(1, result.size());
         verify(dishRepository).findAll();
     }
 
@@ -66,13 +60,14 @@ class DishServiceImplementationTest {
         when(dishRepository.findById(any(Integer.class))).thenReturn(Optional.ofNullable(testDish));
         Dish result = dishServiceImplementation.getDishById(1);
         assertNotNull(result);
-        assertEquals("Pizza",result.getName());
+        assertEquals("Pizza", result.getName());
         verify(dishRepository).findById(1);
     }
+
     @Test
-    void getDishByIdNotFoundCase(){
+    void getDishByIdNotFoundCase() {
         when(dishRepository.findById(any(Integer.class))).thenThrow(DishNotFoundException.class);
-        assertThrows(DishNotFoundException.class,()-> dishServiceImplementation.getDishById(1));
+        assertThrows(DishNotFoundException.class, () -> dishServiceImplementation.getDishById(1));
         verify(dishRepository).findById(1);
     }
 
@@ -81,13 +76,14 @@ class DishServiceImplementationTest {
         when(dishRepository.findByName(any(String.class))).thenReturn(Optional.ofNullable(testDish));
         Dish result = dishServiceImplementation.getDishByName("plato");
         assertNotNull(result);
-        assertEquals("Pizza",result.getName());
+        assertEquals("Pizza", result.getName());
         verify(dishRepository).findByName("plato");
     }
+
     @Test
     void getDishByNameNotFoundCase() {
         when(dishRepository.findByName(any(String.class))).thenThrow(DishNotFoundException.class);
-        assertThrows(DishNotFoundException.class,()-> dishServiceImplementation.getDishByName("plato"));
+        assertThrows(DishNotFoundException.class, () -> dishServiceImplementation.getDishByName("plato"));
         verify(dishRepository).findByName("plato");
     }
 

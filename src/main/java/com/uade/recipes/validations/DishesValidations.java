@@ -9,8 +9,7 @@ public class DishesValidations {
         if (GeneralValidations.containsNumber(dishVo.getName())) {
             throw new DishNameContainsNumberException();
         }
-        for (Integer idType : dishVo.getTypesIdList()) {
-                IdValidations.validateTypeId(idType);
-        }
+        IdValidations.validateTypeId(dishVo.getTypeId());
+
     }
 }

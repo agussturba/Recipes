@@ -15,15 +15,10 @@ public interface RecipeRepository extends CrudRepository<Recipe, Integer> {
 
     List<Recipe> findByUserOrderByName(User user);
 
-    List<Recipe> findByDish(Dish dish);
 
-    List<Recipe> findByUserAndDish(User user, Dish dish);
 
     List<Recipe> findByUserAndPeopleAmount(User user, Integer peopleAmount);
 
-    List<Recipe> findByDishAndPeopleAmount(Dish dish, Integer peopleAmount);
-
-    List<Recipe> findByDishAndUserAndPeopleAmount(Dish dish, User user, Integer peopleAmount);
 
     List<Recipe> findByUserAndTypeIsIn(User user, List<Type> types);
 

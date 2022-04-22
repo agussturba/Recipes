@@ -38,9 +38,6 @@ public class IngredientQuantity {
 
         return vo;
     }
-    public boolean isIngredientDividable(){
-        return ingredient.isDividable();
-    }
 
     @Override
     public boolean equals(Object o) {

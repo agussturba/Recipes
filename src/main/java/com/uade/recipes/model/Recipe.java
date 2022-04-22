@@ -1,12 +1,12 @@
 package com.uade.recipes.model;
 
 import com.uade.recipes.vo.RecipeVo;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -23,34 +23,29 @@ import java.util.Objects;
     private String description;
     private Integer duration;
     @OneToOne
-    private Dish dish;
+    private RecipePhoto recipePhoto;
     @OneToOne
     private User user;
     @Column(nullable = false)
     private Integer peopleAmount;
     @Column(nullable = false)
     private Double portions;
-    @OneToMany
-    @ToString.Exclude
-    private List<Type> type;
+    @OneToOne
+    private Type type;
 
     public RecipeVo toVO() {
         RecipeVo vo = new RecipeVo();
         vo.setId(id);
         vo.setName(name);
         vo.setDescription(description);
-        vo.setDishId(dish.getId());
         vo.setUserId(user.getId());
         vo.setPeopleAmount(peopleAmount);
         vo.setPortions(portions);
-
-        List<Integer> listRecipeTypes = new ArrayList<>();
-        for (Type t : type) {
-            listRecipeTypes.add(t.getId());
-        }
-        vo.setTypeIdList(listRecipeTypes);
-
+        vo.setTypeId(type.getId());
         return vo;
+    }
+    public Integer getUserId(){
+        return user.getId();
     }
 
 
