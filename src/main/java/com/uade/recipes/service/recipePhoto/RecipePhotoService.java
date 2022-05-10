@@ -18,7 +18,7 @@ public interface RecipePhotoService {
 
     void deleteRecipePhoto(Integer recipeId, Integer recipePhotoId) throws RecipeNotFoundException, IOException;
 
-    List<RecipePhoto> getRecipePhotosByIds(List<Integer> recipePhotoIdList);
+
 }
 
 

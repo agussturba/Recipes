@@ -26,14 +26,15 @@ public class AuthenticationController {
     }
 
     @GetMapping("/login")
-    @ApiOperation(value = "Obetener un usuario en base a su email y contraseña", response = ResponseEntity.class)
+    @ApiOperation(value = "Obtener un usuario en base a su email y contraseña", response = ResponseEntity.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Se encontró al usuario exitosamente"),
             @ApiResponse(code = 404, message = "Usuario no encontrado"),
 
     })
     public ResponseEntity<UserVo> login(@RequestParam String email, @RequestParam String password) throws UserNotFoundException {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByEmailAndPassword(email, password).toVO());
+       // return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByEmailAndPassword(email, password).toVO());
+        return null;
     }
 
     @GetMapping("/token")

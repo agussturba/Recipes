@@ -83,6 +83,31 @@ public class RecipeController {
         List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByName(name));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
+    @GetMapping("/name/{ingredientId}")
+    @ApiOperation(value = "Retornar recetas por un ingrediente faltante", response = Iterable.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Lista de recetas por ingrediente faltante retornada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "No existen ingrediente con dicho id")
+
+    })
+    public ResponseEntity<List<RecipeVo>> getRecipesByMissingIngredientId(@PathVariable Integer ingredientId) throws IngredientNotFoundException {
+        List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByMissingIngredientId(ingredientId));
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+    @GetMapping("/enabled/{recipeId}")
+    @ApiOperation(value = "Verificar si una receta esta habilitada", response = Iterable.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "La receta esta habilitada o deshabilitada"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "No existen dicha receta")
+
+    })
+    public ResponseEntity<Boolean> isRecipeEnabled(@PathVariable Integer recipeId) throws UserNotFoundException, RecipeNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(recipeService.isRecipeEnabled(recipeId));
+    }
 
     @GetMapping("/type")
     @ApiOperation(value = "Retornar recetas por su tipo", response = Iterable.class)

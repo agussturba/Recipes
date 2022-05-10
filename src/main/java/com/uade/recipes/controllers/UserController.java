@@ -64,30 +64,41 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByAlias(userName).toVO());
     }
 
-    @PostMapping
-    @ApiOperation(value = "Crear un nuevo usuario", response = ResponseEntity.class)
+    @PostMapping("/student")
+    @ApiOperation(value = "Crear un nuevo usuario estudiante", response = ResponseEntity.class)
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Usuario creado con éxito"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 409, message = "El nombre de usuario ya existe o La contraseña no se valida o el rol no es valido o el email ya existe") //TODO CHEQUEAR
     })
-    public ResponseEntity<UserVo> saveUser(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException, UserPhotoNotFoundException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveOrUpdateUser(userVo, userVo.getRole()).toVO());
+    public ResponseEntity<UserVo> saveUserStudent(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException, UserPhotoNotFoundException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveOrUpdateUser(userVo, "STUDENT").toVO());
+    }
+    @PostMapping("/guest")
+    @ApiOperation(value = "Crear un nuevo usuario invitado", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Usuario creado con éxito"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 409, message = "El nombre de usuario ya existe o La contraseña no se valida o el rol no es valido o el email ya existe") //TODO CHEQUEAR
+    })
+    public ResponseEntity<UserVo> saveUserGuest(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException, UserPhotoNotFoundException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveOrUpdateUser(userVo, "GUEST").toVO());
     }
 
-//    @PostMapping("/admin")
-//    @ApiOperation(value = "Crear un nuevo usuario admin", response = ResponseEntity.class)
-//    @ApiResponses(value = {
-//            @ApiResponse(code = 201, message = "Usuario admin creado con éxito"),
-//            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-//            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-//            @ApiResponse(code = 409, message = "El nombre de usuario ya existe o La contraseña no se valida o el rol no es valido o el email ya existe") //TODO CHEQUEAR
-//
-//    })
-//    public ResponseEntity<UserVo> saveUserStudent(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException, UserPhotoNotFoundException {
-//        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveOrUpdateUser(userVo, "ROLE_ADMIN").toVO());
-//    }
+    @PostMapping("/admin")
+    @ApiOperation(value = "Crear un nuevo usuario admin", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Usuario admin creado con éxito"),
+            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+            @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 409, message = "El nombre de usuario ya existe o La contraseña no se valida o el rol no es valido o el email ya existe") //TODO CHEQUEAR
+
+    })
+    public ResponseEntity<UserVo> saveUserAdmin(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException, UserPhotoNotFoundException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveOrUpdateUser(userVo, "ADMIN").toVO());
+    }
 
     @PutMapping
     @ApiOperation(value = "Actualizar datos de un usuario", response = ResponseEntity.class)

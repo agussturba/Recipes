@@ -18,7 +18,6 @@ import java.util.Objects;
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-    @Column(nullable = false)
     private String name;
     private String description;
     private Integer duration;
@@ -26,9 +25,7 @@ import java.util.Objects;
     private RecipePhoto recipePhoto;
     @OneToOne
     private User user;
-    @Column(nullable = false)
     private Integer peopleAmount;
-    @Column(nullable = false)
     private Double portions;
     @OneToOne
     private Type type;

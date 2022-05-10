@@ -25,19 +25,19 @@ public interface RecipeService {
 
     List<Recipe> getRecipesByTypes(List<Integer> typesIds);
 
+    List<Recipe> getRecipesByMissingIngredientId(Integer ingredientId) throws IngredientNotFoundException;
+
     List<Recipe> getRecipesByUserIdAndPeopleAmount(Integer userId, Integer peopleAmount) throws UserNotFoundException;
 
     List<Recipe> getRecipesByUserIdAndDishIdAndPeopleAmount(Integer userId, Integer dishId, Integer peopleAmount) throws UserNotFoundException, DishNotFoundException;
 
     List<Recipe> getRecipesByDishIdAndPeopleAmount(Integer dishId, Integer peopleAmount) throws DishNotFoundException;
 
-    List<Recipe> getRecipesByUserIdAndTypeIds(Integer userId, List<Integer> typeIdList) throws UserNotFoundException;
-
-    List<Recipe> getRecipesByPeopleAmountAndTypeIds(Integer peopleAmount, List<Integer> typeIdList) throws UserNotFoundException;
-
     List<Recipe> getRecipesByUserIdAndDishId(Integer userId, Integer dishId) throws DishNotFoundException, UserNotFoundException;
 
     List<Recipe> getRecipesByDishId(Integer dishId) throws UserNotFoundException, DishNotFoundException;
+
+    Boolean isRecipeEnabled(Integer recipeId) throws UserNotFoundException, DishNotFoundException, RecipeNotFoundException;
 
     Recipe saveOrUpdateRecipe(RecipeVo RecipeVo) throws DishNotFoundException, InstructionNotFoundException, UserNotFoundException;
 

@@ -34,7 +34,7 @@ public class TypeServiceImplementation implements TypeService {
 
     @Override
     public Type saveOrUpdateType(TypeVo typeVo) {
-        if (typeVo.getId() == null){
+        if (typeVo.getId() != null) {
             typeExists(typeVo);
         }
         return typeRepository.save(typeVo.toModel());
@@ -49,7 +49,7 @@ public class TypeServiceImplementation implements TypeService {
         try {
             this.getTypeByDescription(typeVo.getDescription());
             throw new TypeDescriptionExistsException();
-        } catch (TypeNotFoundException e) {
+        } catch (TypeNotFoundException ignored) {
         }
     }
 }

@@ -7,7 +7,6 @@ import com.uade.recipes.exceptions.ingredientQuantityExceptions.UnacceptableQuan
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.model.*;
 import com.uade.recipes.persistance.IngredientQuantityRepository;
-import com.uade.recipes.persistance.IngredientRepository;
 import com.uade.recipes.persistance.RecipeRepository;
 import com.uade.recipes.service.conversion.ConversionService;
 import com.uade.recipes.service.ingredient.IngredientService;
@@ -16,7 +15,9 @@ import com.uade.recipes.vo.IngredientQuantityVo;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.uade.recipes.validations.IngredientQuantityValidations.validateIngredientQuantityData;
 
@@ -29,7 +30,7 @@ public class IngredientQuantityImplementation implements IngredientQuantityServi
     private final RecipeRepository recipeRepository;
     private final ConversionService conversionService;
 
-    public IngredientQuantityImplementation(IngredientQuantityRepository ingredientQuantityRepository, IngredientRepository ingredientRepository, IngredientService ingredientService, UnitService unitService, RecipeRepository recipeRepository, ConversionService conversionService) {
+    public IngredientQuantityImplementation(IngredientQuantityRepository ingredientQuantityRepository, IngredientService ingredientService, UnitService unitService, RecipeRepository recipeRepository, ConversionService conversionService) {
         this.ingredientQuantityRepository = ingredientQuantityRepository;
         this.ingredientService = ingredientService;
         this.unitService = unitService;
@@ -70,9 +71,15 @@ public class IngredientQuantityImplementation implements IngredientQuantityServi
     }
 
     @Override
-    public IngredientQuantity getIngredientQuantityByIngredientAndQuantity(Ingredient ingredient, Double quantity) throws IngredientQuantityNotFoundException {
-        return ingredientQuantityRepository.findByIngredientAndQuantity(ingredient, quantity).orElseThrow(IngredientQuantityNotFoundException::new);
+    public Set<Recipe> getRecipesByIngredientId(Integer ingredientId) throws IngredientNotFoundException {
+        Set<Recipe> recipes = new HashSet<>();
+        List<IngredientQuantity> ingredientQuantityList = this.getIngredientQuantityByIngredientId(ingredientId);
+        for (IngredientQuantity ingredientQuantity:ingredientQuantityList) {
+            recipes.add(ingredientQuantity.getRecipe());
+        }
+        return recipes;
     }
+
 
     @Override
     public IngredientQuantity saveOrUpdateIngredientQuantity(IngredientQuantityVo ingredientQuantityVo) throws IngredientNotFoundException, RecipeNotFoundException {
@@ -115,10 +122,7 @@ public class IngredientQuantityImplementation implements IngredientQuantityServi
     }
 
     private boolean isAcceptableQuantity(Ingredient_Addition addition, Double newQuantity) {
-        if (addition.isDividable() || newQuantity % 1 == 0) {
-            return true;
-        }
-        return false;
+        return addition.isDividable() || newQuantity % 1 == 0;
     }
 
 
