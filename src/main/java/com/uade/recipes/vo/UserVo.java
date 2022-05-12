@@ -28,6 +28,7 @@ public class UserVo {
         user.setEnabled(true);
         user.setName(name);
         user.setAvatar(null);
+        user.setPassword(password);
         return user;
     }
 }

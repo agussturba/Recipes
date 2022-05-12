@@ -13,6 +13,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@SecondaryTable(name = "user_addition", pkJoinColumns = @PrimaryKeyJoinColumn(name = "user_id"))
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +30,9 @@ public class User {
     @OneToOne
     private UserPhoto avatar;
     private boolean enabled;
+
+    @Column(nullable = false, table = "user_addition")
+    private String password;
 
     public UserVo toVO() {
         UserVo vo = new UserVo();

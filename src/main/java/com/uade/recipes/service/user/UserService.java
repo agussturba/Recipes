@@ -12,7 +12,7 @@ public interface UserService {
 
     User getUserByEmail(String email) throws UserNotFoundException;
 
-  //  User getUserByEmailAndPassword(String email, String password) throws UserNotFoundException;
+    User getUserByEmailAndPassword(String email, String password) throws UserNotFoundException;
 
     User getUserByAlias(String userName);
 

@@ -33,8 +33,7 @@ public class AuthenticationController {
 
     })
     public ResponseEntity<UserVo> login(@RequestParam String email, @RequestParam String password) throws UserNotFoundException {
-       // return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByEmailAndPassword(email, password).toVO());
-        return null;
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByEmailAndPassword(email, password).toVO());
     }
 
     @GetMapping("/token")

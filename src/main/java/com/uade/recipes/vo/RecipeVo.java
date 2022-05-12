@@ -1,12 +1,11 @@
 package com.uade.recipes.vo;
 
 import com.uade.recipes.model.Recipe;
-import com.uade.recipes.model.Recipe_Addition;
 import com.uade.recipes.model.User;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -20,7 +19,7 @@ public class RecipeVo {
     Integer peopleAmount;
     Double portions;
     Integer duration;
-    Timestamp timestamp;
+    LocalDateTime timestamp;
     Boolean enabled;
 
 
@@ -33,12 +32,9 @@ public class RecipeVo {
         recipe.setPeopleAmount(peopleAmount);
         recipe.setPortions(portions);
         recipe.setDuration(duration);
+        recipe.setTimestamp(timestamp);
+        recipe.setEnabled(enabled);
         return recipe;
     }
-    public Recipe_Addition getAdditionalInformation(){
-        Recipe_Addition recipe_addition = new Recipe_Addition();
-        recipe_addition.setEnabled(enabled);
-        recipe_addition.setTimestamp(timestamp);
-        return recipe_addition;
-    }
+
 }

@@ -30,9 +30,16 @@ public class RecipeRatingImplementation implements RecipeRatingService {
     }
 
     @Override
-    public RecipeRating getRecipeRatingByRecipeId(Integer recipeId) throws RecipeNotFoundException {
+    public List<RecipeRating> getRecipeRatingByRecipeId(Integer recipeId) throws RecipeNotFoundException {
         Recipe recipe = recipeService.getRecipeById(recipeId);
         return recipeRatingRepository.findByRecipe(recipe);
+    }
+
+    @Override
+    public RecipeRating getRecipeRatingByRecipeIdAndUserId(Integer recipeId, Integer userId) throws RecipeNotFoundException, UserNotFoundException {
+        Recipe recipe = recipeService.getRecipeById(recipeId);
+        User user = userService.getUserById(userId);
+        return recipeRatingRepository.findByRecipeAndUser(recipe,user);
     }
 
     @Override
@@ -43,7 +50,7 @@ public class RecipeRatingImplementation implements RecipeRatingService {
 
     @Override
     public Double getAverageOfRecipeRatingsByRecipeId(Integer recipeId) throws RecipeNotFoundException {
-        List<RecipeRating> recipeRatingList = (List<RecipeRating>) getRecipeRatingByRecipeId(recipeId);
+        List<RecipeRating> recipeRatingList = getRecipeRatingByRecipeId(recipeId);
         Double totalRating = getTotalRating(recipeRatingList);
         Integer amountOfRatings = getAmountOfRatingsByRecipeId(recipeId);
         return totalRating / amountOfRatings;
