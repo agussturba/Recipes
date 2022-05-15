@@ -67,7 +67,7 @@ public class TypeController {
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
 
     })
-    public ResponseEntity<TypeVo> saveUnit(@RequestBody TypeVo typeVo) {
+    public ResponseEntity<TypeVo> saveType(@RequestBody TypeVo typeVo) {
         return ResponseEntity.status(HttpStatus.CREATED).body(typeService.saveOrUpdateType(typeVo).toVO());
     }
 

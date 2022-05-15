@@ -7,8 +7,12 @@ import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.RecipeRating;
 import com.uade.recipes.vo.RecipeRatingVo;
 
+import java.util.List;
+
 public interface RecipeRatingService {
-    RecipeRating getRecipeRatingByRecipeId(Integer recipeId) throws RecipeNotFoundException;
+    List<RecipeRating> getRecipeRatingByRecipeId(Integer recipeId) throws RecipeNotFoundException;
+
+    RecipeRating getRecipeRatingByRecipeIdAndUserId(Integer recipeId,Integer userId) throws RecipeNotFoundException, UserNotFoundException;
 
     Integer getAmountOfRatingsByRecipeId(Integer recipeId) throws RecipeNotFoundException;
 

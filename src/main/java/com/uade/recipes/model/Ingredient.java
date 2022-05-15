@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -14,6 +15,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@SecondaryTable(name = "ingredient_addition", pkJoinColumns = @PrimaryKeyJoinColumn(name = "ingredient_id"))
+
 public class Ingredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +25,17 @@ public class Ingredient {
     @Column(nullable = false)
     private String name;
 
+    @OneToMany
+    @Column(table = "ingredient_addition")
+    private List<Type> type;
+    /**
+     * Atributo para verificar que el ingrediento puede ser divisible.Que el ingrediente puede ser la mitadd
+     * de dicho elemento. IE un tomate es divisble porque podes trabajar con medio tomate pero un huevo no es
+     * divisible.
+     */
+
+    @Column(table = "ingredient_addition")
+    private boolean dividable;
 
     public IngredientVo toVO() {
         IngredientVo vo = new IngredientVo();

@@ -51,8 +51,8 @@ public class IngredientController {
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "Tipo de ingrediente no encontrado")
     })
-    public ResponseEntity<IngredientVo> saveIngredient(@RequestBody IngredientVo ingredientVo,@RequestParam boolean dividable,@RequestParam Integer typeId) throws IngredientTypeContainsNumberException, IngredientNameContainsNumberException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(ingredientService.saveOrUpdateIngredient(ingredientVo,dividable,typeId).toVO());
+    public ResponseEntity<IngredientVo> saveIngredient(@RequestBody IngredientVo ingredientVo) throws IngredientTypeContainsNumberException, IngredientNameContainsNumberException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(ingredientService.saveOrUpdateIngredient(ingredientVo).toVO());
     }
 
     @GetMapping("/{id}")
@@ -64,7 +64,7 @@ public class IngredientController {
             @ApiResponse(code = 404, message = "Ingrediente no encontrado")
     })
     public ResponseEntity<IngredientVo> getIngredientById(@PathVariable Integer id) throws IngredientNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(ingredientService.getIngredientById(id).getIngredient().toVO());
+        return ResponseEntity.status(HttpStatus.FOUND).body(ingredientService.getIngredientById(id).toVO());
     }
 
     @GetMapping("/name/{name}")
@@ -76,7 +76,7 @@ public class IngredientController {
             @ApiResponse(code = 404, message = "Ingrediente no encontrado")
     })
     public ResponseEntity<IngredientVo> getIngredientByName(@PathVariable String name) throws IngredientNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(ingredientService.getIngredientByName(name).getIngredient().toVO());
+        return ResponseEntity.status(HttpStatus.FOUND).body(ingredientService.getIngredientByName(name).toVO());
     }
 
     private List<IngredientVo> transformListToVoList(List<Ingredient> list){

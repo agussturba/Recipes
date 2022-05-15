@@ -21,4 +21,5 @@ public interface UserService {
     User saveOrUpdateUser(UserVo user, String role) throws InvalidEmailException, InvalidPasswordException, InvalidRoleException, UserNameExistsException, EmailExistsException, UserNotFoundException, UserPhotoNotFoundException;
 
     void changePassword(String email, String password) throws UserNotFoundException;
+
 }

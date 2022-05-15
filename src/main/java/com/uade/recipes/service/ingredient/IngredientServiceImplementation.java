@@ -12,6 +12,7 @@ import com.uade.recipes.service.type.TypeService;
 import com.uade.recipes.vo.IngredientVo;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,12 +22,10 @@ import static com.uade.recipes.validations.IngredientsValidations.validateIngred
 public class IngredientServiceImplementation implements IngredientService {
     private final IngredientRepository ingredientRepository;
     private final TypeService typeService;
-    private final Ingredient_AdditionRepository additionRepository;
 
-    public IngredientServiceImplementation(IngredientRepository ingredientRepository, TypeService typeService, Ingredient_AdditionRepository additionRepository) {
+    public IngredientServiceImplementation(IngredientRepository ingredientRepository, TypeService typeService) {
         this.ingredientRepository = ingredientRepository;
         this.typeService = typeService;
-        this.additionRepository = additionRepository;
     }
 
     @Override
@@ -35,38 +34,32 @@ public class IngredientServiceImplementation implements IngredientService {
     }
 
     @Override
-    public Ingredient_Addition getIngredientById(Integer ingredientId) throws IngredientNotFoundException {
-        Ingredient ingredient = ingredientRepository.findById(ingredientId).orElseThrow(IngredientNotFoundException::new);
-        return additionRepository.findByIngredient(ingredient);
+    public Ingredient getIngredientById(Integer ingredientId) throws IngredientNotFoundException {
+        return ingredientRepository.findById(ingredientId).orElseThrow(IngredientNotFoundException::new);
+
 
     }
 
     @Override
-    public Ingredient_Addition getIngredientByName(String ingredientName) throws IngredientNotFoundException {
-        Ingredient ingredient = ingredientRepository.findByName(ingredientName).orElseThrow(IngredientNotFoundException::new);
-        return additionRepository.findByIngredient(ingredient);
-
+    public Ingredient getIngredientByName(String ingredientName) throws IngredientNotFoundException {
+        return ingredientRepository.findByName(ingredientName).orElseThrow(IngredientNotFoundException::new);
     }
 
     @Override
     public List<Ingredient> getIngredientsByTypeId(Integer ingredientTypeId) {
         Type type = typeService.getTypeById(ingredientTypeId);
-        List<Ingredient_Addition> ingredient_Addition_List = additionRepository.findByType(type);
-        return ingredient_Addition_List.stream().map(Ingredient_Addition::getIngredient).collect(Collectors.toList());
+        return ingredientRepository.findByType(type);
 
     }
 
     @Override
-    public Ingredient saveOrUpdateIngredient(IngredientVo ingredientVo, boolean dividable, Integer typeId) throws IngredientNameContainsNumberException {
+    public Ingredient saveOrUpdateIngredient(IngredientVo ingredientVo) throws IngredientNameContainsNumberException {
         validateIngredientData(ingredientVo);
         if (ingredientVo.getId() == null) {
             ingredientExists(ingredientVo);
         }
-        Type type = typeService.getTypeById(typeId);
-        Ingredient ingredient = ingredientRepository.save(ingredientVo.toModel());
-        Ingredient_Addition ingredient_addition = new Ingredient_Addition(ingredient, type, dividable);
-        additionRepository.save(ingredient_addition);
-        return ingredient;
+        List<Type> typeList = getListType(ingredientVo.getTypeIdList());
+        return ingredientRepository.save(ingredientVo.toModel(typeList));
     }
 
     private void ingredientExists(IngredientVo ingredientVo) {
@@ -75,6 +68,14 @@ public class IngredientServiceImplementation implements IngredientService {
             throw new IngredientNameExistsException();
         } catch (IngredientNotFoundException ignored) {
         }
+    }
+    private List<Type> getListType(List<Integer> typeIdList){
+        List<Type> typeList = new ArrayList<>();
+        for (Integer typeId: typeIdList) {
+            Type type = typeService.getTypeById(typeId);
+            typeList.add(type);
+        }
+        return typeList;
     }
 
 }

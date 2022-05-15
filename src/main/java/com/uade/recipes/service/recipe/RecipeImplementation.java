@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.uade.recipes.validations.RecipeValidations.validateRecipeData;
@@ -28,7 +29,7 @@ public class RecipeImplementation implements RecipeService {
     private final TypeService typeService;
     private final IngredientQuantityService ingredientQuantityService;
 
-    public RecipeImplementation(RecipeRepository recipeRepository, UserService userService, DishService dishService, TypeService typeService, IngredientQuantityService ingredientQuantityService) {
+    public RecipeImplementation(RecipeRepository recipeRepository,UserService userService, DishService dishService, TypeService typeService, IngredientQuantityService ingredientQuantityService) {
         this.recipeRepository = recipeRepository;
         this.userService = userService;
         this.dishService = dishService;
@@ -69,6 +70,20 @@ public class RecipeImplementation implements RecipeService {
     }
 
     @Override
+    /*
+      all the recipes that doesn't have that ingredient
+     */
+    public List<Recipe> getRecipesByMissingIngredientId(Integer ingredientId) throws IngredientNotFoundException {
+        Set<Recipe> unAcceptableRecipes = ingredientQuantityService.getRecipesByIngredientId(ingredientId);
+        List<Recipe> recipes = getAllRecipes();
+        for (Recipe unAcceptableRecipe : unAcceptableRecipes
+        ) {
+            recipes.remove(unAcceptableRecipe);
+        }
+        return recipes;
+    }
+
+    @Override
     public List<Recipe> getRecipesByUserIdAndPeopleAmount(Integer userId, Integer peopleAmount) throws UserNotFoundException {
         User user = userService.getUserById(userId);
         return recipeRepository.findByUserAndPeopleAmount(user, peopleAmount);
@@ -94,18 +109,6 @@ public class RecipeImplementation implements RecipeService {
 
     }
 
-    @Override
-    public List<Recipe> getRecipesByUserIdAndTypeIds(Integer userId, List<Integer> typeIdList) throws UserNotFoundException {
-        User user = userService.getUserById(userId);
-        List<Type> types = typeService.getTypesByIdList(typeIdList);
-        return recipeRepository.findByUserAndTypeIsIn(user, types);
-    }
-
-    @Override
-    public List<Recipe> getRecipesByPeopleAmountAndTypeIds(Integer peopleAmount, List<Integer> typeIdList) {
-        List<Type> types = typeService.getTypesByIdList(typeIdList);
-        return recipeRepository.findByPeopleAmountAndTypeIsIn(peopleAmount, types);
-    }
 
     @Override
     public List<Recipe> getRecipesByUserIdAndDishId(Integer userId, Integer dishId) throws DishNotFoundException {
@@ -124,12 +127,18 @@ public class RecipeImplementation implements RecipeService {
         return dish.getRecipes();
     }
 
+    @Override
+    public Boolean isRecipeEnabled(Integer recipeId) throws RecipeNotFoundException {
+        Recipe recipe = getRecipeById(recipeId);
+        return recipe.isEnabled();
+    }
+
 
     @Override
     public Recipe saveOrUpdateRecipe(RecipeVo recipeVo) throws DishNotFoundException, UserNotFoundException {
         validateRecipeData(recipeVo);
         User user = userService.getUserById(recipeVo.getUserId());
-        return recipeVo.toModel(user);
+        return recipeRepository.save(recipeVo.toModel(user));
     }
 
     @Override
@@ -142,8 +151,8 @@ public class RecipeImplementation implements RecipeService {
     @Override
     public List<IngredientQuantity> convertRecipeIngredientQuantityByConversionFactor(Integer recipeId, Double conversionFactor) throws RecipeNotFoundException, CannotDivideTheIngredientException, IngredientNotFoundException {
         return ingredientQuantityService.getConvertedIngredientQuantityListByRecipeIdAndConversionFactor(recipeId, conversionFactor);
-
     }
+
 
     private Double getConversionFactor(Double oldQuantity, Double newQuantity) {
         return newQuantity / oldQuantity;

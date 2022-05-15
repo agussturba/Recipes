@@ -4,11 +4,12 @@ import com.uade.recipes.exceptions.ingredientExceptions.CannotDivideTheIngredien
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.exceptions.ingredientQuantityExceptions.IngredientQuantityNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
-import com.uade.recipes.model.Ingredient;
 import com.uade.recipes.model.IngredientQuantity;
+import com.uade.recipes.model.Recipe;
 import com.uade.recipes.vo.IngredientQuantityVo;
 
 import java.util.List;
+import java.util.Set;
 
 public interface IngredientQuantityService {
     List<IngredientQuantity> getAllIngredientQuantity();
@@ -21,7 +22,7 @@ public interface IngredientQuantityService {
 
     List<IngredientQuantity> getIngredientQuantityByIngredientId(Integer ingredientId) throws IngredientNotFoundException;
 
-    IngredientQuantity getIngredientQuantityByIngredientAndQuantity(Ingredient ingredient, Double quantity) throws IngredientQuantityNotFoundException;
+    Set<Recipe> getRecipesByIngredientId(Integer ingredientId) throws IngredientNotFoundException;
 
     IngredientQuantityVo convertIngredientQuantityUnitByTargetUnitId(IngredientQuantityVo ingredientQuantityVo, Integer targetUnitId);
 

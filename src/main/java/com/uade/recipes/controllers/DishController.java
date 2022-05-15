@@ -3,6 +3,7 @@ package com.uade.recipes.controllers;
 import com.uade.recipes.exceptions.dishExceptions.DishNameContainsNumberException;
 import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;
 import com.uade.recipes.exceptions.dishExceptions.DishTypeContainsNumberException;
+import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.model.Dish;
 import com.uade.recipes.service.dish.DishService;
 import com.uade.recipes.vo.DishVo;
@@ -64,6 +65,17 @@ public class DishController {
     })
     public ResponseEntity<DishVo> getDishByName(@PathVariable String name) throws DishNotFoundException {
         return ResponseEntity.status(HttpStatus.FOUND).body(dishService.getDishByName(name).toVO());
+    }
+    @GetMapping("/recipe/{recipeId}")
+    @ApiOperation(value = "Obtener un plato por el id de una receta", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 302, message = "Plato retornado satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Plato no encontrado o receta no encontrada")
+    })
+    public ResponseEntity<DishVo> getDishByRecipeId(@PathVariable Integer recipeId) throws DishNotFoundException, RecipeNotFoundException {
+        return ResponseEntity.status(HttpStatus.FOUND).body(dishService.getDishByRecipeId(recipeId).toVO());
     }
 
     @PostMapping

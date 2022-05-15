@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 public class UserVo {
     Integer id;
-    Integer idUser;
     String userName;
     String password;
     String email;
@@ -22,14 +21,14 @@ public class UserVo {
 
     public User toModel() {
         User user = new User();
-        user.setId(idUser);
+        user.setId(id);
         user.setEmail(email);
-        user.setPassword(password);
         user.setUserName(userName);
         user.setRole(role);
         user.setEnabled(true);
         user.setName(name);
         user.setAvatar(null);
+        user.setPassword(password);
         return user;
     }
 }

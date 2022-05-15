@@ -7,18 +7,19 @@ import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
 @Getter
 @Setter
 @ToString
- public class Recipe {
+@SecondaryTable(name = "recipe_addition", pkJoinColumns = @PrimaryKeyJoinColumn(name = "recipe_id"))
+public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-    @Column(nullable = false)
     private String name;
     private String description;
     private Integer duration;
@@ -26,9 +27,12 @@ import java.util.Objects;
     private RecipePhoto recipePhoto;
     @OneToOne
     private User user;
-    @Column(nullable = false)
     private Integer peopleAmount;
-    @Column(nullable = false)
+    @Column(table = "recipe_addition")
+    private boolean enabled;
+    @Column(table = "recipe_addition")
+    private LocalDateTime timestamp;
+
     private Double portions;
     @OneToOne
     private Type type;
@@ -44,7 +48,8 @@ import java.util.Objects;
         vo.setTypeId(type.getId());
         return vo;
     }
-    public Integer getUserId(){
+
+    public Integer getUserId() {
         return user.getId();
     }
 

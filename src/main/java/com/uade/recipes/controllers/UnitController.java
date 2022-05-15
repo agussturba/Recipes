@@ -1,9 +1,7 @@
 package com.uade.recipes.controllers;
 
-import com.uade.recipes.model.Type;
 import com.uade.recipes.model.Unit;
 import com.uade.recipes.service.unit.UnitService;
-import com.uade.recipes.vo.TypeVo;
 import com.uade.recipes.vo.UnitVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

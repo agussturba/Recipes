@@ -12,11 +12,11 @@ import java.util.List;
 public interface IngredientService {
     List<Ingredient> getAllIngredients();
 
-    Ingredient_Addition getIngredientById(Integer ingredientId) throws IngredientNotFoundException;
+    Ingredient getIngredientById(Integer ingredientId) throws IngredientNotFoundException;
 
-    Ingredient_Addition getIngredientByName(String ingredientName) throws IngredientNotFoundException;
+    Ingredient getIngredientByName(String ingredientName) throws IngredientNotFoundException;
 
     List<Ingredient> getIngredientsByTypeId(Integer ingredientTypeId);
 
-    Ingredient saveOrUpdateIngredient(IngredientVo ingredientVo,boolean dividable,Integer typeId) throws IngredientTypeContainsNumberException, IngredientNameContainsNumberException;
+    Ingredient saveOrUpdateIngredient(IngredientVo ingredientVo) throws IngredientTypeContainsNumberException, IngredientNameContainsNumberException;
 }

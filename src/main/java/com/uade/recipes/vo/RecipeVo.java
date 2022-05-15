@@ -1,10 +1,11 @@
 package com.uade.recipes.vo;
 
-import com.uade.recipes.model.Dish;
 import com.uade.recipes.model.Recipe;
 import com.uade.recipes.model.User;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -18,6 +19,8 @@ public class RecipeVo {
     Integer peopleAmount;
     Double portions;
     Integer duration;
+    LocalDateTime timestamp;
+    Boolean enabled;
 
 
     public Recipe toModel(User user) {
@@ -29,6 +32,9 @@ public class RecipeVo {
         recipe.setPeopleAmount(peopleAmount);
         recipe.setPortions(portions);
         recipe.setDuration(duration);
+        recipe.setTimestamp(timestamp);
+        recipe.setEnabled(enabled);
         return recipe;
     }
+
 }

@@ -13,22 +13,26 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@SecondaryTable(name = "user_addition", pkJoinColumns = @PrimaryKeyJoinColumn(name = "user_id"))
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
     private String role;
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String email;
-    @Column(nullable = false, unique = true)
-    private String userName;
     @Column(nullable = false)
-    private String password;
+    private String userName;
+
     private String name;
     @OneToOne
     private UserPhoto avatar;
     private boolean enabled;
+
+    @Column(nullable = false, table = "user_addition")
+    private String password;
 
     public UserVo toVO() {
         UserVo vo = new UserVo();
@@ -37,7 +41,6 @@ public class User {
         vo.setRole(role);
         vo.setEmail(email);
         vo.setUserName(userName);
-        vo.setPassword(password);
         if (this.avatar == null) {
             vo.setAvatarId(null);
         } else {
