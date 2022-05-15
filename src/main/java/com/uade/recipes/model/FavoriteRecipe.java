@@ -1,5 +1,6 @@
 package com.uade.recipes.model;
 
+import com.uade.recipes.vo.FavoriteRecipeVo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,5 +26,12 @@ public class FavoriteRecipe {
     public FavoriteRecipe(Recipe recipe, User user) {
         this.recipe = recipe;
         this.user = user;
+    }
+    public FavoriteRecipeVo toVo(){
+        FavoriteRecipeVo favoriteRecipeVo = new FavoriteRecipeVo();
+        favoriteRecipeVo.setId(id);
+        favoriteRecipeVo.setRecipeId(recipe.getId());
+        favoriteRecipeVo.setUserId(user.getId());
+        return favoriteRecipeVo;
     }
 }

@@ -6,4 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FavoriteRecipeVo {
+    Integer id;
+    Integer recipeId;
+    Integer userId;
 }

@@ -3,9 +3,11 @@ package com.uade.recipes.controllers;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
+import com.uade.recipes.model.Dish;
 import com.uade.recipes.model.FavoriteRecipe;
 import com.uade.recipes.service.favoriteRecipe.FavoriteRecipeService;
 import com.uade.recipes.vo.DishVo;
+import com.uade.recipes.vo.FavoriteRecipeVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -13,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -32,8 +35,8 @@ public class FavoriteRecipeController {
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "usuario no encontrado")
     })
-    public ResponseEntity<List<FavoriteRecipe>> getAllFavoritesRecipesByUserId(@PathVariable Integer userId) throws UserNotFoundException {
-        return ResponseEntity.status(HttpStatus.OK).body(favoriteRecipeService.getAllFavoritesRecipesByUserId(userId));
+    public ResponseEntity<List<FavoriteRecipeVo>> getAllFavoritesRecipesByUserId(@PathVariable Integer userId) throws UserNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(transformListToVoList(favoriteRecipeService.getAllFavoritesRecipesByUserId(userId)));
     }
 
     @PostMapping
@@ -44,8 +47,8 @@ public class FavoriteRecipeController {
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "Usuario no encontrado o Receta no encontrada")
     })
-    public ResponseEntity<FavoriteRecipe> saveFavoriteRecipe(@RequestParam Integer recipeId, @RequestParam Integer userId) throws UserNotFoundException, IngredientNotFoundException, RecipeNotFoundException {
-        return ResponseEntity.status(HttpStatus.OK).body(favoriteRecipeService.saveFavoriteRecipe(recipeId, userId));
+    public ResponseEntity<FavoriteRecipeVo> saveFavoriteRecipe(@RequestParam Integer recipeId, @RequestParam Integer userId) throws UserNotFoundException, IngredientNotFoundException, RecipeNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(favoriteRecipeService.saveFavoriteRecipe(recipeId, userId).toVo());
     }
 
     @DeleteMapping("/delete")
@@ -71,5 +74,12 @@ public class FavoriteRecipeController {
     public ResponseEntity deleteFavoriteRecipeByFavoriteRecipeId(@RequestParam Integer favoriteRecipeId) throws UserNotFoundException, IngredientNotFoundException, RecipeNotFoundException {
         favoriteRecipeService.deleteFavoriteRecipeByFavoriteRecipeId(favoriteRecipeId);
         return (ResponseEntity) ResponseEntity.status(HttpStatus.OK);
+    }
+    private List<FavoriteRecipeVo> transformListToVoList(List<FavoriteRecipe> list){
+        List<FavoriteRecipeVo> result = new ArrayList<>();
+        for(FavoriteRecipe favoriteRecipe : list){
+            result.add(favoriteRecipe.toVo());
+        }
+        return result;
     }
 }

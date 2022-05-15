@@ -30,9 +30,9 @@ public class SwaggerConfig  {
                 "Recipes Services",
                 "An API for storing,seeing and managing recipes",
                 "1.0","",
-                new Contact("Agustin Sturba", "https://www.webcampus.uade.edu.ar/","asturba@uade.com.edu"),
-                "LICENSE",
-                "LICENSE URL",
+                new Contact("Tasty Hub", "https://www.webcampus.uade.edu.ar/","asturba@uade.com.edu"),
+                "",
+                "",
                 Collections.emptyList()
         );
     }
