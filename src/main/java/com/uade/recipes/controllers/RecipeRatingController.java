@@ -4,10 +4,8 @@ import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.recipeRatingExceptions.RatingIsLowerThanZeroException;
 import com.uade.recipes.exceptions.recipeRatingExceptions.RatingIsNullException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
-import com.uade.recipes.model.RecipePhoto;
 import com.uade.recipes.model.RecipeRating;
 import com.uade.recipes.service.recipeRating.RecipeRatingService;
-import com.uade.recipes.vo.RecipePhotoVo;
 import com.uade.recipes.vo.RecipeRatingVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -37,8 +35,8 @@ public class RecipeRatingController {
             @ApiResponse(code = 404, message = "La calificacion de receta no fue encontrada"),
 
     })
-    public ResponseEntity<RecipeRatingVo> getRecipeRatingById(@PathVariable Integer recipeRatingId) throws RecipeNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(recipeRatingService.getRecipeRatingByRecipeId(recipeRatingId).toVO());
+    public ResponseEntity<List<RecipeRatingVo>> getRecipeRatingById(@PathVariable Integer recipeRatingId) throws RecipeNotFoundException {
+        return ResponseEntity.status(HttpStatus.FOUND).body(transformListToVoList(recipeRatingService.getRecipeRatingByRecipeId(recipeRatingId)));
     }
 
     @GetMapping("/amount/{recipeId}")
@@ -66,6 +64,7 @@ public class RecipeRatingController {
     public ResponseEntity<Double> getAverageOfRatingByRecipeId(@PathVariable Integer recipeId) throws RecipeNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(recipeRatingService.getAverageOfRecipeRatingsByRecipeId(recipeId));
     }
+
     @PostMapping
     @ApiOperation(value = "Crear una nueva calificacion de receta ", response = ResponseEntity.class)
     @ApiResponses(value = {
@@ -78,6 +77,7 @@ public class RecipeRatingController {
     public ResponseEntity<RecipeRatingVo> saveRecipeRating(@RequestBody RecipeRatingVo recipeRatingVo) throws UserNotFoundException, RecipeNotFoundException, RatingIsLowerThanZeroException, RatingIsNullException {
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeRatingService.saveOrUpdateRecipeRating(recipeRatingVo).toVO());
     }
+
     @PutMapping
     @ApiOperation(value = "Actualizar una calificacion de receta ", response = ResponseEntity.class)
     @ApiResponses(value = {
@@ -91,7 +91,20 @@ public class RecipeRatingController {
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeRatingService.saveOrUpdateRecipeRating(recipeRatingVo).toVO());
     }
 
-    private List<RecipeRatingVo> transformListToVoList(List<RecipeRating> list){
+    @GetMapping("/user")
+    @ApiOperation(value = "Obtener una calificacion de una receta por el userId y la recetaId", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Calificacion de receta retornada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "La calificacion de receta no fue encontrada"),
+
+    })
+    public ResponseEntity<RecipeRatingVo> getRecipeRatingByRecipeIdAndUserId(@RequestParam Integer recipeId,@RequestParam Integer userId) throws RecipeNotFoundException, UserNotFoundException {
+        return ResponseEntity.status(HttpStatus.FOUND).body(recipeRatingService.getRecipeRatingByRecipeIdAndUserId(recipeId,userId).toVO());
+    }
+
+    private List<RecipeRatingVo> transformListToVoList(List<RecipeRating> list) {
         List<RecipeRatingVo> result = new ArrayList<>();
         for(RecipeRating obj: list){
             result.add(obj.toVO());
