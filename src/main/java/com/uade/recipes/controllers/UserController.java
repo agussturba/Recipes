@@ -6,6 +6,7 @@ import com.uade.recipes.exceptions.userPhotoExceptions.UserPhotoNotFoundExceptio
 import com.uade.recipes.model.User;
 import com.uade.recipes.service.user.UserService;
 import com.uade.recipes.vo.UserVo;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -60,7 +61,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "Usuario no encontrado"),
 
     })
-    public ResponseEntity<UserVo> getUserByAlias(@PathVariable String userName) {
+    public ResponseEntity<UserVo> getUserByAlias(@PathVariable String userName) throws UserNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByAlias(userName).toVO());
     }
 
@@ -106,11 +107,36 @@ public class UserController {
             @ApiResponse(code = 201, message = "Usuario actualizado con éxito"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
-            @ApiResponse(code = 409, message = "El nombre de usuario ya existe o La contraseña no se valida o el rol no es valido o el email ya existe") //TODO CHEQUEAR
+            @ApiResponse(code = 409, message = "El nombre de usuario ya existe o La contraseña no es valida o el rol no es valido o el email ya existe") //TODO CHEQUEAR
 
     })
     public ResponseEntity<UserVo> updateUser(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException, UserPhotoNotFoundException {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveOrUpdateUser(userVo, userVo.getRole()).toVO());
+    }
+
+    @PostMapping("/new")
+    @ApiOperation(value = "Crear un nuevo usuario en base a su alias, email y rol")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Usuario creado con éxito"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 409, message = "El nombre de usuario ya existe o el email ya existe")
+    })
+    public ResponseEntity<UserVo> createUser(@RequestParam String alias, @RequestParam String email, @RequestParam String role) throws UserNameExistsException, EmailExistsException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createNewUser(alias, email, role).toVO());
+    }
+
+    @PostMapping("/email/confirmation")
+    @ApiOperation(value = "Confirmar email para continuación de registro")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Email confirmado con éxito"),
+            @ApiResponse(code = 404, message = "El usuario no fue encontrado"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder")
+    })
+    public ResponseEntity confirmEmail(@RequestParam String email) throws UserNotFoundException {
+        userService.confirmEmail(email);
+        return ResponseEntity.status(HttpStatus.OK).body("");
     }
 
     private List<UserVo> transformListToVoList(List<User> list) {

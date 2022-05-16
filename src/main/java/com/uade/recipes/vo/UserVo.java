@@ -5,6 +5,8 @@ import com.uade.recipes.model.User;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 public class UserVo {
@@ -16,6 +18,7 @@ public class UserVo {
     boolean enabled;
     String name;
     Integer avatarId;
+    LocalDateTime registrationTimestamp;
 
 
 
@@ -29,6 +32,7 @@ public class UserVo {
         user.setName(name);
         user.setAvatar(null);
         user.setPassword(password);
+        user.setRegistrationTimestamp(registrationTimestamp);
         return user;
     }
 }

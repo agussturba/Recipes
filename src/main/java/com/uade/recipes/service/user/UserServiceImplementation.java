@@ -7,17 +7,22 @@ import com.uade.recipes.exceptions.userExceptions.UserNameExistsException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.User;
 import com.uade.recipes.persistance.UserRepository;
+import com.uade.recipes.service.email.EmailSenderImplementation;
 import com.uade.recipes.vo.UserVo;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class UserServiceImplementation implements UserService {
     private final UserRepository userRepository;
+    private final EmailSenderImplementation emailSender;
 
-    public UserServiceImplementation(UserRepository userRepository) {
+    public UserServiceImplementation(UserRepository userRepository, EmailSenderImplementation emailSender) {
         this.userRepository = userRepository;
+        this.emailSender = emailSender;
     }
 
     @Override
@@ -26,8 +31,13 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public User getUserByEmail(String email) throws UserNotFoundException {
+        return userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+    }
+
+    @Override
+    public User getUserByEmailAndAlias(String email, String alias) throws UserNotFoundException {
+        return userRepository.findByEmailAndUserName(email, alias).orElseThrow(UserNotFoundException::new);
     }
 
     @Override
@@ -36,12 +46,61 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public User getUserByAlias(String userName) {
-        return userRepository.findByUserName(userName);
+    public User validateUserRegistration(String email) throws UserNotFoundException {
+        return userRepository.findByEmailAndRegistrationTimestampGreaterThanAndRegistrationTimestampLessThanEqual(email, LocalDateTime.now().minusDays(1), LocalDateTime.now()).orElseThrow(UserNotFoundException::new);
     }
 
     @Override
-    public User saveOrUpdateUser(UserVo userVo, String role) throws UserNameExistsException, EmailExistsException, InvalidRoleException {
+    public User createNewUser(String alias, String email, String role) throws UserNameExistsException, EmailExistsException {
+
+        User user = new User();
+
+        checkEmailExistence(email);
+        checkAliasExistence(alias);
+
+        user.setUserName(alias);
+        user.setEmail(email);
+        user.setRole(role);
+        user.setPassword("");
+        user.setEnabled(false);
+        user.setRegistrationTimestamp(LocalDateTime.now());
+        userRepository.save(user);
+        emailSender.sendSimpleEmail(email, "Hola " + alias + ", \n Este es un mensaje para verificar tu correo electrónico.\n Haz Click en el link para validar tu correo: http://localhost:8080/api/user/email/confirmation?email=" + email, "Correo de verificación");
+        return user;
+
+    }
+
+    private void checkEmailExistence(String email) throws EmailExistsException {
+        try {
+            User userCheck = getUserByEmail(email);
+            throw new EmailExistsException();
+        } catch (UserNotFoundException e) {
+        }
+
+    }
+
+    private void checkAliasExistence(String alias) throws UserNameExistsException {
+        try {
+            User userCheck = getUserByAlias(alias);
+            throw new UserNameExistsException();
+        } catch (UserNotFoundException e) {
+        }
+    }
+
+    @Override
+    public void confirmEmail(String email) throws UserNotFoundException {
+        User user = validateUserRegistration(email);
+        user.setEnabled(true);
+        userRepository.save(user);
+    }
+
+    @Override
+    public User getUserByAlias(String userName) throws UserNotFoundException {
+        return userRepository.findByUserName(userName).orElseThrow(UserNotFoundException::new);
+    }
+
+    @Override
+    public User saveOrUpdateUser(UserVo userVo, String role) throws UserNameExistsException, EmailExistsException, InvalidRoleException, UserNotFoundException {
         existsUser(userVo);
         userVo.setRole(role);
         userVo.setEnabled(true);
@@ -50,7 +109,7 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public void changePassword(String email, String password) {
+    public void changePassword(String email, String password) throws UserNotFoundException {
         User user = this.getUserByEmail(email);
         user.setPassword(password);
         userRepository.save(user);
@@ -62,7 +121,7 @@ public class UserServiceImplementation implements UserService {
     }
 
 
-    private void existsUser(UserVo userVo) throws UserNameExistsException, EmailExistsException {
+    private void existsUser(UserVo userVo) throws UserNameExistsException, EmailExistsException, UserNotFoundException {
         if (this.getUserByAlias(userVo.getUserName()) != null) {
             throw new UserNameExistsException();
         }
