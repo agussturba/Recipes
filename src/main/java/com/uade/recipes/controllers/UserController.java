@@ -114,19 +114,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveOrUpdateUser(userVo, userVo.getRole()).toVO());
     }
 
-    @PostMapping("/new")
-    @ApiOperation(value = "Crear un nuevo usuario en base a su alias, email y rol")
-    @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Usuario creado con éxito"),
-            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
-            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
-            @ApiResponse(code = 409, message = "El nombre de usuario ya existe o el email ya existe")
-    })
-    public ResponseEntity<UserVo> createUser(@RequestParam String alias, @RequestParam String email, @RequestParam String role) throws UserNameExistsException, EmailExistsException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createNewUser(alias, email, role).toVO());
-    }
-
-    @PostMapping("/email/confirmation")
+    @GetMapping("/email/confirmation")
     @ApiOperation(value = "Confirmar email para continuación de registro")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Email confirmado con éxito"),
@@ -136,6 +124,20 @@ public class UserController {
     })
     public ResponseEntity confirmEmail(@RequestParam String email) throws UserNotFoundException {
         userService.confirmEmail(email);
+        return ResponseEntity.status(HttpStatus.OK).body("Gracias por verificar tu correo! Ya puedes regresar a la app");
+    }
+
+    @GetMapping("/check/registration/completion")
+    @ApiOperation(value = "Chequear si un email pertenece a un registro completo")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "El email corresponde a un registro completo"),
+            @ApiResponse(code = 404, message = "El usuario no fue encontrado"),
+            @ApiResponse(code = 409, message = "El email corresponde a un registro incompleto"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder")
+    })
+    public ResponseEntity isRegistrationComplete(@RequestParam String email) throws UserNotFoundException, RegistrationProcessIncompleteException {
+        userService.isRegistryComplete(email);
         return ResponseEntity.status(HttpStatus.OK).body("");
     }
 

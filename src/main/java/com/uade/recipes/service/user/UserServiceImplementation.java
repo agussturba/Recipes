@@ -1,16 +1,12 @@
 package com.uade.recipes.service.user;
 
 
-import com.uade.recipes.exceptions.userExceptions.EmailExistsException;
-import com.uade.recipes.exceptions.userExceptions.InvalidRoleException;
-import com.uade.recipes.exceptions.userExceptions.UserNameExistsException;
-import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
+import com.uade.recipes.exceptions.userExceptions.*;
 import com.uade.recipes.model.User;
 import com.uade.recipes.persistance.UserRepository;
 import com.uade.recipes.service.email.EmailSenderImplementation;
 import com.uade.recipes.vo.UserVo;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -51,22 +47,46 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public User createNewUser(String alias, String email, String role) throws UserNameExistsException, EmailExistsException {
-
-        User user = new User();
-
-        checkEmailExistence(email);
-        checkAliasExistence(alias);
-
-        user.setUserName(alias);
-        user.setEmail(email);
-        user.setRole(role);
-        user.setPassword("");
-        user.setEnabled(false);
-        user.setRegistrationTimestamp(LocalDateTime.now());
+    public void confirmEmail(String email) throws UserNotFoundException {
+        User user = validateUserRegistration(email);
+        user.setEnabled(true);
         userRepository.save(user);
-        emailSender.sendSimpleEmail(email, "Hola " + alias + ", \n Este es un mensaje para verificar tu correo electrónico.\n Haz Click en el link para validar tu correo: http://localhost:8080/api/user/email/confirmation?email=" + email, "Correo de verificación");
+    }
+
+    @Override
+    public User getUserByAlias(String userName) throws UserNotFoundException {
+        return userRepository.findByUserName(userName).orElseThrow(UserNotFoundException::new);
+    }
+
+    @Override
+    public User saveOrUpdateUser(UserVo userVo, String role) throws UserNameExistsException, EmailExistsException, InvalidRoleException, UserNotFoundException {
+        checkEmailExistence(userVo.getEmail());
+        checkAliasExistence(userVo.getUserName());
+        userVo.setPassword("");
+        userVo.setRole(role);
+        userVo.setEnabled(false);
+        userVo.setRegistrationTimestamp(LocalDateTime.now());
+        User user = userRepository.save(userVo.toModel());
+        emailSender.sendSimpleEmail(userVo.getEmail(), "Hola " + userVo.getUserName() + ", \n Este es un mensaje para verificar tu correo electrónico.\n Haz Click en el link para validar tu correo: http://localhost:8080/api/user/email/confirmation?email=" + userVo.getEmail(), "Correo de verificación");
         return user;
+    }
+
+    @Override
+    public void changePassword(String email, String password) throws UserNotFoundException {
+        User user = this.getUserByEmail(email);
+        user.setPassword(password);
+        userRepository.save(user);
+    }
+
+    @Override
+    public User getUserById(Integer userId) throws UserNotFoundException {
+        return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+    }
+
+    @Override
+    public void isRegistryComplete(String email) throws UserNotFoundException, RegistrationProcessIncompleteException {
+        User user = getUserByEmail(email);
+        if (!user.isEnabled()) throw new RegistrationProcessIncompleteException();
 
     }
 
@@ -84,49 +104,6 @@ public class UserServiceImplementation implements UserService {
             User userCheck = getUserByAlias(alias);
             throw new UserNameExistsException();
         } catch (UserNotFoundException e) {
-        }
-    }
-
-    @Override
-    public void confirmEmail(String email) throws UserNotFoundException {
-        User user = validateUserRegistration(email);
-        user.setEnabled(true);
-        userRepository.save(user);
-    }
-
-    @Override
-    public User getUserByAlias(String userName) throws UserNotFoundException {
-        return userRepository.findByUserName(userName).orElseThrow(UserNotFoundException::new);
-    }
-
-    @Override
-    public User saveOrUpdateUser(UserVo userVo, String role) throws UserNameExistsException, EmailExistsException, InvalidRoleException, UserNotFoundException {
-        existsUser(userVo);
-        userVo.setRole(role);
-        userVo.setEnabled(true);
-        User user = userRepository.save(userVo.toModel());
-        return user;
-    }
-
-    @Override
-    public void changePassword(String email, String password) throws UserNotFoundException {
-        User user = this.getUserByEmail(email);
-        user.setPassword(password);
-        userRepository.save(user);
-    }
-
-    @Override
-    public User getUserById(Integer userId) throws UserNotFoundException {
-        return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-    }
-
-
-    private void existsUser(UserVo userVo) throws UserNameExistsException, EmailExistsException, UserNotFoundException {
-        if (this.getUserByAlias(userVo.getUserName()) != null) {
-            throw new UserNameExistsException();
-        }
-        if (this.getUserByEmail(userVo.getEmail()) != null) {
-            throw new EmailExistsException();
         }
     }
 

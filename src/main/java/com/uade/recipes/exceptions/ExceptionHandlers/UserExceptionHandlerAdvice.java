@@ -49,5 +49,8 @@ public class UserExceptionHandlerAdvice {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The User was not found");
     }
 
-
+    @ExceptionHandler(RegistrationProcessIncompleteException.class)
+    public ResponseEntity handleRegistrationProcessIncompleteException() {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("The registration process for the given user is incomplete");
+    }
 }

@@ -26,8 +26,7 @@ public interface UserService {
 
     User validateUserRegistration(String email) throws UserNotFoundException;
 
-    User createNewUser(String alias, String email, String role) throws UserNameExistsException, EmailExistsException;
-
     void confirmEmail(String email) throws UserNotFoundException;
 
+    void isRegistryComplete(String email) throws UserNotFoundException, RegistrationProcessIncompleteException;
 }
