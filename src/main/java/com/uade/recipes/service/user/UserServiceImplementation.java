@@ -67,7 +67,7 @@ public class UserServiceImplementation implements UserService {
         userVo.setEnabled(false);
         userVo.setRegistrationTimestamp(LocalDateTime.now());
         User user = userRepository.save(userVo.toModel());
-        emailSender.sendSimpleEmail(userVo.getEmail(), "Hola " + userVo.getUserName() + ", \n Este es un mensaje para verificar tu correo electrónico.\n Haz Click en el link para validar tu correo: http://localhost:8080/api/user/email/confirmation?email=" + userVo.getEmail(), "Correo de verificación");
+        emailSender.sendSimpleEmail(userVo.getEmail(), "Hola " + userVo.getUserName() + ",\nEste es un mensaje para verificar tu correo electrónico.\nHaz Click en el link para validar tu correo: https://tasty-hub.herokuapp.com/api/user/email/confirmation?email=" + userVo.getEmail(), "Correo de verificación");
         return user;
     }
 
