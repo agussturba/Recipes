@@ -66,16 +66,10 @@ public class IngredientServiceImplementation implements IngredientService {
         try {
             this.getIngredientByName(ingredientVo.getName());
             throw new IngredientNameExistsException();
-        } catch (IngredientNotFoundException ignored) {
-        }
+        } catch (IngredientNotFoundException ignored) {}
     }
     private List<Type> getListType(List<Integer> typeIdList){
-        List<Type> typeList = new ArrayList<>();
-        for (Integer typeId: typeIdList) {
-            Type type = typeService.getTypeById(typeId);
-            typeList.add(type);
-        }
-        return typeList;
+        return typeIdList.stream().map(typeId -> typeService.getTypeById(typeId)).collect(Collectors.toList());
     }
 
 }

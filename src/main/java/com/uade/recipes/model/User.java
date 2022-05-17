@@ -26,7 +26,6 @@ public class User {
     private String email;
     @Column(nullable = false)
     private String userName;
-
     private String name;
     @OneToOne
     private UserPhoto avatar;
@@ -45,8 +44,6 @@ public class User {
         vo.setRole(role);
         vo.setEmail(email);
         vo.setUserName(userName);
-        vo.setPassword(password);
-        vo.setRegistrationTimestamp(registrationTimestamp);
         if (this.avatar == null) {
             vo.setAvatarId(null);
         } else {

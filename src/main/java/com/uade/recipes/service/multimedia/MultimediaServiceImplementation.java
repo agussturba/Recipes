@@ -49,20 +49,21 @@ public class MultimediaServiceImplementation implements MultimediaService {
     @Override
     public Iterable<Multimedia> saveMultimedia(Integer instructionId, List<MultipartFile> multimedia) throws InstructionNotFoundException, IOException {
         Instruction instruction = instructionService.getInstructionById(instructionId);
-        Map uploadResult;
         List<Multimedia> multimediaList = new ArrayList<>();
-        Multimedia newImageOrVideo;
         for (MultipartFile videoOrImage : multimedia) {
-            newImageOrVideo = new Multimedia();
-            newImageOrVideo.setInstruction(instruction);
-            newImageOrVideo.setTypeContent(videoOrImage.getContentType());
-            uploadResult = saveMultimediaToCloudinary(videoOrImage);
-            newImageOrVideo.setUrlContent((String) uploadResult.get("url"));
-            newImageOrVideo.setExtension(StringUtils.getFilenameExtension(videoOrImage.getOriginalFilename()));
+            Multimedia newImageOrVideo = setNewImageOrVideo(videoOrImage, instruction);
             multimediaList.add(newImageOrVideo);
         }
-
         return multimediaRepository.saveAll(multimediaList);
+    }
+    private Multimedia setNewImageOrVideo(MultipartFile videoOrImage,Instruction instruction) throws IOException {
+        Multimedia newImageOrVideo = new Multimedia();
+        newImageOrVideo.setInstruction(instruction);
+        newImageOrVideo.setTypeContent(videoOrImage.getContentType());
+        Map uploadResult = saveMultimediaToCloudinary(videoOrImage);
+        newImageOrVideo.setUrlContent((String) uploadResult.get("url"));
+        newImageOrVideo.setExtension(StringUtils.getFilenameExtension(videoOrImage.getOriginalFilename()));
+        return newImageOrVideo;
     }
 
     @Override
@@ -77,8 +78,8 @@ public class MultimediaServiceImplementation implements MultimediaService {
 
     private Map saveMultimediaToCloudinary(MultipartFile multimediaFile) throws IOException {
         String type = multimediaFile.getContentType().split("/")[0];
-        Map uploadResult =  cloudinary.uploader().upload(multimediaFile.getBytes(),
+        return  cloudinary.uploader().upload(multimediaFile.getBytes(),
                 ObjectUtils.asMap("resource_type", type));
-        return uploadResult;
+
     }
 }

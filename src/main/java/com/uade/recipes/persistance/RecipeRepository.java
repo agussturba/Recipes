@@ -1,6 +1,5 @@
 package com.uade.recipes.persistance;
 
-import com.uade.recipes.model.Dish;
 import com.uade.recipes.model.Recipe;
 import com.uade.recipes.model.Type;
 import com.uade.recipes.model.User;
@@ -14,8 +13,6 @@ public interface RecipeRepository extends CrudRepository<Recipe, Integer> {
     List<Recipe> findByNameOrderByName(String name);
 
     List<Recipe> findByUserOrderByName(User user);
-
-
 
     List<Recipe> findByUserAndPeopleAmount(User user, Integer peopleAmount);
 

@@ -73,7 +73,7 @@ public class RecipePhotoServiceImplementation implements RecipePhotoService {
         recipePhotoRepository.delete(recipePhoto);
     }
 
-    public List<RecipePhoto> getRecipePhotosByIds(List<Integer> recipePhotoIdList) {//TODO TEST
+    public List<RecipePhoto> getRecipePhotosByIds(List<Integer> recipePhotoIdList) {
         return (List<RecipePhoto>) recipePhotoRepository.findAllById(recipePhotoIdList);
     }
 

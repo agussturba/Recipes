@@ -14,6 +14,7 @@ import com.uade.recipes.vo.RecipeRatingVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.uade.recipes.validations.RatingValidations.validateRatingData;
 
@@ -64,12 +65,7 @@ public class RecipeRatingImplementation implements RecipeRatingService {
         return recipeRatingRepository.save(recipeRatingVo.toModel(recipe, user));
     }
     private Double getTotalRating(List<RecipeRating> ratingList){
-        Double totalRating = 0D;
-        for (RecipeRating recipeRating :
-                ratingList) {
-            totalRating += recipeRating.getRating();
-        }
-        return totalRating;
+        return ratingList.stream().collect(Collectors.summingDouble(RecipeRating::getRating));
     }
 
 

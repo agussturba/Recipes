@@ -1,6 +1,8 @@
 package com.uade.recipes.service.dish;
 
+import com.uade.recipes.exceptions.dishExceptions.DishNameContainsNumberException;
 import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;
+import com.uade.recipes.exceptions.dishExceptions.DishTypeContainsNumberException;
 import com.uade.recipes.model.Dish;
 import com.uade.recipes.model.Type;
 import com.uade.recipes.persistance.DishRepository;
@@ -14,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,11 +30,10 @@ class DishServiceImplementationTest {
     @Mock
     private DishRepository dishRepository;
     @Mock
-    private TypeRepository typeRepository;
+    private TypeServiceImplementation typeService;
     @InjectMocks
     private DishServiceImplementation dishServiceImplementation;
-    @InjectMocks
-    private TypeServiceImplementation typeService;
+
 
     private Dish testDish;
     private Type testType;
@@ -87,23 +89,22 @@ class DishServiceImplementationTest {
         verify(dishRepository).findByName("plato");
     }
 
-   /* @Test
+    @Test
     void getDishesByTypeIdList() {
-        when(dishRepository.findByTypesIsIn(any(List.class))).thenReturn(dishTestList);
-        when(typeService.getTypesByIdList(any(List.class))).thenReturn(typeTestList);
+        when(dishRepository.findByTypeIsIn(any(List.class))).thenReturn(dishTestList);
         List<Dish> result = dishServiceImplementation.getDishesByTypeIdList(Collections.singletonList(1));
         assertNotNull(result);
-        assertEquals(1,result.size());
+        assertEquals(1, result.size());
 
-    }*/
-/*
+    }
+
     @Test
     void saveOrUpdateDish() throws DishNameContainsNumberException, DishTypeContainsNumberException {
         when(dishRepository.save(any(Dish.class))).thenReturn(testDish);
-        when(typeService.getTypesByIdList(any(List.class))).thenReturn(typeTestList);
+        when(typeService.getTypeById(any(Integer.class))).thenReturn(testType);
         Dish result = dishServiceImplementation.saveOrUpdateDish(testDish.toVO());
         assertNotNull(result);
-        assertEquals("Pizza",result.getName());
-        verify(dishRepository).save(testDish);
-    }*/
+        assertEquals("Pizza", result.getName());
+
+    }
 }

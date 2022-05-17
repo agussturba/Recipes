@@ -1,7 +1,6 @@
 package com.uade.recipes.service.favoriteRecipe;
 
 import com.uade.recipes.exceptions.FavoriteRecipeNotFoundException;
-import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.FavoriteRecipe;
