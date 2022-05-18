@@ -34,21 +34,15 @@ public class IngredientQuantityController {
     }
 
     @GetMapping
-    @ApiOperation(value = "Obtener una lista de todas las cantidad de ingredientes de las recetas", response = Iterable.class)
+    @ApiOperation(value = "Obtener una lista de todas las cantidad de ingredientes una receta", response = Iterable.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Lista de cantidad de ingrediente devuelta satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
-            @ApiResponse(code = 404, message = "Ingrediente no encontrado")
+            @ApiResponse(code = 404, message = "Receta no encontrada")
     })
-    public ResponseEntity<List<IngredientQuantityVo>> getAllIngredientQuantities(@RequestParam(required = false) Integer ingredientId) throws IngredientNotFoundException {
-        List<IngredientQuantityVo> result;
-        if (ingredientId == null) {
-            result = transformListToVoList(ingredientQuantityService.getAllIngredientQuantity());
-        } else {
-            result = transformListToVoList(ingredientQuantityService.getIngredientQuantityByIngredientId(ingredientId));
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(result);
+    public ResponseEntity<List<IngredientQuantityVo>> getAllIngredientQuantitiesByRecipeId(@RequestParam Integer recipeId) throws RecipeNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(transformListToVoList(ingredientQuantityService.getIngredientQuantityByRecipeId(recipeId)));
     }
 
     @GetMapping("/{ingredientQuantityId}")
@@ -75,7 +69,7 @@ public class IngredientQuantityController {
     }
 
     @PostMapping
-    @ApiOperation(value = "Crear una nueva cantidad de ingrediente", response = ResponseEntity.class)
+    @ApiOperation(value = "Crear una nueva cantidad de ingrediente para una receta", response = ResponseEntity.class)
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Cantidad de ingrediente creada satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),

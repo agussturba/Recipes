@@ -79,6 +79,7 @@ public class FavoriteRecipeController {
         favoriteRecipeService.deleteFavoriteRecipeByFavoriteRecipeId(favoriteRecipeId);
         return (ResponseEntity) ResponseEntity.status(HttpStatus.OK);
     }
+
     private List<FavoriteRecipeVo> transformListToVoList(List<FavoriteRecipe> list){
         List<FavoriteRecipeVo> result = new ArrayList<>();
         for(FavoriteRecipe favoriteRecipe : list){

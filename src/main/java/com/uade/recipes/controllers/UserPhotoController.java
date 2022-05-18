@@ -25,17 +25,7 @@ public class UserPhotoController {
     public UserPhotoController(UserPhotoService userPhotoService) {
         this.userPhotoService = userPhotoService;
     }
-    @GetMapping
-    @ApiOperation(value = "Obtener una lista de fotos de usuario", response = ResponseEntity.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Lista de fotos de usuario retornada satisfactoriamente"),
-            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
-            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
-    })
-    public ResponseEntity<List<UserPhotoVo>> getAllUserPhotos(){
-        List<UserPhotoVo> result = transformListToVoList(userPhotoService.getAllUserPhotos());
-        return ResponseEntity.status(HttpStatus.OK).body(result);
-    }
+
     @GetMapping("/{id}")
     @ApiOperation(value = "Obtener una foto de usuario por ID", response = ResponseEntity.class)
     @ApiResponses(value = {

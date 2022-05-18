@@ -41,7 +41,7 @@ public class RecipeController {
     }
 
     @GetMapping
-    @ApiOperation(value = "Retornar una lista de todas las recetas", response = Iterable.class)
+    @ApiOperation(value = "Retornar una lista de todas las recetas donde se le puede pasar opcionalmente un user Id y/o un dish Id y/o peopleAmount", response = Iterable.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Lista de recetas retornada satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
@@ -128,7 +128,7 @@ public class RecipeController {
         return ResponseEntity.status(HttpStatus.OK).body(new RecipeVo());
     }
     @GetMapping("/type")
-    @ApiOperation(value = "Retornar recetas por su tipo", response = Iterable.class)
+    @ApiOperation(value = "Obtener una lista de recetas a partir un grupo de tipos", response = Iterable.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Lista de recetas por su tipo retornada satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
@@ -154,7 +154,7 @@ public class RecipeController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
     @GetMapping("/convert/ingredient")
-    @ApiOperation(value = "Convertir una receta apartir de una nueva cantidad de ingrediente", response = Iterable.class)
+    @ApiOperation(value = "Convertir una receta a partir de una nueva cantidad de ingrediente", response = Iterable.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Lista de recetas por su tipo retornada satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),

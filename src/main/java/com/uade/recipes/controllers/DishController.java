@@ -34,7 +34,7 @@ public class DishController {
     }
 
     @GetMapping
-    @ApiOperation(value = "Obtener una lista de todos los platos ", response = Iterable.class)
+    @ApiOperation(value = "Obtener una lista de todos los platos donde se le puede pasar opcionalmente una lisa de tipos", response = Iterable.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Lista de platos retornados satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),

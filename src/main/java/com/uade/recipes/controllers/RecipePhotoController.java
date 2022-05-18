@@ -31,17 +31,6 @@ public class RecipePhotoController {
         this.recipePhotoService = recipePhotoService;
     }
 
-    @GetMapping
-    @ApiOperation(value = "Obtener una lista de todas las fotos de recetas", response = Iterable.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Lista de fotos retornada satisfactoriamente"),
-            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
-            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
-    })
-    public ResponseEntity<List<RecipePhotoVo>> getAllRecipePhotos() {
-        List<RecipePhotoVo> result = transformListToVoList(recipePhotoService.getAllRecipePhotos());
-        return ResponseEntity.status(HttpStatus.OK).body(result);
-    }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Obtener una foto de receta por ID", response = ResponseEntity.class)

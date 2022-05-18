@@ -26,18 +26,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
-    @ApiOperation(value = "Obtener una lista de todos las usuarios", response = ResponseEntity.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Lista de usuarios retornada satisfactoriamente"),
-            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
-            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
-
-    })
-    public ResponseEntity<List<UserVo>> getAllUsers() {
-        List<UserVo> result = transformListToVoList(userService.getAllUsers());
-        return ResponseEntity.status(HttpStatus.OK).body(result);
-    }
 
     @GetMapping("/email/{email}")
     @ApiOperation(value = "Obtener un usuario en base a su email", response = ResponseEntity.class)

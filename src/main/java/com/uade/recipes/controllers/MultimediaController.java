@@ -31,18 +31,6 @@ public class MultimediaController {
         this.multimediaService = multimediaService;
     }
 
-
-    @GetMapping
-    @ApiOperation(value = "Retornar una lista con toda la multimedia", response = Iterable.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Lista de multimedia retornada satisfactoriamente"),
-            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
-            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
-    })
-    public ResponseEntity<List<MultimediaVo>> getAllMultimedia(){
-        List<MultimediaVo> result = transformListToVoList(multimediaService.getAllMultimedia());
-        return ResponseEntity.status(HttpStatus.OK).body(result);
-    }
     @GetMapping("/{id}")
     @ApiOperation(value = "Retornar una multimedia por su ID", response = ResponseEntity.class)
     @ApiResponses(value = {
@@ -68,7 +56,7 @@ public class MultimediaController {
     @PostMapping
     @ApiOperation(value = "Crear una multimedia para una instrucción", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Multimedia creada satisfactoriamente"),
+            @ApiResponse(code = 201, message = "Multimedia creada satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "La instrucción no fue encontrada")
