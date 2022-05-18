@@ -98,8 +98,8 @@ public class RecipeController {
             @ApiResponse(code = 404, message = "No existen ingrediente con dicho id")
 
     })
-    public ResponseEntity<List<RecipeVo>> getRecipesByMissingIngredientId(@PathVariable Integer ingredientId) throws IngredientNotFoundException {
-        List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByMissingIngredientId(ingredientId));
+    public ResponseEntity<List<RecipeVo>> getRecipesByMissingIngredientId(@RequestBody List<Integer> ingredientIdList) throws IngredientNotFoundException {
+        List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByMissingIngredientId(ingredientIdList.get(0)));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
     @GetMapping("/enabled/{recipeId}")
@@ -176,8 +176,8 @@ public class RecipeController {
             @ApiResponse(code = 404, message = "No se pudo encontrar el ingrediente o recetas")
 
     })
-    public ResponseEntity<List<RecipeVo>> getRecipesByIngredient(@RequestParam Integer ingredientId) throws IngredientNotFoundException {
-        List<Recipe> result = getRecipesFromIngredientQuantity(ingredientQuantityService.getIngredientQuantityByIngredientId(ingredientId));
+    public ResponseEntity<List<RecipeVo>> getRecipesByIngredient(@RequestBody List<Integer> ingredientIdList) throws IngredientNotFoundException {
+        List<Recipe> result = getRecipesFromIngredientQuantity(ingredientQuantityService.getIngredientQuantityByIngredientId(ingredientIdList.get(0)));
         List<RecipeVo> resultFinal = transformListToVoList(result);
         return ResponseEntity.status(HttpStatus.FOUND).body(resultFinal);
     }
