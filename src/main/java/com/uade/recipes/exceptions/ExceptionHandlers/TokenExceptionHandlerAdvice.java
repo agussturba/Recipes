@@ -15,7 +15,7 @@ public class TokenExceptionHandlerAdvice {
     }
 
     @ExceptionHandler(TokenCantBeGeneratedException.class)
-    public ResponseEntity handleTokenCantBeGeneratedException() {
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("There is currently another valid token for this user");
+    public ResponseEntity handleTokenCantBeGeneratedException(TokenCantBeGeneratedException tcbe) {
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(tcbe.getMessage());
     }
 }

@@ -42,14 +42,15 @@ public class TokenServiceImplementation implements TokenService {
     @Override
     public Integer generateToken(Integer userId) throws UserNotFoundException, TokenCantBeGeneratedException {
         User user = userService.getUserById(userId);
-        if (canGenerateToken(userId)) {
+        boolean isUserStudent = user.getRole().equalsIgnoreCase("student");
+        if (!isUserStudent && canGenerateToken(userId)) {
             Token token = new Token(user);
             tokenRepository.save(token);
             sendTokenEmail(user.getEmail(), token.getCode());
             return token.getCode();
         }
         else {
-            throw new TokenCantBeGeneratedException();
+            throw new TokenCantBeGeneratedException(isUserStudent ? "You can't generate a token for a Student User" : "here is currently another valid token for this user");
         }
     }
 

@@ -41,10 +41,11 @@ public class AuthenticationController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "El token fue generado y enviado con éxito" ),
             @ApiResponse(code = 404, message = "El usuario no fue encontrado"),
-            @ApiResponse(code = 422, message = "El token no pudo ser generado")
+            @ApiResponse(code = 422, message = "El token no pudo ser generado porque ya existe uno o bien su rol no es invitado")
 
     })
-    public ResponseEntity<Integer> getCode(@RequestParam Integer userId) throws UserNotFoundException, TokenCantBeGeneratedException {
+    public ResponseEntity<Integer> getCode(@RequestParam String email) throws UserNotFoundException, TokenCantBeGeneratedException {
+        Integer userId = userService.getUserByEmail(email).getId();
         return ResponseEntity.status(HttpStatus.OK).body(tokenService.generateToken(userId));
     }
 
