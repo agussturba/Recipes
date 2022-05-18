@@ -1,11 +1,13 @@
 package com.uade.recipes.vo;
 
 import com.uade.recipes.model.Recipe;
+import com.uade.recipes.model.RecipePhoto;
 import com.uade.recipes.model.User;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,6 +18,7 @@ public class RecipeVo {
     Integer typeId;
     Integer dishId;
     Integer userId;
+    List<Integer> recipePhotoIdList;
     Integer peopleAmount;
     Double portions;
     Integer duration;

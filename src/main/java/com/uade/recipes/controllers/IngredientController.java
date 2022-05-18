@@ -40,19 +40,15 @@ public class IngredientController {
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "Tipo de ingrediente no encontrado")
     })
-    public ResponseEntity<List<IngredientVo>> getAllIngredients(@RequestParam(required = false) Integer typeId) {
-        if (typeId != null) {
-            List<IngredientVo> result = transformListToVoList(ingredientService.getIngredientsByTypeId(typeId));
-            return ResponseEntity.status(HttpStatus.OK).body(result);
-        }
+    public ResponseEntity<List<IngredientVo>> getAllIngredients() {
         List<IngredientVo> result = transformListToVoList(ingredientService.getAllIngredients());
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @PostMapping
-    @ApiOperation(value = "Crear un nuevo ingrediente", response = Iterable.class)
+    @ApiOperation(value = "Crear un nuevo ingrediente", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Ingrediente creado satisfactoriamente"),
+            @ApiResponse(code = 201, message = "Ingrediente creado satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "Tipo de ingrediente no encontrado")
@@ -62,7 +58,7 @@ public class IngredientController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Obtener un ingrediente por su ID", response = Iterable.class)
+    @ApiOperation(value = "Obtener un ingrediente por su ID", response = ResponseEntity.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Ingrediente retornado satisfactoriamente por su ID"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
@@ -74,7 +70,7 @@ public class IngredientController {
     }
 
     @GetMapping("/name/{name}")
-    @ApiOperation(value = "Obtener un ingrediente por su nombre", response = Iterable.class)
+    @ApiOperation(value = "Obtener un ingrediente por su nombre", response = ResponseEntity.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Ingrediente retornado satisfactoriamente por su nombre"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),

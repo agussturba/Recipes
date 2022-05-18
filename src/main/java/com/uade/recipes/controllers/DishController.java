@@ -39,7 +39,7 @@ public class DishController {
             @ApiResponse(code = 200, message = "Lista de platos retornados satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
-            @ApiResponse(code = 404, message = "Tipo no encontrado")
+            @ApiResponse(code = 404, message = "Tipo/s no encontrado")
     })
     public ResponseEntity<List<DishVo>> getAllDishes(@RequestParam(required = false) List<Integer> typeIds) {
         if (typeIds != null) {
@@ -51,7 +51,7 @@ public class DishController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Obtener un plato por su ID en base de datos", response = ResponseEntity.class)
+    @ApiOperation(value = "Obtener un plato por su ID en la base de datos", response = ResponseEntity.class)
     @ApiResponses(value = {
             @ApiResponse(code = 302, message = "Plato retornado satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
@@ -65,7 +65,7 @@ public class DishController {
     @GetMapping("/name/{name}")
     @ApiOperation(value = "Obtener un plato por su nombre", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 302, message = "Plato retornado satisfactoriamente"),
+            @ApiResponse(code = 200, message = "Plato retornado satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "Plato no encontrado")
@@ -76,7 +76,7 @@ public class DishController {
     @GetMapping("/recipe/{recipeId}")
     @ApiOperation(value = "Obtener un plato por el id de una receta", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 302, message = "Plato retornado satisfactoriamente"),
+            @ApiResponse(code = 200, message = "Plato retornado satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "Plato no encontrado o receta no encontrada")
@@ -100,7 +100,7 @@ public class DishController {
     @PutMapping
     @ApiOperation(value = "Actualizar un plato", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Plato actualizado satisfactoriamente"),
+            @ApiResponse(code = 200, message = "Plato actualizado satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "Tipo de plato no encontrado")

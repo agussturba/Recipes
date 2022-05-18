@@ -103,7 +103,7 @@ public class RecipeController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
     @GetMapping("/enabled/{recipeId}")
-    @ApiOperation(value = "Verificar si una receta esta habilitada", response = Iterable.class)
+    @ApiOperation(value = "Verificar si una receta esta habilitada", response = Boolean.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "La receta esta habilitada o deshabilitada"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
@@ -115,6 +115,18 @@ public class RecipeController {
         return ResponseEntity.status(HttpStatus.OK).body(recipeService.isRecipeEnabled(recipeId));
     }
 
+    @PutMapping("/enabled/{recipeId}")
+    @ApiOperation(value = "Habilitar una receta", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "La receta esta habilitada"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "No existen dicha receta")
+
+    })
+    public ResponseEntity<RecipeVo> enabledRecipeByRecipeId(@PathVariable Integer recipeId) {
+        return ResponseEntity.status(HttpStatus.OK).body(new RecipeVo());
+    }
     @GetMapping("/type")
     @ApiOperation(value = "Retornar recetas por su tipo", response = Iterable.class)
     @ApiResponses(value = {
@@ -124,7 +136,7 @@ public class RecipeController {
             @ApiResponse(code = 404, message = "No existen recetas con dicho tipo")
 
     })
-    public ResponseEntity<List<RecipeVo>> getRecipesByTypes(@RequestBody List<Integer> typesIds) {//TODO  PUEDE SER UN REQUEST PARAM
+    public ResponseEntity<List<RecipeVo>> getRecipesByTypes(@RequestBody List<Integer> typesIds) {
         List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByTypes(typesIds));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
@@ -156,6 +168,14 @@ public class RecipeController {
     }
 
     @GetMapping("/ingredients")
+    @ApiOperation(value = "Obtener una lista de recetas a partir del id de un ingredient", response = Iterable.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Lista de recetas por un ingrediente retornada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "No se pudo encontrar el ingrediente o recetas")
+
+    })
     public ResponseEntity<List<RecipeVo>> getRecipesByIngredient(@RequestParam Integer ingredientId) throws IngredientNotFoundException {
         List<Recipe> result = getRecipesFromIngredientQuantity(ingredientQuantityService.getIngredientQuantityByIngredientId(ingredientId));
         List<RecipeVo> resultFinal = transformListToVoList(result);

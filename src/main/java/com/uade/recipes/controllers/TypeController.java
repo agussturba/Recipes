@@ -27,6 +27,7 @@ public class TypeController {
     public TypeController(TypeService typeService) {
         this.typeService = typeService;
     }
+
     @GetMapping
     @ApiOperation(value = "Obtener una lista de todos los tipos", response = Iterable.class)
     @ApiResponses(value = {

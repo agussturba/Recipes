@@ -1,6 +1,5 @@
 package com.uade.recipes.controllers;
 
-import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.exceptions.userPhotoExceptions.UserPhotoNotFoundException;
 import com.uade.recipes.model.UserPhoto;
@@ -11,13 +10,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -64,7 +57,7 @@ public class UserPhotoController {
             @ApiResponse(code = 404, message = "La foto de usuario no fue encontrada"),
 
     })
-    public ResponseEntity<UserPhotoVo> getUserPhotoByUserId(@PathVariable Integer userId) throws RecipeNotFoundException, UserNotFoundException, UserPhotoNotFoundException {
+    public ResponseEntity<UserPhotoVo> getUserPhotoByUserId(@PathVariable Integer userId) throws  UserNotFoundException, UserPhotoNotFoundException {
         return ResponseEntity.status(HttpStatus.FOUND).body(userPhotoService.getUserPhotoByUserId(userId).toVO());
     }
     @PostMapping
@@ -76,11 +69,19 @@ public class UserPhotoController {
             @ApiResponse(code = 404, message = "El usuario no fue encontrado"),
 
     })
-    public ResponseEntity<UserPhotoVo> savePhotoUser(@RequestParam Integer userId, @RequestParam MultipartFile image) throws RecipeNotFoundException, IOException, UserNotFoundException, UserPhotoNotFoundException {
+    public ResponseEntity<UserPhotoVo> savePhotoUser(@RequestParam Integer userId, @RequestParam MultipartFile image) throws  IOException, UserNotFoundException, UserPhotoNotFoundException {
         return ResponseEntity.status(HttpStatus.FOUND).body(userPhotoService.saveUserPhoto(userId, image).toVO());
     }
 
     @DeleteMapping
+    @ApiOperation(value = "Eliminar la foto de usuario", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Foto de usuario eliminada exitosamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "El usuario o foto no fue encontrado"),
+
+    })
     public ResponseEntity deleteUserPhoto(@RequestParam Integer photoId) throws IOException, UserPhotoNotFoundException {
         userPhotoService.deleteUserPhoto(photoId);
         return new ResponseEntity(HttpStatus.OK);

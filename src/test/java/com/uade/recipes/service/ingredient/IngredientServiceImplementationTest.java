@@ -46,7 +46,6 @@ class IngredientServiceImplementationTest {
         testIngredient = new Ingredient();
         testIngredient.setName("Tomate");
         testIngredient.setDividable(true);
-        testIngredient.setType(typeTestList);
         testIngredient.setId(1);
         ingredientTestList.add(testIngredient);
     }
@@ -80,15 +79,6 @@ class IngredientServiceImplementationTest {
         verify(ingredientRepository).findByName("Tomate");
     }
 
-    @Test
-    void getIngredientsByTypeId() {
-        when(ingredientRepository.findByType(any(Type.class))).thenReturn(ingredientTestList);
-        when(typeService.getTypeById(any(Integer.class))).thenReturn(testType);
-        List<Ingredient> ingredient = ingredientServiceImplementation.getIngredientsByTypeId(1);
-        assertNotNull(ingredient);
-        assertEquals(1, ingredient.size());
-        verify(ingredientRepository).findByType(testType);
-    }
 
     @Test
     void saveOrUpdateIngredient() {

@@ -60,7 +60,7 @@ public class UnitController {
             @ApiResponse(code = 200, message = "Unidad retornada satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
-            @ApiResponse(code = 404, message = "Unidad no encontrada")
+            @ApiResponse(code = 404, message = "La Unidad no fue encontrada")
 
     })
     public ResponseEntity<UnitVo> getUnitById(@PathVariable Integer id) {

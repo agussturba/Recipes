@@ -17,5 +17,4 @@ public interface IngredientQuantityRepository extends CrudRepository<IngredientQ
 
     IngredientQuantity findByRecipeAndIngredient(Recipe recipe, Ingredient ingredient);
 
-    Optional<IngredientQuantity> findByIngredientAndQuantity(Ingredient ingredient, Double quantity);
 }

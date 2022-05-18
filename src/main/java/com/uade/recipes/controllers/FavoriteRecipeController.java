@@ -32,21 +32,21 @@ public class FavoriteRecipeController {
     }
 
     @GetMapping
-    @ApiOperation(value = "Obtener una lista de todos las recetas favoritas de un usuario ", response = Iterable.class)
+    @ApiOperation(value = "Obtener una lista de todos las recetas favoritas de un usuario", response = Iterable.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Lista de recetas retornados satisfactoriamente"),
+            @ApiResponse(code = 200, message = "Lista de recetas favoritas del usuario retornado satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
-            @ApiResponse(code = 404, message = "usuario no encontrado")
+            @ApiResponse(code = 404, message = "Usuario no encontrado")
     })
     public ResponseEntity<List<FavoriteRecipeVo>> getAllFavoritesRecipesByUserId(@PathVariable Integer userId) throws UserNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(transformListToVoList(favoriteRecipeService.getAllFavoritesRecipesByUserId(userId)));
     }
 
     @PostMapping
-    @ApiOperation(value = "Guardar una receta como favorita para un usuario determinado ", response = Iterable.class)
+    @ApiOperation(value = "Guardar una receta como favorita para un usuario determinado ", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "La receta a sido añadida como favorita para el usuario"),
+            @ApiResponse(code = 201, message = "La receta a sido añadida como favorita para el usuario"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "Usuario no encontrado o Receta no encontrada")
@@ -56,7 +56,7 @@ public class FavoriteRecipeController {
     }
 
     @DeleteMapping("/delete")
-    @ApiOperation(value = "Eliminar una receta de favoritos por id usuario y id receta ", response = Iterable.class)
+    @ApiOperation(value = "Eliminar una receta de favoritos por id usuario y id receta", response = ResponseEntity.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "La receta a sido eliminada de favoritos para el usuario indicado"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
@@ -68,9 +68,9 @@ public class FavoriteRecipeController {
         return (ResponseEntity) ResponseEntity.status(HttpStatus.OK);
     }
     @DeleteMapping
-    @ApiOperation(value = "Eliminar una receta de favoritos por su id ", response = Iterable.class)
+    @ApiOperation(value = "Eliminar una receta de favoritos por su id ", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "La receta a sido eliminada de favoritos para el usuario indicado"),
+            @ApiResponse(code = 204, message = "La receta a sido eliminada de favoritos para el usuario indicado"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "Usuario no encontrado o Receta no encontrada")

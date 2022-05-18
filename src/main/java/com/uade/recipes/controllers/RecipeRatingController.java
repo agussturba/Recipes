@@ -34,12 +34,12 @@ public class RecipeRatingController {
     }
 
     @GetMapping("/{recipeRatingId}")
-    @ApiOperation(value = "Obtener una calificacion de receta por ID", response = ResponseEntity.class)
+    @ApiOperation(value = "Obtener una calificación de una receta por el ID de dicha calificación", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Calificacion de receta retornada satisfactoriamente"),
+            @ApiResponse(code = 200, message = "Calificación de receta retornada satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
-            @ApiResponse(code = 404, message = "La calificacion de receta no fue encontrada"),
+            @ApiResponse(code = 404, message = "La calificación de receta no fue encontrada"),
 
     })
     public ResponseEntity<List<RecipeRatingVo>> getRecipeRatingById(@PathVariable Integer recipeRatingId) throws RecipeNotFoundException {
@@ -47,7 +47,7 @@ public class RecipeRatingController {
     }
 
     @GetMapping("/amount/{recipeId}")
-    @ApiOperation(value = "Obtener la cantidad de calificaciones de una receta", response = ResponseEntity.class)
+    @ApiOperation(value = "Obtener la cantidad de calificaciones de una receta", response = Integer.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Cantidad de calificaciones de la receta retornada satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
@@ -73,12 +73,12 @@ public class RecipeRatingController {
     }
 
     @PostMapping
-    @ApiOperation(value = "Crear una nueva calificacion de receta ", response = ResponseEntity.class)
+    @ApiOperation(value = "Crear una nueva calificación para una receta ", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Calificacion de receta creada satisfactoriamente"),
+            @ApiResponse(code = 200, message = "Calificación de receta creada satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
-            @ApiResponse(code = 404, message = "La receta/usuario no fue encontrado"),
+            @ApiResponse(code = 404, message = "La receta/usuario no fue encontrado")
 
     })
     public ResponseEntity<RecipeRatingVo> saveRecipeRating(@RequestBody RecipeRatingVo recipeRatingVo) throws UserNotFoundException, RecipeNotFoundException, RatingIsLowerThanZeroException, RatingIsNullException {
@@ -86,9 +86,9 @@ public class RecipeRatingController {
     }
 
     @PutMapping
-    @ApiOperation(value = "Actualizar una calificacion de receta ", response = ResponseEntity.class)
+    @ApiOperation(value = "Actualizar la calificación de una receta ", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Calificacion de receta actualizada satisfactoriamente"),
+            @ApiResponse(code = 200, message = "Calificación de receta actualizada satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "La receta/usuario no fue encontrado"),
@@ -99,12 +99,12 @@ public class RecipeRatingController {
     }
 
     @GetMapping("/user")
-    @ApiOperation(value = "Obtener una calificacion de una receta por el userId y la recetaId", response = ResponseEntity.class)
+    @ApiOperation(value = "Obtener una calificación de una receta por el userId y la recetaId", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Calificacion de receta retornada satisfactoriamente"),
+            @ApiResponse(code = 200, message = "Calificación de receta retornada satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
-            @ApiResponse(code = 404, message = "La calificacion de receta no fue encontrada"),
+            @ApiResponse(code = 404, message = "La calificación de receta no fue encontrada o "),
 
     })
     public ResponseEntity<RecipeRatingVo> getRecipeRatingByRecipeIdAndUserId(@RequestParam Integer recipeId,@RequestParam Integer userId) throws RecipeNotFoundException, UserNotFoundException {

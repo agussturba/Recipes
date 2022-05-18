@@ -55,29 +55,36 @@ public class MultimediaController {
         return ResponseEntity.status(HttpStatus.FOUND).body(multimediaService.getMultimediaById(id).toVO());
     }
     @GetMapping("/instruction/{id}")
-    @ApiOperation(value = "Retornar una multimedia por su receta", response = ResponseEntity.class)
+    @ApiOperation(value = "Retornar una multimedia por el id de la instrucción", response = ResponseEntity.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Multimedia retornada satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
-            @ApiResponse(code = 404, message = "La multimedia no fue encontrada")
+            @ApiResponse(code = 404, message = "La multimedia o instrucción no fue encontrada")
     })
     public ResponseEntity<MultimediaVo> getMultimediaByInstructionId(@PathVariable Integer id) throws InstructionNotFoundException {
         return ResponseEntity.status(HttpStatus.FOUND).body(multimediaService.getMultimediaByInstructionId(id).toVO());
     }
     @PostMapping
-    @ApiOperation(value = "Crear una multimedia para una instruccion", response = ResponseEntity.class)
+    @ApiOperation(value = "Crear una multimedia para una instrucción", response = ResponseEntity.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Multimedia creada satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
-            @ApiResponse(code = 404, message = "La instruccion no fue encontrada")
+            @ApiResponse(code = 404, message = "La instrucción no fue encontrada")
     })
     public ResponseEntity<List<Multimedia>> saveMultimedia(@RequestParam Integer instructionId, @RequestParam List<MultipartFile> multimedia) throws InstructionNotFoundException, IOException {
         return ResponseEntity.status(HttpStatus.FOUND).body((List<Multimedia>) multimediaService.saveMultimedia(instructionId, multimedia));
     }
 
     @DeleteMapping
+    @ApiOperation(value = "Eliminar la multimedia de una instrucción por el id de la multimedia", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Multimedia eliminada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "La instrucción no fue encontrada")
+    })
     public ResponseEntity deleteMultimedia(@RequestParam Integer multimediaId) throws IOException {
         multimediaService.deleteMultimedia(multimediaId);
         return new ResponseEntity(HttpStatus.OK);

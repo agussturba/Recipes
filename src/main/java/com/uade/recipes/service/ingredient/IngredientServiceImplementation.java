@@ -4,17 +4,12 @@ import com.uade.recipes.exceptions.ingredientExceptions.IngredientNameContainsNu
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNameExistsException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.model.Ingredient;
-import com.uade.recipes.model.Ingredient_Addition;
-import com.uade.recipes.model.Type;
 import com.uade.recipes.persistance.IngredientRepository;
-import com.uade.recipes.persistance.Ingredient_AdditionRepository;
 import com.uade.recipes.service.type.TypeService;
 import com.uade.recipes.vo.IngredientVo;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.uade.recipes.validations.IngredientsValidations.validateIngredientData;
 
@@ -45,12 +40,6 @@ public class IngredientServiceImplementation implements IngredientService {
         return ingredientRepository.findByName(ingredientName).orElseThrow(IngredientNotFoundException::new);
     }
 
-    @Override
-    public List<Ingredient> getIngredientsByTypeId(Integer ingredientTypeId) {
-        Type type = typeService.getTypeById(ingredientTypeId);
-        return ingredientRepository.findByType(type);
-
-    }
 
     @Override
     public Ingredient saveOrUpdateIngredient(IngredientVo ingredientVo) throws IngredientNameContainsNumberException {
@@ -58,8 +47,7 @@ public class IngredientServiceImplementation implements IngredientService {
         if (ingredientVo.getId() == null) {
             ingredientExists(ingredientVo);
         }
-        List<Type> typeList = getListType(ingredientVo.getTypeIdList());
-        return ingredientRepository.save(ingredientVo.toModel(typeList));
+        return ingredientRepository.save(ingredientVo.toModel());
     }
 
     private void ingredientExists(IngredientVo ingredientVo) {
@@ -68,8 +56,6 @@ public class IngredientServiceImplementation implements IngredientService {
             throw new IngredientNameExistsException();
         } catch (IngredientNotFoundException ignored) {}
     }
-    private List<Type> getListType(List<Integer> typeIdList){
-        return typeIdList.stream().map(typeId -> typeService.getTypeById(typeId)).collect(Collectors.toList());
-    }
+
 
 }

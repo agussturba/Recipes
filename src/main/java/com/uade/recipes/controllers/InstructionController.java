@@ -45,12 +45,12 @@ public class InstructionController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation(value = "Retornar una instruccion por su ID", response = ResponseEntity.class)
+    @ApiOperation(value = "Retornar una instrucción por su ID", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 302, message = "Instruccion retornada satisfactoriamente"),
+            @ApiResponse(code = 302, message = "Instrucción retornada satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
-            @ApiResponse(code = 404, message = "La instruccion no fue encontrada")
+            @ApiResponse(code = 404, message = "La instrucción no fue encontrada")
     })
     public ResponseEntity<InstructionVo> getInstructionById(@PathVariable Integer id) throws InstructionNotFoundException {
         return ResponseEntity.status(HttpStatus.FOUND).body(instructionService.getInstructionById(id).toVO());
@@ -70,9 +70,9 @@ public class InstructionController {
     }
 
     @PostMapping
-    @ApiOperation(value = "Crear una nueva instruccion", response = ResponseEntity.class)
+    @ApiOperation(value = "Crear una nueva instrucción", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 302, message = "Instrucciones de la receta creadas satisfactoriamente"),
+            @ApiResponse(code = 201, message = "Instrucción creada correctamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "La receta no fue encontrada")
@@ -82,12 +82,12 @@ public class InstructionController {
     }
 
     @PutMapping
-    @ApiOperation(value = "Actualizar una instruccion", response = ResponseEntity.class)
+    @ApiOperation(value = "Actualizar una instrucción", response = ResponseEntity.class)
     @ApiResponses(value = {
             @ApiResponse(code = 302, message = "Instrucciones de la receta actualizadas satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
-            @ApiResponse(code = 404, message = "La receta o la instruccion no fue encontrada")
+            @ApiResponse(code = 404, message = "La receta o la instrucción no fue encontrada")
     })
     public ResponseEntity<InstructionVo> updateInstruction(@RequestBody InstructionVo instructionVo) throws RecipeNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(instructionService.saveOrUpdateInstruction(instructionVo).toVO());

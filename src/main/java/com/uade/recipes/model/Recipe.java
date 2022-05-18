@@ -6,16 +6,11 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.SecondaryTable;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -31,8 +26,8 @@ public class Recipe {
     private String description;
     @Column(table = "recipe_addition")
     private Integer duration;
-    @OneToOne
-    private RecipePhoto recipePhoto;
+    @OneToMany
+    private List<RecipePhoto> recipePhoto;
     @OneToOne
     private User user;
     private Integer peopleAmount;
@@ -52,6 +47,7 @@ public class Recipe {
         vo.setDescription(description);
         vo.setUserId(user.getId());
         vo.setPeopleAmount(peopleAmount);
+        vo.setRecipePhotoIdList(recipePhoto.stream().map(RecipePhoto::getId).collect(Collectors.toList()));
         vo.setPortions(portions);
         vo.setTypeId(type.getId());
         vo.setTimestamp(timestamp);

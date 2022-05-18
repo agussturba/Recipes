@@ -32,9 +32,6 @@ public class Ingredient {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany
-    @Column(table = "ingredient_addition")
-    private List<Type> type;
     /**
      * Atributo para verificar que el ingrediento puede ser divisible.Que el ingrediente puede ser la mitadd
      * de dicho elemento. IE un tomate es divisble porque podes trabajar con medio tomate pero un huevo no es
@@ -49,7 +46,6 @@ public class Ingredient {
         vo.setId(id);
         vo.setName(name);
         vo.setDividable(dividable);
-        vo.setTypeIdList(type.stream().map(Type::getId).collect(Collectors.toList()));
         return vo;
     }
 

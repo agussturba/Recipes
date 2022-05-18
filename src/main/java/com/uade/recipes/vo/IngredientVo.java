@@ -15,11 +15,10 @@ public class IngredientVo {
     boolean dividable;
     List<Integer> typeIdList;
 
-    public Ingredient toModel(List<Type> type) {
+    public Ingredient toModel() {
         Ingredient ingredient = new Ingredient();
         ingredient.setId(this.getId());
         ingredient.setName(this.getName());
-        ingredient.setType(type);
         ingredient.setDividable(dividable);
         return ingredient;
     }

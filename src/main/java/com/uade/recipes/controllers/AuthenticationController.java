@@ -36,9 +36,9 @@ public class AuthenticationController {
     }
 
     @GetMapping("/token")
-    @ApiOperation(value = "Genera y envía el token para continuar el proceso de recuperación de contraseña")
+    @ApiOperation(value = "Genera y envía el token para continuar el proceso de recuperación de contraseña", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "El token fue generado y enviado con éxito" ),
+            @ApiResponse(code = 200, message = "El token fue generado y enviado con éxito"),
             @ApiResponse(code = 404, message = "El usuario no fue encontrado"),
             @ApiResponse(code = 422, message = "El token no pudo ser generado porque ya existe uno o bien su rol no es invitado")
 
@@ -52,6 +52,7 @@ public class AuthenticationController {
     @ApiOperation(value = "Controla que el token ingresado sea válido")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "El token ingresado es válido"),
+            @ApiResponse(code = 406, message = "El token ingresado es invalido"),//TODO TIRAR EL ERROR
             @ApiResponse(code = 404, message = "El usuario no fue encontrado")
     })
     public ResponseEntity<Boolean> isValid(@PathVariable Integer token, @RequestParam String email) throws UserNotFoundException {

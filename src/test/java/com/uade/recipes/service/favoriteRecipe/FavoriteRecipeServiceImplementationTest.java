@@ -11,6 +11,7 @@ import org.mockito.Mock;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 class FavoriteRecipeServiceImplementationTest {
@@ -50,7 +51,7 @@ class FavoriteRecipeServiceImplementationTest {
         testRecipe.setTimestamp(LocalDateTime.now());
         testRecipe.setDescription("Receta de Papa");
         testRecipe.setEnabled(true);
-        testRecipe.setRecipePhoto(testRecipePhoto);
+        testRecipe.setRecipePhoto(Arrays.asList(testRecipePhoto));
         testRecipe.setName("PAPAS");
         testRecipe.setDuration(2);
         testRecipe.setPortions(3D);
