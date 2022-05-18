@@ -6,7 +6,14 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.SecondaryTable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -18,10 +25,11 @@ import java.util.Objects;
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "recipe_id", nullable = false)
     private Integer id;
     private String name;
     private String description;
+    @Column(table = "recipe_addition")
     private Integer duration;
     @OneToOne
     private RecipePhoto recipePhoto;
@@ -46,6 +54,8 @@ public class Recipe {
         vo.setPeopleAmount(peopleAmount);
         vo.setPortions(portions);
         vo.setTypeId(type.getId());
+        vo.setTimestamp(timestamp);
+        vo.setEnabled(enabled);
         return vo;
     }
 

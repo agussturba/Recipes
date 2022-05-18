@@ -1,7 +1,9 @@
 package com.uade.recipes.model;
 
 import com.uade.recipes.vo.MultimediaVo;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.Entity;

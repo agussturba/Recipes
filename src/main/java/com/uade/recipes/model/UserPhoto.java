@@ -1,10 +1,17 @@
 package com.uade.recipes.model;
 
 import com.uade.recipes.vo.UserPhotoVo;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import java.util.Objects;
 
 @Entity

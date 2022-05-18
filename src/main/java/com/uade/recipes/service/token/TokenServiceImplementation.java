@@ -30,7 +30,7 @@ public class TokenServiceImplementation implements TokenService {
     public boolean isTokenValid(Integer token, Integer userId) throws UserNotFoundException {
         User user = userService.getUserById(userId);
         try {
-            Token tokenElem = tokenRepository.findByUserAndCodeAndTimestampGreaterThanEqualAndTimestampLessThanEqual(user, token, Timestamp.valueOf(LocalDateTime.now().minusDays(1)),
+            tokenRepository.findByUserAndCodeAndTimestampGreaterThanEqualAndTimestampLessThanEqual(user, token, Timestamp.valueOf(LocalDateTime.now().minusDays(1)),
                     Timestamp.from(Instant.now())).orElseThrow(TokenNotFoundException::new);
             return true;
         } catch (TokenNotFoundException e) {

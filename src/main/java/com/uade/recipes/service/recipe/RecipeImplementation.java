@@ -70,17 +70,11 @@ public class RecipeImplementation implements RecipeService {
     }
 
     @Override
-    /*
-      all the recipes that doesn't have that ingredient
-     */
     public List<Recipe> getRecipesByMissingIngredientId(Integer ingredientId) throws IngredientNotFoundException {
         Set<Recipe> unAcceptableRecipes = ingredientQuantityService.getRecipesByIngredientId(ingredientId);
         List<Recipe> recipes = getAllRecipes();
-        for (Recipe unAcceptableRecipe : unAcceptableRecipes
-        ) {
-            recipes.remove(unAcceptableRecipe);
-        }
-        return recipes;
+        return recipes.stream().filter(unAcceptableRecipes::contains).collect(Collectors.toList());
+
     }
 
     @Override

@@ -11,7 +11,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-public class Conversion {
+public class Conversion  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -45,4 +45,5 @@ public class Conversion {
     public int hashCode() {
         return getClass().hashCode();
     }
+
 }

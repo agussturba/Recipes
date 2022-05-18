@@ -1,7 +1,10 @@
 package com.uade.recipes.service.user;
 
 
-import com.uade.recipes.exceptions.userExceptions.*;
+import com.uade.recipes.exceptions.userExceptions.EmailExistsException;
+import com.uade.recipes.exceptions.userExceptions.RegistrationProcessIncompleteException;
+import com.uade.recipes.exceptions.userExceptions.UserNameExistsException;
+import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.User;
 import com.uade.recipes.persistance.UserRepository;
 import com.uade.recipes.service.email.EmailSenderImplementation;
@@ -59,7 +62,7 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public User saveOrUpdateUser(UserVo userVo, String role) throws UserNameExistsException, EmailExistsException, InvalidRoleException, UserNotFoundException {
+    public User saveOrUpdateUser(UserVo userVo, String role) throws UserNameExistsException, EmailExistsException{
         checkEmailExistence(userVo.getEmail());
         checkAliasExistence(userVo.getUserName());
         userVo.setPassword("");
@@ -86,24 +89,25 @@ public class UserServiceImplementation implements UserService {
     @Override
     public void isRegistryComplete(String email) throws UserNotFoundException, RegistrationProcessIncompleteException {
         User user = getUserByEmail(email);
-        if (!user.isEnabled()) throw new RegistrationProcessIncompleteException();
+        if (!user.isEnabled())
+            throw new RegistrationProcessIncompleteException();
 
     }
 
     private void checkEmailExistence(String email) throws EmailExistsException {
         try {
-            User userCheck = getUserByEmail(email);
+            getUserByEmail(email);
             throw new EmailExistsException();
-        } catch (UserNotFoundException e) {
+        } catch (UserNotFoundException ignored) {
         }
 
     }
 
     private void checkAliasExistence(String alias) throws UserNameExistsException {
         try {
-            User userCheck = getUserByAlias(alias);
+            getUserByAlias(alias);
             throw new UserNameExistsException();
-        } catch (UserNotFoundException e) {
+        } catch (UserNotFoundException ignored) {
         }
     }
 

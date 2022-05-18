@@ -2,7 +2,6 @@ package com.uade.recipes.controllers;
 
 import com.uade.recipes.exceptions.tokenExceptions.TokenCantBeGeneratedException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
-import com.uade.recipes.model.User;
 import com.uade.recipes.service.token.TokenService;
 import com.uade.recipes.service.user.UserService;
 import com.uade.recipes.vo.UserVo;

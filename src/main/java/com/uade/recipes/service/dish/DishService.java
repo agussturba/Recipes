@@ -20,6 +20,5 @@ public interface DishService {
 
     List<Dish> getDishesByTypeIdList(List<Integer> typeIdList);
 
-
     Dish saveOrUpdateDish(DishVo DishVo) throws DishNameContainsNumberException, DishTypeContainsNumberException;
 }

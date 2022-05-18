@@ -15,6 +15,7 @@ import com.uade.recipes.vo.DishVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.uade.recipes.validations.DishesValidations.validateDishData;
 
@@ -70,12 +71,9 @@ public class DishServiceImplementation implements DishService {
 
 
     private List<Dish> filterDishesByTypesIdList(List<Dish> candidateDishes, List<Integer> typeIdList) {
-        for (Dish dish : candidateDishes) {
-                if (!typeIdList.contains(dish.getType().getId())) {
-                    candidateDishes.remove(dish);
-                }
-            }
-        return candidateDishes;
+        return candidateDishes.stream()
+                .filter(dish -> typeIdList.contains(dish.getType().getId()))
+                .collect(Collectors.toList());
     }
 
     private void dishExists(DishVo dishVo) {

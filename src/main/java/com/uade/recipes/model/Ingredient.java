@@ -6,9 +6,17 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.SecondaryTable;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 @Entity
@@ -20,7 +28,6 @@ import java.util.Objects;
 public class Ingredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Integer id;
     @Column(nullable = false)
     private String name;
@@ -41,6 +48,8 @@ public class Ingredient {
         IngredientVo vo = new IngredientVo();
         vo.setId(id);
         vo.setName(name);
+        vo.setDividable(dividable);
+        vo.setTypeIdList(type.stream().map(Type::getId).collect(Collectors.toList()));
         return vo;
     }
 
