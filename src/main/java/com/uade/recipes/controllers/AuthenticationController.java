@@ -54,7 +54,8 @@ public class AuthenticationController {
             @ApiResponse(code = 200, message = "El token ingresado es válido"),
             @ApiResponse(code = 404, message = "El usuario no fue encontrado")
     })
-    public ResponseEntity<Boolean> isValid(@PathVariable Integer token, @RequestParam Integer userId) throws UserNotFoundException {
+    public ResponseEntity<Boolean> isValid(@PathVariable Integer token, @RequestParam String email) throws UserNotFoundException {
+        Integer userId = userService.getUserByEmail(email).getId();
         return ResponseEntity.status(HttpStatus.OK).body(tokenService.isTokenValid(token, userId));
     }
 
