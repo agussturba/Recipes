@@ -34,7 +34,7 @@ public class IngredientQuantityController {
     }
 
     @GetMapping
-    @ApiOperation(value = "Obtener una lista de todas las cantidad de ingredientes una receta", response = Iterable.class)
+    @ApiOperation(value = "Obtener una lista de todas las cantidades de ingredientes una receta", response = Iterable.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Lista de cantidad de ingrediente devuelta satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
@@ -46,7 +46,7 @@ public class IngredientQuantityController {
     }
 
     @GetMapping("/{ingredientQuantityId}")
-    @ApiOperation(value = "Obtener una cantidad de ingrediente por ID", response = Iterable.class)
+    @ApiOperation(value = "Obtener una cantidades de ingrediente por ID", response = Iterable.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Cantidad de ingrediente devuelta satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
