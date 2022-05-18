@@ -30,7 +30,7 @@ public class SwaggerConfig  {
                 "Recipes Services",
                 "An API for storing,seeing and managing recipes",
                 "1.0","",
-                new Contact("Tasty Hub", "https://www.webcampus.uade.edu.ar/","asturba@uade.com.edu"),
+                new Contact("Tasty Hub", "","tasty.hub2022@gmail.com"),
                 "",
                 "",
                 Collections.emptyList()
