@@ -21,19 +21,19 @@ public interface RecipeService {
 
     List<Recipe> getRecipesByPeopleAmount(Integer peopleAmount);
 
-    List<Recipe> getRecipesByUserId(Integer userId) throws UserNotFoundException;
+    List<Recipe> getRecipesByOwnerId(Integer ownerId) throws UserNotFoundException;
 
     List<Recipe> getRecipesByTypes(List<Integer> typesIds);
 
     List<Recipe> getRecipesByMissingIngredientId(Integer ingredientId) throws IngredientNotFoundException;
 
-    List<Recipe> getRecipesByUserIdAndPeopleAmount(Integer userId, Integer peopleAmount) throws UserNotFoundException;
+    List<Recipe> getRecipesByOwnerIdAndPeopleAmount(Integer ownerId, Integer peopleAmount) throws UserNotFoundException;
 
-    List<Recipe> getRecipesByUserIdAndDishIdAndPeopleAmount(Integer userId, Integer dishId, Integer peopleAmount) throws UserNotFoundException, DishNotFoundException;
+    List<Recipe> getRecipesByOwnerIdAndDishIdAndPeopleAmount(Integer ownerId, Integer dishId, Integer peopleAmount) throws UserNotFoundException, DishNotFoundException;
 
     List<Recipe> getRecipesByDishIdAndPeopleAmount(Integer dishId, Integer peopleAmount) throws DishNotFoundException;
 
-    List<Recipe> getRecipesByUserIdAndDishId(Integer userId, Integer dishId) throws DishNotFoundException, UserNotFoundException;
+    List<Recipe> getRecipesByOwnerIdAndDishId(Integer ownerId, Integer dishId) throws DishNotFoundException, UserNotFoundException;
 
     List<Recipe> getRecipesByDishId(Integer dishId) throws UserNotFoundException, DishNotFoundException;
 

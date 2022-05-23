@@ -4,6 +4,7 @@ package com.uade.recipes.controllers;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNameContainsNumberException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientTypeContainsNumberException;
+import com.uade.recipes.model.FavoriteRecipe;
 import com.uade.recipes.model.Ingredient;
 import com.uade.recipes.service.ingredient.IngredientService;
 import com.uade.recipes.vo.IngredientVo;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/ingredient")
@@ -82,11 +84,7 @@ public class IngredientController {
     }
 
     private List<IngredientVo> transformListToVoList(List<Ingredient> list){
-        List<IngredientVo> result = new ArrayList<>();
-        for(Ingredient ing : list){
-            result.add(ing.toVO());
-        }
-        return result;
+        return list.stream().map(Ingredient::toVO).collect(Collectors.toList());
     }
 
 }

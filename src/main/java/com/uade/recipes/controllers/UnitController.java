@@ -1,5 +1,6 @@
 package com.uade.recipes.controllers;
 
+import com.uade.recipes.model.Type;
 import com.uade.recipes.model.Unit;
 import com.uade.recipes.service.unit.UnitService;
 import com.uade.recipes.vo.UnitVo;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/unit")
@@ -90,10 +92,6 @@ public class UnitController {
     }
 
     private List<UnitVo> transformListToVoList(List<Unit> list){
-        List<UnitVo> result = new ArrayList<>();
-        for(Unit obj: list){
-            result.add(obj.toVO());
-        }
-        return result;
+        return list.stream().map(Unit::toVO).collect(Collectors.toList());
     }
 }

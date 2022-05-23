@@ -29,7 +29,7 @@ public class Recipe {
     @OneToMany
     private List<RecipePhoto> recipePhoto;
     @OneToOne
-    private User user;
+    private User owner;
     private Integer peopleAmount;
     @Column(table = "recipe_addition")
     private boolean enabled;
@@ -45,7 +45,7 @@ public class Recipe {
         vo.setId(id);
         vo.setName(name);
         vo.setDescription(description);
-        vo.setUserId(user.getId());
+        vo.setOwnerId(owner.getId());
         vo.setPeopleAmount(peopleAmount);
         vo.setRecipePhotoIdList(recipePhoto.stream().map(RecipePhoto::getId).collect(Collectors.toList()));
         vo.setPortions(portions);
@@ -55,8 +55,8 @@ public class Recipe {
         return vo;
     }
 
-    public Integer getUserId() {
-        return user.getId();
+    public Integer getOwnerId() {
+        return owner.getId();
     }
 
 

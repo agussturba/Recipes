@@ -4,6 +4,7 @@ import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.recipeRatingExceptions.RatingIsLowerThanZeroException;
 import com.uade.recipes.exceptions.recipeRatingExceptions.RatingIsNullException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
+import com.uade.recipes.model.RecipePhoto;
 import com.uade.recipes.model.RecipeRating;
 import com.uade.recipes.service.recipeRating.RecipeRatingService;
 import com.uade.recipes.vo.RecipeRatingVo;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/rating")
@@ -112,11 +114,7 @@ public class RecipeRatingController {
     }
 
     private List<RecipeRatingVo> transformListToVoList(List<RecipeRating> list) {
-        List<RecipeRatingVo> result = new ArrayList<>();
-        for(RecipeRating obj: list){
-            result.add(obj.toVO());
-        }
-        return result;
+        return list.stream().map(RecipeRating::toVO).collect(Collectors.toList());
     }
 
 }

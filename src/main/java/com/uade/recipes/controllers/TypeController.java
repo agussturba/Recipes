@@ -1,5 +1,6 @@
 package com.uade.recipes.controllers;
 
+import com.uade.recipes.model.RecipePhoto;
 import com.uade.recipes.model.Type;
 import com.uade.recipes.service.type.TypeService;
 import com.uade.recipes.vo.TypeVo;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/type")
@@ -91,10 +93,6 @@ public class TypeController {
     }
 
     private List<TypeVo> transformListToVoList(List<Type> list){
-        List<TypeVo> result = new ArrayList<>();
-        for(Type obj: list){
-            result.add(obj.toVO());
-        }
-        return result;
+        return list.stream().map(Type::toVO).collect(Collectors.toList());
     }
 }

@@ -49,27 +49,29 @@ public class RecipePhotoServiceImplementation implements RecipePhotoService {
     @Override
     public List<RecipePhoto> saveRecipePhoto(Integer recipeId, List<MultipartFile> images) throws RecipeNotFoundException, IOException {
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(RecipeNotFoundException::new);
-        RecipePhoto recipePhoto;
-        Map uploadResult;
         List<RecipePhoto> recipePhotos = new ArrayList<>();
         for (MultipartFile image : images) {
-            recipePhoto = new RecipePhoto();
-            recipePhoto.setRecipe(recipe);
-            uploadResult = saveRecipePhotoToCloudinary(recipeId, image);
-            recipePhoto.setPhotoUrl((String) uploadResult.get("url"));
-            recipePhoto.setExtension(StringUtils.getFilenameExtension(image.getOriginalFilename()));
-            recipePhotos.add(recipePhoto);
+            recipePhotos.add(setNewImageRecipe(image,recipe));
         }
         return (List<RecipePhoto>) recipePhotoRepository.saveAll(recipePhotos);
     }
+    private RecipePhoto setNewImageRecipe(MultipartFile image, Recipe recipe) throws IOException {
+        RecipePhoto recipePhoto = new RecipePhoto();
+        recipePhoto.setRecipe(recipe);
+        Map uploadResult = saveRecipePhotoToCloudinary(recipe.getId(),image);
+        recipePhoto.setPhotoUrl( uploadResult.get("url").toString());
+        recipePhoto.setExtension(StringUtils.getFilenameExtension(image.getOriginalFilename()));
+        return recipePhoto;
+    }
+
 
     @Override
-    public void deleteRecipePhoto(Integer recipeId, Integer recipePhotoId) throws RecipeNotFoundException, IOException {
+    public void deleteRecipePhoto(Integer recipeId, Integer recipePhotoId) throws IOException {
         RecipePhoto recipePhoto = this.getRecipePhotoById(recipePhotoId);
         List<String> url = Arrays.asList(recipePhoto.getPhotoUrl().split("/"));
         String filename = url.get(url.size() - 1);
-        String public_id = filename.substring(0, filename.indexOf("."));
-        cloudinary.uploader().destroy(public_id, ObjectUtils.emptyMap());
+        String publicId = filename.substring(0, filename.indexOf("."));
+        cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
         recipePhotoRepository.delete(recipePhoto);
     }
 
@@ -78,8 +80,24 @@ public class RecipePhotoServiceImplementation implements RecipePhotoService {
     }
 
     private Map saveRecipePhotoToCloudinary(Integer recipeId, MultipartFile image) throws IOException {
-        Map uploadResult = cloudinary.uploader().upload(image.getBytes(),
+        return cloudinary.uploader().upload(image.getBytes(),
                 ObjectUtils.emptyMap());
-        return uploadResult;
     }
+    /**
+     *   Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(RecipeNotFoundException::new);
+     *         RecipePhoto recipePhoto;
+     *         Map uploadResult;
+     *         List<RecipePhoto> recipePhotos = new ArrayList<>();
+     *         for (MultipartFile image : images) {
+     *             recipePhoto = new RecipePhoto();
+     *             recipePhoto.setRecipe(recipe);
+     *             uploadResult = saveRecipePhotoToCloudinary(recipeId, image);
+     *             recipePhoto.setPhotoUrl((String) uploadResult.get("url"));
+     *             recipePhoto.setExtension(StringUtils.getFilenameExtension(image.getOriginalFilename()));
+     *             recipePhotos.add(recipePhoto);
+     *         }
+     *         return (List<RecipePhoto>) recipePhotoRepository.saveAll(recipePhotos);
+     *     }
+     */
 }
+

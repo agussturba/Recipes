@@ -15,7 +15,7 @@ public class RecipeValidations {
             throw new RecipeNameContainsNumberException();
         }
         validateDishId(recipeVo.getDishId());
-        validateUserId(recipeVo.getUserId());
+        validateUserId(recipeVo.getOwnerId());
 
         if (recipeVo.getPortions() <= 0) {
             throw new PortionsLowerEqualThanZeroException();

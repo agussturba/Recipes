@@ -7,6 +7,7 @@ import com.uade.recipes.exceptions.instructionExceptions.InstructionNotFoundExce
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.IngredientQuantity;
+import com.uade.recipes.model.Instruction;
 import com.uade.recipes.model.Recipe;
 import com.uade.recipes.service.ingredientQuantity.IngredientQuantityService;
 import com.uade.recipes.service.recipe.RecipeService;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/recipes")
@@ -48,30 +50,30 @@ public class RecipeController {
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "El plato/usuario no fue encontrado")
     })
-    public ResponseEntity<List<RecipeVo>> getAllRecipes(@RequestParam(required = false) Integer userId, @RequestParam(required = false) Integer dishId, @RequestParam(required = false) Integer peopleAmount) throws DishNotFoundException, UserNotFoundException {
-        if (userId == null && dishId == null && peopleAmount == null) {
+    public ResponseEntity<List<RecipeVo>> getAllRecipes(@RequestParam(required = false) Integer ownerId, @RequestParam(required = false) Integer dishId, @RequestParam(required = false) Integer peopleAmount) throws DishNotFoundException, UserNotFoundException {
+        if (ownerId == null && dishId == null && peopleAmount == null) {
             List<RecipeVo> result = transformListToVoList(recipeService.getAllRecipes());
             return ResponseEntity.status(HttpStatus.OK).body(result);
-        } else if (userId != null && dishId == null && peopleAmount == null) {
-            List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByUserId(userId));
+        } else if (ownerId != null && dishId == null && peopleAmount == null) {
+            List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByOwnerId(ownerId));
             return ResponseEntity.status(HttpStatus.OK).body(result);
-        } else if (userId == null && dishId != null && peopleAmount == null) {
+        } else if (ownerId == null && dishId != null && peopleAmount == null) {
             List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByDishId(dishId));
             return ResponseEntity.status(HttpStatus.OK).body(result);
-        } else if (userId != null && dishId != null && peopleAmount == null) {
-            List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByUserIdAndDishId(userId, dishId));
+        } else if (ownerId != null && dishId != null && peopleAmount == null) {
+            List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByOwnerIdAndDishId(ownerId, dishId));
             return ResponseEntity.status(HttpStatus.OK).body(result);
-        } else if (userId != null && dishId == null && peopleAmount != null) {
-            List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByUserIdAndPeopleAmount(userId, peopleAmount));
+        } else if (ownerId != null && dishId == null && peopleAmount != null) {
+            List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByOwnerIdAndPeopleAmount(ownerId, peopleAmount));
             return ResponseEntity.status(HttpStatus.OK).body(result);
-        } else if (userId == null && dishId == null && peopleAmount != null) {
+        } else if (ownerId == null && dishId == null && peopleAmount != null) {
             List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByPeopleAmount(peopleAmount));
             return ResponseEntity.status(HttpStatus.OK).body(result);
-        } else if (userId == null && dishId != null && peopleAmount != null) {
+        } else if (ownerId == null && dishId != null && peopleAmount != null) {
             List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByDishIdAndPeopleAmount(dishId, peopleAmount));
             return ResponseEntity.status(HttpStatus.OK).body(result);
         }
-        List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByUserIdAndDishIdAndPeopleAmount(userId, dishId, peopleAmount));
+        List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByOwnerIdAndDishIdAndPeopleAmount(ownerId, dishId, peopleAmount));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
@@ -89,6 +91,7 @@ public class RecipeController {
         List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByName(name));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
+
     @GetMapping("/name/{ingredientId}")
     @ApiOperation(value = "Retornar recetas por un ingrediente faltante", response = Iterable.class)
     @ApiResponses(value = {
@@ -102,6 +105,7 @@ public class RecipeController {
         List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByMissingIngredientId(ingredientIdList.get(0)));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
+
     @GetMapping("/enabled/{recipeId}")
     @ApiOperation(value = "Verificar si una receta esta habilitada", response = Boolean.class)
     @ApiResponses(value = {
@@ -127,6 +131,7 @@ public class RecipeController {
     public ResponseEntity<RecipeVo> enabledRecipeByRecipeId(@PathVariable Integer recipeId) {
         return ResponseEntity.status(HttpStatus.OK).body(new RecipeVo());
     }
+
     @GetMapping("/type")
     @ApiOperation(value = "Obtener una lista de recetas a partir un grupo de tipos", response = Iterable.class)
     @ApiResponses(value = {
@@ -140,6 +145,7 @@ public class RecipeController {
         List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByTypes(typesIds));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
+
     @GetMapping("/convert")
     @ApiOperation(value = "Convertir una receta por un factor de conversion", response = Iterable.class)
     @ApiResponses(value = {
@@ -149,10 +155,11 @@ public class RecipeController {
             @ApiResponse(code = 404, message = "No se pudo dividir un ingrediente")
 
     })
-    public ResponseEntity<List<IngredientQuantityVo>> convertRecipeIngredientQuantityByConversionFactor(@RequestParam Integer recipeId,@RequestParam Double conversionFactor) throws IngredientNotFoundException, RecipeNotFoundException, CannotDivideTheIngredientException {
-        List<IngredientQuantityVo> result = transformIngredientQuantityListToVoList(recipeService.convertRecipeIngredientQuantityByConversionFactor(recipeId,conversionFactor));
+    public ResponseEntity<List<IngredientQuantityVo>> convertRecipeIngredientQuantityByConversionFactor(@RequestParam Integer recipeId, @RequestParam Double conversionFactor) throws IngredientNotFoundException, RecipeNotFoundException, CannotDivideTheIngredientException {
+        List<IngredientQuantityVo> result = transformIngredientQuantityListToVoList(recipeService.convertRecipeIngredientQuantityByConversionFactor(recipeId, conversionFactor));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
+
     @GetMapping("/convert/ingredient")
     @ApiOperation(value = "Convertir una receta a partir de una nueva cantidad de ingrediente", response = Iterable.class)
     @ApiResponses(value = {
@@ -162,8 +169,8 @@ public class RecipeController {
             @ApiResponse(code = 404, message = "No se pudo dividir un ingrediente")
 
     })
-    public ResponseEntity<List<IngredientQuantityVo>> convertRecipeIngredientQuantityByRecipeIdAndIngredientIdAndNewQuantity(@RequestParam Integer recipeId,@RequestParam Integer ingredientId,@RequestParam Double quantity) throws IngredientNotFoundException, RecipeNotFoundException, CannotDivideTheIngredientException {
-        List<IngredientQuantityVo> result = transformIngredientQuantityListToVoList(recipeService.convertRecipeIngredientQuantityByIngredientIdAndRecipeIdAndNewQuantity(ingredientId,quantity,recipeId));
+    public ResponseEntity<List<IngredientQuantityVo>> convertRecipeIngredientQuantityByRecipeIdAndIngredientIdAndNewQuantity(@RequestParam Integer recipeId, @RequestParam Integer ingredientId, @RequestParam Double quantity) throws IngredientNotFoundException, RecipeNotFoundException, CannotDivideTheIngredientException {
+        List<IngredientQuantityVo> result = transformIngredientQuantityListToVoList(recipeService.convertRecipeIngredientQuantityByIngredientIdAndRecipeIdAndNewQuantity(ingredientId, quantity, recipeId));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
@@ -210,27 +217,16 @@ public class RecipeController {
     }
 
     private List<Recipe> getRecipesFromIngredientQuantity(List<IngredientQuantity> list) {
-        List<Recipe> resultList = new ArrayList<>();
-        for (IngredientQuantity ingredient : list) {
-            resultList.add(ingredient.getRecipe());
-        }
-        return resultList;
+        return list.stream().map(IngredientQuantity::getRecipe).collect(Collectors.toList());
     }
 
     private List<RecipeVo> transformListToVoList(List<Recipe> list) {
-        List<RecipeVo> result = new ArrayList<>();
-        for (Recipe obj : list) {
-            result.add(obj.toVO());
-        }
-        return result;
+        return list.stream().map(Recipe::toVO).collect(Collectors.toList());
+
     }
 
     private List<IngredientQuantityVo> transformIngredientQuantityListToVoList(List<IngredientQuantity> ingredientQuantityList) {
-        List<IngredientQuantityVo> ingredientQuantityVoList = new ArrayList<>();
-        for (IngredientQuantity ingredientQuantity : ingredientQuantityList) {
-            ingredientQuantityVoList.add(ingredientQuantity.toVO());
-        }
-        return ingredientQuantityVoList;
+        return ingredientQuantityList.stream().map(IngredientQuantity::toVO).collect(Collectors.toList());
     }
 
 }

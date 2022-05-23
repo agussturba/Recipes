@@ -3,6 +3,7 @@ package com.uade.recipes.controllers;
 
 import com.uade.recipes.exceptions.userExceptions.*;
 import com.uade.recipes.exceptions.userPhotoExceptions.UserPhotoNotFoundException;
+import com.uade.recipes.model.Type;
 import com.uade.recipes.model.User;
 import com.uade.recipes.service.user.UserService;
 import com.uade.recipes.vo.UserVo;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user")
@@ -130,10 +132,6 @@ public class UserController {
     }
 
     private List<UserVo> transformListToVoList(List<User> list) {
-        List<UserVo> result = new ArrayList<>();
-        for (User obj : list) {
-            result.add(obj.toVO());
-        }
-        return result;
+        return list.stream().map(User::toVO).collect(Collectors.toList());
     }
 }

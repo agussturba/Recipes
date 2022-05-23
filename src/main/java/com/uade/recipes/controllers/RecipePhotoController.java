@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/recipePhotos")
@@ -88,11 +89,7 @@ public class RecipePhotoController {
     }
 
     private List<RecipePhotoVo> transformListToVoList(List<RecipePhoto> list){
-        List<RecipePhotoVo> result = new ArrayList<>();
-        for(RecipePhoto obj: list){
-            result.add(obj.toVO());
-        }
-        return result;
+        return list.stream().map(RecipePhoto::toVO).collect(Collectors.toList());
     }
 
 }

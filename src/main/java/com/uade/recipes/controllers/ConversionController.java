@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/conversion")
@@ -93,11 +94,7 @@ public class ConversionController {
         return ResponseEntity.status(HttpStatus.OK).body(conversionService.saveOrUpdateConversion(conversionVo).toVO());
     }
 
-    private List<ConversionVo> transformListToVoList(List<Conversion> list){
-        List<ConversionVo> result = new ArrayList<>();
-        for(Conversion conv : list){
-            result.add(conv.toVO());
-        }
-        return result;
+    private List<ConversionVo> transformListToVoList(List<Conversion> conversions){
+        return conversions.stream().map(Conversion::toVO).collect(Collectors.toList());
     }
 }

@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
@@ -80,7 +79,7 @@ class IngredientQuantityImplementationTest {
         testRecipe.setPortions(3D);
         testRecipe.setPeopleAmount(2);
         testRecipe.setType(testType);
-        testRecipe.setUser(testUser);
+        testRecipe.setOwner(testUser);
         testSetRecipes.add(testRecipe);
 
         testUnit = new Unit();

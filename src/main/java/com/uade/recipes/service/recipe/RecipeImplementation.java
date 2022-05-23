@@ -58,9 +58,9 @@ public class RecipeImplementation implements RecipeService {
     }
 
     @Override
-    public List<Recipe> getRecipesByUserId(Integer userId) throws UserNotFoundException {
-        User user = userService.getUserById(userId);
-        return recipeRepository.findByUserOrderByName(user);
+    public List<Recipe> getRecipesByOwnerId(Integer ownerId) throws UserNotFoundException {
+        User owner = userService.getUserById(ownerId);
+        return recipeRepository.findByOwnerOrderByName(owner);
     }
 
     @Override
@@ -78,17 +78,17 @@ public class RecipeImplementation implements RecipeService {
     }
 
     @Override
-    public List<Recipe> getRecipesByUserIdAndPeopleAmount(Integer userId, Integer peopleAmount) throws UserNotFoundException {
-        User user = userService.getUserById(userId);
-        return recipeRepository.findByUserAndPeopleAmount(user, peopleAmount);
+    public List<Recipe> getRecipesByOwnerIdAndPeopleAmount(Integer ownerId, Integer peopleAmount) throws UserNotFoundException {
+        User owner = userService.getUserById(ownerId);
+        return recipeRepository.findByOwnerAndPeopleAmount(owner, peopleAmount);
     }
 
     @Override
-    public List<Recipe> getRecipesByUserIdAndDishIdAndPeopleAmount(Integer userId, Integer dishId, Integer peopleAmount) throws DishNotFoundException {
+    public List<Recipe> getRecipesByOwnerIdAndDishIdAndPeopleAmount(Integer ownerId, Integer dishId, Integer peopleAmount) throws DishNotFoundException {
         Dish dish = dishService.getDishById(dishId);
         List<Recipe> recipes = dish.getRecipes();
         return recipes.stream()
-                .filter(recipe -> Objects.equals(recipe.getPeopleAmount(), peopleAmount) && Objects.equals(recipe.getUserId(), userId))
+                .filter(recipe -> Objects.equals(recipe.getPeopleAmount(), peopleAmount) && Objects.equals(recipe.getOwnerId(), ownerId))
                 .collect(Collectors.toList());
 
     }
@@ -105,11 +105,11 @@ public class RecipeImplementation implements RecipeService {
 
 
     @Override
-    public List<Recipe> getRecipesByUserIdAndDishId(Integer userId, Integer dishId) throws DishNotFoundException {
+    public List<Recipe> getRecipesByOwnerIdAndDishId(Integer userId, Integer dishId) throws DishNotFoundException {
         Dish dish = dishService.getDishById(dishId);
         List<Recipe> recipes = dish.getRecipes();
         return recipes.stream()
-                .filter(recipe -> Objects.equals(recipe.getUserId(), userId))
+                .filter(recipe -> Objects.equals(recipe.getOwnerId(), userId))
                 .collect(Collectors.toList());
 
 
@@ -131,8 +131,8 @@ public class RecipeImplementation implements RecipeService {
     @Override
     public Recipe saveOrUpdateRecipe(RecipeVo recipeVo) throws DishNotFoundException, UserNotFoundException {
         validateRecipeData(recipeVo);
-        User user = userService.getUserById(recipeVo.getUserId());
-        return recipeRepository.save(recipeVo.toModel(user));
+        User owner = userService.getUserById(recipeVo.getOwnerId());
+        return recipeRepository.save(recipeVo.toModel(owner));
     }
 
     @Override
@@ -151,6 +151,4 @@ public class RecipeImplementation implements RecipeService {
     private Double getConversionFactor(Double oldQuantity, Double newQuantity) {
         return newQuantity / oldQuantity;
     }
-
-
 }

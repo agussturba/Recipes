@@ -12,11 +12,11 @@ import java.util.List;
 public interface RecipeRepository extends CrudRepository<Recipe, Integer> {
     List<Recipe> findByNameOrderByName(String name);
 
-    List<Recipe> findByUserOrderByName(User user);
+    List<Recipe> findByOwnerOrderByName(User owner);
 
-    List<Recipe> findByUserAndPeopleAmount(User user, Integer peopleAmount);
+    List<Recipe> findByOwnerAndPeopleAmount(User owner, Integer peopleAmount);
 
-    List<Recipe> findByUserAndTypeIsIn(User user, List<Type> types);
+    List<Recipe> findByOwnerAndTypeIsIn(User owner, List<Type> types);
 
     List<Recipe> findByPeopleAmountAndTypeIsIn(Integer peopleAmount, List<Type> types);
 

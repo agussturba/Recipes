@@ -70,7 +70,7 @@ class RecipeImplementationTest {
         testRecipe.setPortions(3D);
         testRecipe.setPeopleAmount(2);
         testRecipe.setType(testType);
-        testRecipe.setUser(testUser);
+        testRecipe.setOwner(testUser);
 
         testUnit = new Unit();
         testUnit.setDescription("KG");

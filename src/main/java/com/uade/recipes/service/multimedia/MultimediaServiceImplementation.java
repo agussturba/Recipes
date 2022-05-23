@@ -14,10 +14,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class MultimediaServiceImplementation implements MultimediaService {
@@ -68,16 +65,16 @@ public class MultimediaServiceImplementation implements MultimediaService {
 
     @Override
     public void deleteMultimedia(Integer multimediaId) throws IOException {
-        Multimedia multimedia = this.getMultimediaById(multimediaId);
+        Multimedia multimedia = getMultimediaById(multimediaId);
         List<String> url = Arrays.asList(multimedia.getUrlContent().split("/"));
         String filename = url.get(url.size()-1);
-        String public_id = filename.substring(0, filename.indexOf("."));
-        cloudinary.uploader().destroy(public_id, ObjectUtils.emptyMap());
+        String publicId = filename.substring(0, filename.indexOf("."));
+        cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
         multimediaRepository.delete(multimedia);
     }
 
     private Map saveMultimediaToCloudinary(MultipartFile multimediaFile) throws IOException {
-        String type = multimediaFile.getContentType().split("/")[0];
+        String type = Objects.requireNonNull(multimediaFile.getContentType()).split("/")[0];
         return  cloudinary.uploader().upload(multimediaFile.getBytes(),
                 ObjectUtils.asMap("resource_type", type));
 

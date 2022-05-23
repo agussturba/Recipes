@@ -14,6 +14,7 @@ public class RecipeRatingVo {
     Integer userId;
     String comments;
     Double rating;
+
     public RecipeRating toModel(Recipe recipe,User user){
         RecipeRating recipeRating = new RecipeRating();
         recipeRating.setRating(rating);

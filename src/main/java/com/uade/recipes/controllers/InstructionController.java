@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/instruction")
@@ -94,10 +95,6 @@ public class InstructionController {
     }
 
     private List<InstructionVo> transformListToVoList(List<Instruction> list){
-        List<InstructionVo> result = new ArrayList<>();
-        for(Instruction inst: list){
-            result.add(inst.toVO());
-        }
-        return result;
+        return list.stream().map(Instruction::toVO).collect(Collectors.toList());
     }
 }

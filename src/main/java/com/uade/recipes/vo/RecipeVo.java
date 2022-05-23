@@ -1,7 +1,6 @@
 package com.uade.recipes.vo;
 
 import com.uade.recipes.model.Recipe;
-import com.uade.recipes.model.RecipePhoto;
 import com.uade.recipes.model.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +16,7 @@ public class RecipeVo {
     String description;
     Integer typeId;
     Integer dishId;
-    Integer userId;
+    Integer ownerId;
     List<Integer> recipePhotoIdList;
     Integer peopleAmount;
     Double portions;
@@ -26,12 +25,12 @@ public class RecipeVo {
     Boolean enabled;
 
 
-    public Recipe toModel(User user) {
+    public Recipe toModel(User owner) {
         Recipe recipe = new Recipe();
         recipe.setId(getId());
         recipe.setName(getName());
         recipe.setDescription(getDescription());
-        recipe.setUser(user);
+        recipe.setOwner(owner);
         recipe.setPeopleAmount(peopleAmount);
         recipe.setPortions(portions);
         recipe.setDuration(duration);

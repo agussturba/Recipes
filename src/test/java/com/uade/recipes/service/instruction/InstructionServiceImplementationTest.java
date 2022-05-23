@@ -66,7 +66,7 @@ class InstructionServiceImplementationTest {
         testRecipe.setPortions(3D);
         testRecipe.setPeopleAmount(2);
         testRecipe.setType(testType);
-        testRecipe.setUser(testUser);
+        testRecipe.setOwner(testUser);
 
 
         testInstructionList = new ArrayList<>();

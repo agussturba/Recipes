@@ -3,6 +3,7 @@ package com.uade.recipes.controllers;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
+import com.uade.recipes.model.Dish;
 import com.uade.recipes.model.FavoriteRecipe;
 import com.uade.recipes.service.favoriteRecipe.FavoriteRecipeService;
 import com.uade.recipes.vo.FavoriteRecipeVo;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/favorite")
@@ -81,10 +83,6 @@ public class FavoriteRecipeController {
     }
 
     private List<FavoriteRecipeVo> transformListToVoList(List<FavoriteRecipe> list){
-        List<FavoriteRecipeVo> result = new ArrayList<>();
-        for(FavoriteRecipe favoriteRecipe : list){
-            result.add(favoriteRecipe.toVo());
-        }
-        return result;
+        return list.stream().map(FavoriteRecipe::toVo).collect(Collectors.toList());
     }
 }

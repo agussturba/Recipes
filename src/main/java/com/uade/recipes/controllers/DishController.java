@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/dish")
@@ -73,6 +74,7 @@ public class DishController {
     public ResponseEntity<DishVo> getDishByName(@PathVariable String name) throws DishNotFoundException {
         return ResponseEntity.status(HttpStatus.FOUND).body(dishService.getDishByName(name).toVO());
     }
+
     @GetMapping("/recipe/{recipeId}")
     @ApiOperation(value = "Obtener un plato por el id de una receta", response = ResponseEntity.class)
     @ApiResponses(value = {
@@ -110,11 +112,7 @@ public class DishController {
     }
 
 
-    private List<DishVo> transformListToVoList(List<Dish> list){
-        List<DishVo> result = new ArrayList<>();
-        for(Dish dish : list){
-            result.add(dish.toVO());
-        }
-        return result;
+    private List<DishVo> transformListToVoList(List<Dish> list) {
+        return list.stream().map(Dish::toVO).collect(Collectors.toList());
     }
 }

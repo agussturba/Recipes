@@ -2,6 +2,7 @@ package com.uade.recipes.controllers;
 
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.exceptions.userPhotoExceptions.UserPhotoNotFoundException;
+import com.uade.recipes.model.Type;
 import com.uade.recipes.model.UserPhoto;
 import com.uade.recipes.service.userPhoto.UserPhotoService;
 import com.uade.recipes.vo.UserPhotoVo;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/userPhotos")
@@ -78,10 +80,6 @@ public class UserPhotoController {
     }
 
     private List<UserPhotoVo> transformListToVoList(List<UserPhoto> list){
-        List<UserPhotoVo> result = new ArrayList<>();
-        for(UserPhoto obj: list){
-            result.add(obj.toVO());
-        }
-        return result;
+        return list.stream().map(UserPhoto::toVO).collect(Collectors.toList());
     }
 }

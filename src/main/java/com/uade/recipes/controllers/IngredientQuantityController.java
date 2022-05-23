@@ -4,6 +4,7 @@ import com.uade.recipes.exceptions.ingredientExceptions.CannotDivideTheIngredien
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.exceptions.ingredientQuantityExceptions.IngredientQuantityNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
+import com.uade.recipes.model.Ingredient;
 import com.uade.recipes.model.IngredientQuantity;
 import com.uade.recipes.service.ingredientQuantity.IngredientQuantityService;
 import com.uade.recipes.vo.IngredientQuantityVo;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/ingredientQuantity")
@@ -93,11 +95,7 @@ public class IngredientQuantityController {
     }
 
     private List<IngredientQuantityVo> transformListToVoList(List<IngredientQuantity> list){
-        List<IngredientQuantityVo> result = new ArrayList<>();
-        for(IngredientQuantity ing : list){
-            result.add(ing.toVO());
-        }
-        return result;
+        return list.stream().map(IngredientQuantity::toVO).collect(Collectors.toList());
     }
 
 }

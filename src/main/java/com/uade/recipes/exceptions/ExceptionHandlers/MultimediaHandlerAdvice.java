@@ -12,4 +12,5 @@ public class MultimediaHandlerAdvice {
     public ResponseEntity handleMultimediaNotFoundException() {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("There multimedia was not found");
     }
+
 }
