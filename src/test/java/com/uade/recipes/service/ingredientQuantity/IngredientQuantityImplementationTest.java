@@ -10,6 +10,7 @@ import com.uade.recipes.persistance.RecipeRepository;
 import com.uade.recipes.service.conversion.ConversionService;
 import com.uade.recipes.service.ingredient.IngredientService;
 import com.uade.recipes.service.unit.UnitService;
+import com.uade.recipes.vo.IngredientQuantityVo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,11 +44,13 @@ class IngredientQuantityImplementationTest {
 
     private Ingredient testIngredient;
     private IngredientQuantity testIngredientQuantity;
-    private Unit testUnit;
+    private Unit testSourceUnit;
+    private Unit testTargetUnit;
     private Recipe testRecipe;
     private Set<Recipe> testSetRecipes;
     private User testUser;
     private Type testType;
+    private Conversion testConversion;
     private RecipePhoto testRecipePhoto;
     private List<Type> typeTestList;
     private List<IngredientQuantity> ingredientQuantityTestList;
@@ -70,6 +73,7 @@ class IngredientQuantityImplementationTest {
 
         testSetRecipes = new HashSet<>();
         testRecipe = new Recipe();
+        testRecipe.setId(1);
         testRecipe.setTimestamp(LocalDateTime.now());
         testRecipe.setDescription("Receta de Papa");
         testRecipe.setEnabled(true);
@@ -82,8 +86,19 @@ class IngredientQuantityImplementationTest {
         testRecipe.setOwner(testUser);
         testSetRecipes.add(testRecipe);
 
-        testUnit = new Unit();
-        testUnit.setDescription("KG");
+        testSourceUnit = new Unit();
+        testSourceUnit.setId(1);
+        testSourceUnit.setDescription("KG");
+
+        testTargetUnit = new Unit();
+        testTargetUnit.setId(2);
+        testTargetUnit.setDescription("G");
+
+        testConversion = new Conversion();
+        testConversion.setConversionFactor(2D);
+        testConversion.setSourceUnit(testSourceUnit);
+        testConversion.setTargetUnit(testTargetUnit);
+
 
         typeTestList = new ArrayList<>();
         testType = new Type();
@@ -101,20 +116,12 @@ class IngredientQuantityImplementationTest {
         testIngredientQuantity.setQuantity(2D);
         testIngredientQuantity.setObservations("Tratar con cuidado");
         testIngredientQuantity.setRecipe(testRecipe);
-        testIngredientQuantity.setUnit(testUnit);
+        testIngredientQuantity.setUnit(testSourceUnit);
         ingredientQuantityTestList.add(testIngredientQuantity);
 
 
     }
 
-    @Test
-    void getAllIngredientQuantity() {
-        when(ingredientQuantityRepository.findAll()).thenReturn(ingredientQuantityTestList);
-        List<IngredientQuantity> ingredientQuantityList = ingredientQuantityImplementation.getAllIngredientQuantity();
-        assertNotNull(ingredientQuantityList);
-        assertEquals(1, ingredientQuantityList.size());
-        verify(ingredientQuantityRepository).findAll();
-    }
 
     @Test
     void getIngredientQuantityByRecipeId() throws RecipeNotFoundException {
@@ -162,18 +169,39 @@ class IngredientQuantityImplementationTest {
     void getRecipesByIngredientId() throws IngredientNotFoundException {
         when(ingredientService.getIngredientById(any(Integer.class))).thenReturn(testIngredient);
         when(ingredientQuantityRepository.findByIngredient(any(Ingredient.class))).thenReturn(ingredientQuantityTestList);
-
+        Set<Recipe> recipes = ingredientQuantityImplementation.getRecipesByIngredientId(1);
+        assertNotNull(recipes);
+        assertEquals(1, recipes.size());
     }
 
     @Test
-    void saveOrUpdateIngredientQuantity() {
+    void saveOrUpdateIngredientQuantity() throws IngredientNotFoundException, RecipeNotFoundException {
+        when(ingredientService.getIngredientById(any(Integer.class))).thenReturn(testIngredient);
+        when(unitService.getUnitById(any(Integer.class))).thenReturn(testSourceUnit);
+        when(recipeRepository.findById(any(Integer.class))).thenReturn(Optional.ofNullable(testRecipe));
+        when(ingredientQuantityRepository.save(any(IngredientQuantity.class))).thenReturn(testIngredientQuantity);
+        IngredientQuantity ingredientQuantity = ingredientQuantityImplementation.saveOrUpdateIngredientQuantity(testIngredientQuantity.toVO());
+        assertNotNull(ingredientQuantity);
+        assertEquals("Tomate", ingredientQuantity.getIngredient().getName());
     }
 
     @Test
     void convertIngredientQuantityUnitByTargetUnitId() {
+        when(conversionService.getConversionBySourceUnitIdAndTargetUnitId(any(Integer.class),any(Integer.class))).thenReturn(testConversion);
+        IngredientQuantityVo ingredientQuantityVo = ingredientQuantityImplementation.convertIngredientQuantityUnitByTargetUnitId(testIngredientQuantity.toVO(), 2);
+        assertNotNull(ingredientQuantityVo);
+        assertEquals(4D,ingredientQuantityVo.getQuantity());
+
     }
 
     @Test
-    void getIngredientQuantityByIngredientIdAndRecipeId() {
+    void getIngredientQuantityByIngredientIdAndRecipeId() throws IngredientNotFoundException, RecipeNotFoundException {
+        when(ingredientService.getIngredientById(any(Integer.class))).thenReturn(testIngredient);
+        when(recipeRepository.findById(any(Integer.class))).thenReturn(Optional.ofNullable(testRecipe));
+        when(ingredientQuantityRepository.findByRecipeAndIngredient(any(Recipe.class),any(Ingredient.class))).thenReturn(testIngredientQuantity);
+        IngredientQuantity ingredientQuantity = ingredientQuantityImplementation.getIngredientQuantityByIngredientIdAndRecipeId(1,1);
+        assertNotNull(ingredientQuantity);
+        assertEquals("Tomate", ingredientQuantity.getIngredient().getName());
+        verify(ingredientQuantityRepository).findByRecipeAndIngredient(testRecipe,testIngredient);
     }
 }

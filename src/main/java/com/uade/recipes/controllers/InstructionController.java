@@ -33,17 +33,6 @@ public class InstructionController {
         this.instructionService = instructionService;
     }
 
-    @GetMapping
-    @ApiOperation(value = "Retornar una lista con todas las instrucciones", response = Iterable.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Lista con todas las instrucciones retornada satisfactoriamente"),
-            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
-            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
-    })
-    public ResponseEntity<List<InstructionVo>> getAllInstructions() {
-        List<InstructionVo> result = transformListToVoList(instructionService.getAllInstructions());
-        return ResponseEntity.status(HttpStatus.OK).body(result);
-    }
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Retornar una instrucción por su ID", response = ResponseEntity.class)

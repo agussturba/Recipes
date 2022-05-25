@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Set;
 
 public interface IngredientQuantityService {
-    List<IngredientQuantity> getAllIngredientQuantity();
 
     List<IngredientQuantity> getIngredientQuantityByRecipeId(Integer recipeId) throws RecipeNotFoundException;
 

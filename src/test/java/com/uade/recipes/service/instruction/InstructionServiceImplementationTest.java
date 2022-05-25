@@ -87,14 +87,7 @@ class InstructionServiceImplementationTest {
         verify(instructionRepository).findById(1);
     }
 
-    @Test
-    void getAllInstructions() {
-        when(instructionRepository.findAll()).thenReturn(testInstructionList);
-        List<Instruction> instructionList = instructionServiceImplementation.getAllInstructions();
-        assertNotNull(instructionList);
-        assertEquals(1, instructionList.size());
-        verify(instructionRepository).findAll();
-    }
+
 
     @Test
     void getInstructionsByRecipeId() throws RecipeNotFoundException {

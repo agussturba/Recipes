@@ -39,11 +39,6 @@ public class IngredientQuantityImplementation implements IngredientQuantityServi
     }
 
     @Override
-    public List<IngredientQuantity> getAllIngredientQuantity() {
-        return (List<IngredientQuantity>) ingredientQuantityRepository.findAll();
-    }
-
-    @Override
     public List<IngredientQuantity> getIngredientQuantityByRecipeId(Integer recipeId) throws RecipeNotFoundException {
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(RecipeNotFoundException::new);
         return ingredientQuantityRepository.findByRecipe(recipe);

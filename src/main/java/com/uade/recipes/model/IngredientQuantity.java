@@ -44,6 +44,7 @@ public class IngredientQuantity {
         vo.setRecipeId(recipe.getId());
         vo.setObservations(observations);
         vo.setQuantity(quantity);
+        vo.setUnitId(unit.getId());
 
         return vo;
     }

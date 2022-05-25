@@ -10,8 +10,6 @@ import java.util.List;
 public interface InstructionService {
     Instruction getInstructionById(Integer id) throws InstructionNotFoundException;
 
-    List<Instruction> getAllInstructions();
-
     List<Instruction> getInstructionsByRecipeId(Integer recipeId) throws RecipeNotFoundException;
 
     Instruction saveOrUpdateInstruction(InstructionVo instructionVo) throws RecipeNotFoundException;

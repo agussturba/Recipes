@@ -4,7 +4,6 @@ package com.uade.recipes.controllers;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNameContainsNumberException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientTypeContainsNumberException;
-import com.uade.recipes.model.FavoriteRecipe;
 import com.uade.recipes.model.Ingredient;
 import com.uade.recipes.service.ingredient.IngredientService;
 import com.uade.recipes.vo.IngredientVo;
@@ -18,10 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,7 +53,7 @@ public class IngredientController {
             @ApiResponse(code = 404, message = "Tipo de ingrediente no encontrado")
     })
     public ResponseEntity<IngredientVo> saveIngredient(@RequestBody IngredientVo ingredientVo) throws IngredientTypeContainsNumberException, IngredientNameContainsNumberException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(ingredientService.saveOrUpdateIngredient(ingredientVo).toVO());
+        return ResponseEntity.status(HttpStatus.CREATED).body(ingredientService.saveIngredient(ingredientVo).toVO());
     }
 
     @GetMapping("/{id}")

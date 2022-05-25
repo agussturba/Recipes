@@ -16,5 +16,5 @@ public interface IngredientService {
 
     Ingredient getIngredientByName(String ingredientName) throws IngredientNotFoundException;
 
-    Ingredient saveOrUpdateIngredient(IngredientVo ingredientVo) throws IngredientTypeContainsNumberException, IngredientNameContainsNumberException;
+    Ingredient saveIngredient(IngredientVo ingredientVo) throws IngredientTypeContainsNumberException, IngredientNameContainsNumberException;
 }

@@ -29,11 +29,6 @@ public class InstructionServiceImplementation implements InstructionService {
     }
 
     @Override
-    public List<Instruction> getAllInstructions() {
-        return (List<Instruction>) instructionRepository.findAll();
-    }
-
-    @Override
     public List<Instruction> getInstructionsByRecipeId(Integer recipeId) throws RecipeNotFoundException {
         Recipe recipe = recipeService.getRecipeById(recipeId);
         return instructionRepository.findByRecipe(recipe);
