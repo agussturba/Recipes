@@ -44,6 +44,8 @@ public class User {
         vo.setRole(role);
         vo.setEmail(email);
         vo.setUserName(userName);
+        vo.setRegistrationTimestamp(registrationTimestamp);
+        vo.setEnabled(enabled);
         if (this.avatar == null) {
             vo.setAvatarId(null);
         } else {

@@ -28,7 +28,7 @@ public class UserVo {
         user.setEmail(email);
         user.setUserName(userName);
         user.setRole(role);
-        user.setEnabled(true);
+        user.setEnabled(enabled);
         user.setName(name);
         user.setAvatar(null);
         user.setPassword(password);
