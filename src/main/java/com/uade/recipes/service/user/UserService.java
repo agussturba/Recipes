@@ -16,6 +16,8 @@ public interface UserService {
 
     User getUserByEmailAndPassword(String email, String password) throws UserNotFoundException;
 
+    User getUserByAliasAndPassword(String alias, String password) throws UserNotFoundException;
+
     User getUserByAlias(String userName) throws UserNotFoundException;
 
     User getUserById(Integer userId) throws UserNotFoundException;

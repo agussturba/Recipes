@@ -94,6 +94,13 @@ public class UserServiceImplementation implements UserService {
 
     }
 
+    @Override
+    public User getUserByAliasAndPassword(String alias, String password) throws UserNotFoundException {
+        User user = getUserByAlias(alias);
+        if (user.getPassword().equals(password)) return user;
+        throw new UserNotFoundException();
+    }
+
     private void checkEmailExistence(String email) throws EmailExistsException {
         try {
             getUserByEmail(email);
