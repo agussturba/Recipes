@@ -8,6 +8,7 @@ import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.User;
 import com.uade.recipes.persistance.UserRepository;
 import com.uade.recipes.service.email.EmailSenderImplementation;
+import com.uade.recipes.service.email.EmailSenderService;
 import com.uade.recipes.vo.UserVo;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +18,9 @@ import java.util.List;
 @Service
 public class UserServiceImplementation implements UserService {
     private final UserRepository userRepository;
-    private final EmailSenderImplementation emailSender;
+    private final EmailSenderService emailSender;
 
-    public UserServiceImplementation(UserRepository userRepository, EmailSenderImplementation emailSender) {
+    public UserServiceImplementation(UserRepository userRepository, EmailSenderService emailSender) {
         this.userRepository = userRepository;
         this.emailSender = emailSender;
     }

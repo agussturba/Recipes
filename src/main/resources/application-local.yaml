@@ -3,8 +3,9 @@ spring:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
   jpa:
+
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
   datasource:
     url: "jdbc:sqlserver://localhost:2000;databaseName=Recipes"

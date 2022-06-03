@@ -6,6 +6,7 @@ import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundExcept
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientTypeContainsNumberException;
 import com.uade.recipes.model.Ingredient;
 import com.uade.recipes.service.ingredient.IngredientService;
+import com.uade.recipes.service.token.TokenService;
 import com.uade.recipes.vo.IngredientVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -29,6 +30,7 @@ public class IngredientController {
 
     public IngredientController(IngredientService ingredientService) {
         this.ingredientService = ingredientService;
+
     }
 
     @GetMapping

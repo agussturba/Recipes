@@ -5,10 +5,11 @@ import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.service.token.TokenService;
 import com.uade.recipes.service.user.UserService;
 import com.uade.recipes.vo.UserVo;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import io.swagger.models.auth.In;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +18,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 public class AuthenticationController {
     private final UserService userService;
-    private final TokenService tokenService;
+    @Autowired
+    private TokenService tokenService;
 
-    public AuthenticationController(UserService userService, TokenService tokenService) {
+    public AuthenticationController(UserService userService) {
         this.userService = userService;
-        this.tokenService = tokenService;
     }
 
     @GetMapping("/login")
@@ -45,7 +46,8 @@ public class AuthenticationController {
     })
     public ResponseEntity<Integer> getCode(@RequestParam String email) throws UserNotFoundException, TokenCantBeGeneratedException {
         Integer userId = userService.getUserByEmail(email).getId();
-        return ResponseEntity.status(HttpStatus.OK).body(tokenService.generateToken(userId));
+        Integer token = tokenService.generateToken(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(token);
     }
 
     @GetMapping("/check/{token}")
@@ -60,7 +62,7 @@ public class AuthenticationController {
         return ResponseEntity.status(HttpStatus.OK).body(tokenService.isTokenValid(token, userId));
     }
 
-    @PostMapping("/password/restore")
+    @PutMapping("/password/restore")
     @ApiOperation(value = "Permite cambiar la contraseña de un usuario")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "La contraseña fue cambiada con éxito"),
