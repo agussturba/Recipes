@@ -22,7 +22,9 @@ public interface UserService {
 
     User getUserById(Integer userId) throws UserNotFoundException;
 
-    User saveOrUpdateUser(UserVo user, String role) throws InvalidEmailException, InvalidPasswordException, InvalidRoleException, UserNameExistsException, EmailExistsException, UserNotFoundException, UserPhotoNotFoundException;
+    User saveUser(UserVo userVo) throws EmailExistsException, UserNameExistsException;
+
+    User updateUser(UserVo userVo) throws UserNotFoundException, UserPhotoNotFoundException, EmailExistsException, UserNameExistsException;
 
     void changePassword(String email, String password) throws UserNotFoundException;
 

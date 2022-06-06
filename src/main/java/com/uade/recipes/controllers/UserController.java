@@ -77,7 +77,8 @@ public class UserController {
             @ApiResponse(code = 409, message = "El nombre de usuario ya existe o La contraseña no se valida o el rol no es valido o el email ya existe") //TODO CHEQUEAR
     })
     public ResponseEntity<UserVo> saveUserStudent(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException, UserPhotoNotFoundException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveOrUpdateUser(userVo, "STUDENT").toVO());
+        userVo.setRole("STUDENT");
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(userVo).toVO());
     }
     @PostMapping("/guest")
     @ApiOperation(value = "Crear un nuevo usuario invitado", response = ResponseEntity.class)
@@ -88,7 +89,8 @@ public class UserController {
             @ApiResponse(code = 409, message = "El nombre de usuario ya existe o La contraseña no se valida o el rol no es valido o el email ya existe") //TODO CHEQUEAR
     })
     public ResponseEntity<UserVo> saveUserGuest(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException, UserPhotoNotFoundException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveOrUpdateUser(userVo, "GUEST").toVO());
+        userVo.setRole("GUEST");
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(userVo).toVO());
     }
 
     @PutMapping
@@ -101,7 +103,7 @@ public class UserController {
 
     })
     public ResponseEntity<UserVo> updateUser(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException, UserPhotoNotFoundException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveOrUpdateUser(userVo, userVo.getRole()).toVO());
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.updateUser(userVo).toVO());
     }
 
     @GetMapping("/email/confirmation")

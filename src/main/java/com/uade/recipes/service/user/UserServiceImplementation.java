@@ -5,10 +5,12 @@ import com.uade.recipes.exceptions.userExceptions.EmailExistsException;
 import com.uade.recipes.exceptions.userExceptions.RegistrationProcessIncompleteException;
 import com.uade.recipes.exceptions.userExceptions.UserNameExistsException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
+import com.uade.recipes.exceptions.userPhotoExceptions.UserPhotoNotFoundException;
 import com.uade.recipes.model.User;
+import com.uade.recipes.model.UserPhoto;
 import com.uade.recipes.persistance.UserRepository;
-import com.uade.recipes.service.email.EmailSenderImplementation;
 import com.uade.recipes.service.email.EmailSenderService;
+import com.uade.recipes.service.userPhoto.UserPhotoService;
 import com.uade.recipes.vo.UserVo;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +20,12 @@ import java.util.List;
 @Service
 public class UserServiceImplementation implements UserService {
     private final UserRepository userRepository;
+    private final UserPhotoService userPhotoService;
     private final EmailSenderService emailSender;
 
-    public UserServiceImplementation(UserRepository userRepository, EmailSenderService emailSender) {
+    public UserServiceImplementation(UserRepository userRepository, UserPhotoService userPhotoService, EmailSenderService emailSender) {
         this.userRepository = userRepository;
+        this.userPhotoService = userPhotoService;
         this.emailSender = emailSender;
     }
 
@@ -62,18 +66,7 @@ public class UserServiceImplementation implements UserService {
         return userRepository.findByUserName(userName).orElseThrow(UserNotFoundException::new);
     }
 
-    @Override
-    public User saveOrUpdateUser(UserVo userVo, String role) throws UserNameExistsException, EmailExistsException{
-        checkEmailExistence(userVo.getEmail());
-        checkAliasExistence(userVo.getUserName());
-        userVo.setPassword("");
-        userVo.setRole(role);
-        userVo.setEnabled(false);
-        userVo.setRegistrationTimestamp(LocalDateTime.now());
-        User user = userRepository.save(userVo.toModel());
-        emailSender.sendSimpleEmail(userVo.getEmail(), "Hola " + userVo.getUserName() + ",\nEste es un mensaje para verificar tu correo electrónico.\nHaz Click en el link para validar tu correo: https://tasty-hub.herokuapp.com/api/user/email/confirmation?email=" + userVo.getEmail(), "Correo de verificación");
-        return user;
-    }
+
 
     @Override
     public void changePassword(String email, String password) throws UserNotFoundException {
@@ -110,11 +103,49 @@ public class UserServiceImplementation implements UserService {
         }
 
     }
+    @Override
+    public User saveUser(UserVo userVo) throws EmailExistsException, UserNameExistsException {
+        checkEmailExistence(userVo.getEmail());
+        checkAliasExistence(userVo);
+        userVo.setEnabled(true);
+        userVo.setRegistrationTimestamp(LocalDateTime.now());
+        emailSender.sendSimpleEmail(userVo.getEmail(), "Hola " + userVo.getUserName() + ",\nEste es un mensaje para verificar tu correo electrónico.\nHaz Click en el link para validar tu correo: https://tasty-hub.herokuapp.com/api/user/email/confirmation?email=" + userVo.getEmail(), "Correo de verificación");
+        return userVo.toModel();
+    }
+    @Override
+    public User updateUser(UserVo userVo) throws UserNotFoundException, UserPhotoNotFoundException, EmailExistsException, UserNameExistsException {
+        User user = this.getUserById(userVo.getId());
+        userVo.setEnabled(true);
+        userVo.setRole(user.getRole());
+        userVo.setRegistrationTimestamp(user.getRegistrationTimestamp());
+        if (userVo.getUserName() != null) {
+            checkAliasExistence(userVo);
+            user.setUserName(userVo.getUserName());
+        }
+        if (userVo.getPassword() != null) {
+            user.setPassword(userVo.getPassword());
+        }
+        if (userVo.getName() != null) {
+            user.setName(userVo.getName());
+        }
+        if (userVo.getEmail() != null) {
+            checkEmailExistence(userVo.getEmail());
+            user.setName(userVo.getEmail());
+        }
+        if (userVo.getAvatarId() != null) {
+            UserPhoto photo = userPhotoService.getUserPhotoById(userVo.getAvatarId());
+            user.setAvatar(photo);
+        }
+        return user;
 
-    private void checkAliasExistence(String alias) throws UserNameExistsException {
+    }
+
+    private void checkAliasExistence(UserVo userVo) throws UserNameExistsException {
         try {
-            getUserByAlias(alias);
-            throw new UserNameExistsException();
+            if (userVo.getId() != null) {
+                getUserByAlias(userVo.getUserName());
+                throw new UserNameExistsException();
+            }
         } catch (UserNotFoundException ignored) {
         }
     }
