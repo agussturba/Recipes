@@ -55,6 +55,10 @@ public class User {
         return vo;
     }
 
+    public boolean isRegistryComplete(){
+        return password!=null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

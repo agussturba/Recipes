@@ -67,7 +67,6 @@ public class UserServiceImplementation implements UserService {
     }
 
 
-
     @Override
     public void changePassword(String email, String password) throws UserNotFoundException {
         User user = this.getUserByEmail(email);
@@ -83,7 +82,7 @@ public class UserServiceImplementation implements UserService {
     @Override
     public void isRegistryComplete(String email) throws UserNotFoundException, RegistrationProcessIncompleteException {
         User user = getUserByEmail(email);
-        if (!user.isEnabled())
+        if (!user.isRegistryComplete())
             throw new RegistrationProcessIncompleteException();
 
     }
@@ -103,15 +102,16 @@ public class UserServiceImplementation implements UserService {
         }
 
     }
+
     @Override
     public User saveUser(UserVo userVo) throws EmailExistsException, UserNameExistsException {
         checkEmailExistence(userVo.getEmail());
         checkAliasExistence(userVo);
-        userVo.setEnabled(true);
         userVo.setRegistrationTimestamp(LocalDateTime.now());
         emailSender.sendSimpleEmail(userVo.getEmail(), "Hola " + userVo.getUserName() + ",\nEste es un mensaje para verificar tu correo electrónico.\nHaz Click en el link para validar tu correo: https://tasty-hub.herokuapp.com/api/user/email/confirmation?email=" + userVo.getEmail(), "Correo de verificación");
-        return userVo.toModel();
+        return userRepository.save(userVo.toModel());
     }
+
     @Override
     public User updateUser(UserVo userVo) throws UserNotFoundException, UserPhotoNotFoundException, EmailExistsException, UserNameExistsException {
         User user = this.getUserById(userVo.getId());
@@ -136,7 +136,7 @@ public class UserServiceImplementation implements UserService {
             UserPhoto photo = userPhotoService.getUserPhotoById(userVo.getAvatarId());
             user.setAvatar(photo);
         }
-        return user;
+        return userRepository.save(user);
 
     }
 
