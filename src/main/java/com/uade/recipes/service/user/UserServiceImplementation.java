@@ -82,9 +82,8 @@ public class UserServiceImplementation implements UserService {
     @Override
     public void isRegistryComplete(String email) throws UserNotFoundException, RegistrationProcessIncompleteException {
         User user = getUserByEmail(email);
-        if (!user.isRegistryComplete())
+        if (!user.isEnabled())
             throw new RegistrationProcessIncompleteException();
-
     }
 
     @Override
