@@ -45,7 +45,7 @@ public class RecipeRatingController {
 
     })
     public ResponseEntity<List<RecipeRatingVo>> getRecipeRatingById(@PathVariable Integer recipeRatingId) throws RecipeNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(transformListToVoList(recipeRatingService.getRecipeRatingByRecipeId(recipeRatingId)));
+        return ResponseEntity.status(HttpStatus.OK).body(transformListToVoList(recipeRatingService.getRecipeRatingByRecipeId(recipeRatingId)));
     }
 
     @GetMapping("/amount/{recipeId}")
@@ -110,7 +110,7 @@ public class RecipeRatingController {
 
     })
     public ResponseEntity<RecipeRatingVo> getRecipeRatingByRecipeIdAndUserId(@RequestParam Integer recipeId,@RequestParam Integer userId) throws RecipeNotFoundException, UserNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(recipeRatingService.getRecipeRatingByRecipeIdAndUserId(recipeId,userId).toVO());
+        return ResponseEntity.status(HttpStatus.OK).body(recipeRatingService.getRecipeRatingByRecipeIdAndUserId(recipeId,userId).toVO());
     }
 
     private List<RecipeRatingVo> transformListToVoList(List<RecipeRating> list) {

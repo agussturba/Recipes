@@ -67,7 +67,7 @@ public class IngredientController {
             @ApiResponse(code = 404, message = "Ingrediente no encontrado")
     })
     public ResponseEntity<IngredientVo> getIngredientById(@PathVariable Integer id) throws IngredientNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(ingredientService.getIngredientById(id).toVO());
+        return ResponseEntity.status(HttpStatus.OK).body(ingredientService.getIngredientById(id).toVO());
     }
 
     @GetMapping("/name/{name}")
@@ -79,7 +79,7 @@ public class IngredientController {
             @ApiResponse(code = 404, message = "Ingrediente no encontrado")
     })
     public ResponseEntity<IngredientVo> getIngredientByName(@PathVariable String name) throws IngredientNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(ingredientService.getIngredientByName(name).toVO());
+        return ResponseEntity.status(HttpStatus.OK).body(ingredientService.getIngredientByName(name).toVO());
     }
 
     private List<IngredientVo> transformListToVoList(List<Ingredient> list){

@@ -60,7 +60,7 @@ public class DishController {
             @ApiResponse(code = 404, message = "Plato no encontrado")
     })
     public ResponseEntity<DishVo> getDishById(@PathVariable Integer id) throws DishNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(dishService.getDishById(id).toVO());
+        return ResponseEntity.status(HttpStatus.OK).body(dishService.getDishById(id).toVO());
     }
 
     @GetMapping("/name/{name}")
@@ -72,7 +72,7 @@ public class DishController {
             @ApiResponse(code = 404, message = "Plato no encontrado")
     })
     public ResponseEntity<DishVo> getDishByName(@PathVariable String name) throws DishNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(dishService.getDishByName(name).toVO());
+        return ResponseEntity.status(HttpStatus.OK).body(dishService.getDishByName(name).toVO());
     }
 
     @GetMapping("/recipe/{recipeId}")
@@ -84,7 +84,7 @@ public class DishController {
             @ApiResponse(code = 404, message = "Plato no encontrado o receta no encontrada")
     })
     public ResponseEntity<DishVo> getDishByRecipeId(@PathVariable Integer recipeId) throws DishNotFoundException, RecipeNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(dishService.getDishByRecipeId(recipeId).toVO());
+        return ResponseEntity.status(HttpStatus.OK).body(dishService.getDishByRecipeId(recipeId).toVO());
     }
 
     @PostMapping

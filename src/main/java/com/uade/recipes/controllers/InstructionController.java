@@ -43,7 +43,7 @@ public class InstructionController {
             @ApiResponse(code = 404, message = "La instrucción no fue encontrada")
     })
     public ResponseEntity<InstructionVo> getInstructionById(@PathVariable Integer id) throws InstructionNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(instructionService.getInstructionById(id).toVO());
+        return ResponseEntity.status(HttpStatus.OK).body(instructionService.getInstructionById(id).toVO());
     }
 
     @GetMapping("/recipe/{recipeId}")

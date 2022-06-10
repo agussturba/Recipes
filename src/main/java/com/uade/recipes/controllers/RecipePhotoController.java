@@ -43,7 +43,7 @@ public class RecipePhotoController {
 
     })
     public ResponseEntity<RecipePhotoVo> getRecipePhotoById(@PathVariable Integer id) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(recipePhotoService.getRecipePhotoById(id).toVO());
+        return ResponseEntity.status(HttpStatus.OK).body(recipePhotoService.getRecipePhotoById(id).toVO());
     }
 
     @GetMapping("/recipe/{recipeId}")
@@ -57,7 +57,7 @@ public class RecipePhotoController {
     })
     public ResponseEntity<List<RecipePhotoVo>> getRecipePhotosByRecipe(@PathVariable Integer recipeId) throws RecipeNotFoundException {
         List<RecipePhotoVo> result = transformListToVoList(recipePhotoService.getRecipePhotosByRecipeId(recipeId));
-        return ResponseEntity.status(HttpStatus.FOUND).body(result);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @PostMapping
@@ -71,7 +71,7 @@ public class RecipePhotoController {
     })
     public ResponseEntity<List<RecipePhotoVo>> saveRecipePhoto(@RequestParam Integer recipeId, @RequestParam List<MultipartFile> images) throws RecipeNotFoundException, IOException {
         List<RecipePhotoVo> result = transformListToVoList( (List<RecipePhoto>) recipePhotoService.saveRecipePhoto(recipeId, images));
-        return ResponseEntity.status(HttpStatus.FOUND).body(result);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
     @DeleteMapping
@@ -85,7 +85,7 @@ public class RecipePhotoController {
     })
     public ResponseEntity deleteRecipePhoto(@RequestParam Integer recipeId, @RequestParam Integer recipePhotoId) throws RecipeNotFoundException, IOException {
         recipePhotoService.deleteRecipePhoto(recipeId, recipePhotoId);
-        return new ResponseEntity(HttpStatus.FOUND);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     private List<RecipePhotoVo> transformListToVoList(List<RecipePhoto> list){

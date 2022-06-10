@@ -65,7 +65,7 @@ public class ConversionController {
 
     })
     public ResponseEntity<ConversionVo> getConversionById(@PathVariable Integer id) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(conversionService.getConversionById(id).toVO());
+        return ResponseEntity.status(HttpStatus.OK).body(conversionService.getConversionById(id).toVO());
     }
 
     @PostMapping

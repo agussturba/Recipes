@@ -56,7 +56,7 @@ public class IngredientQuantityController {
             @ApiResponse(code = 404, message = "Ingrediente no encontrado")
     })
     public ResponseEntity<IngredientQuantityVo> getIngredientQuantityById(@PathVariable Integer ingredientQuantityId) throws IngredientQuantityNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(ingredientQuantityService.getIngredientQuantityById(ingredientQuantityId).toVO());
+        return ResponseEntity.status(HttpStatus.OK).body(ingredientQuantityService.getIngredientQuantityById(ingredientQuantityId).toVO());
     }
     @GetMapping("/convert")
     @ApiOperation(value = "Convertir la unidad de la relacion ingrediente-cantidad a partir de una nueva unidad ", response = ResponseEntity.class)

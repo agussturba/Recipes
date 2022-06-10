@@ -42,7 +42,7 @@ public class MultimediaController {
             @ApiResponse(code = 404, message = "La multimedia no fue encontrada")
     })
     public ResponseEntity<MultimediaVo> getMultimediaById(@PathVariable Integer id){
-        return ResponseEntity.status(HttpStatus.FOUND).body(multimediaService.getMultimediaById(id).toVO());
+        return ResponseEntity.status(HttpStatus.OK).body(multimediaService.getMultimediaById(id).toVO());
     }
     @GetMapping("/instruction/{id}")
     @ApiOperation(value = "Retornar una multimedia por el id de la instrucción", response = ResponseEntity.class)
@@ -53,7 +53,7 @@ public class MultimediaController {
             @ApiResponse(code = 404, message = "La multimedia o instrucción no fue encontrada")
     })
     public ResponseEntity<MultimediaVo> getMultimediaByInstructionId(@PathVariable Integer id) throws InstructionNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(multimediaService.getMultimediaByInstructionId(id).toVO());
+        return ResponseEntity.status(HttpStatus.OK).body(multimediaService.getMultimediaByInstructionId(id).toVO());
     }
     @PostMapping
     @ApiOperation(value = "Crear una multimedia para una instrucción", response = ResponseEntity.class)
@@ -64,7 +64,7 @@ public class MultimediaController {
             @ApiResponse(code = 404, message = "La instrucción no fue encontrada")
     })
     public ResponseEntity<List<Multimedia>> saveMultimedia(@RequestParam Integer instructionId, @RequestParam List<MultipartFile> multimedia) throws InstructionNotFoundException, IOException {
-        return ResponseEntity.status(HttpStatus.FOUND).body((List<Multimedia>) multimediaService.saveMultimedia(instructionId, multimedia));
+        return ResponseEntity.status(HttpStatus.OK).body((List<Multimedia>) multimediaService.saveMultimedia(instructionId, multimedia));
     }
 
     @DeleteMapping

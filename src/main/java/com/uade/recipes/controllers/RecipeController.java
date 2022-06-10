@@ -186,7 +186,7 @@ public class RecipeController {
     public ResponseEntity<List<RecipeVo>> getRecipesByIngredient(@RequestBody List<Integer> ingredientIdList) throws IngredientNotFoundException {
         List<Recipe> result = getRecipesFromIngredientQuantity(ingredientQuantityService.getIngredientQuantityByIngredientId(ingredientIdList.get(0)));
         List<RecipeVo> resultFinal = transformListToVoList(result);
-        return ResponseEntity.status(HttpStatus.FOUND).body(resultFinal);
+        return ResponseEntity.status(HttpStatus.OK).body(resultFinal);
     }
 
     @PostMapping
