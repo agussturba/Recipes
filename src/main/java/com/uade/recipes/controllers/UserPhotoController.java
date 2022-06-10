@@ -38,7 +38,7 @@ public class UserPhotoController {
 
     })
     public ResponseEntity<UserPhotoVo> getPhotoById(@PathVariable Integer id) throws UserPhotoNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(userPhotoService.getUserPhotoById(id).toVO());
+        return ResponseEntity.status(HttpStatus.OK).body(userPhotoService.getUserPhotoById(id).toVO());
     }
     @GetMapping("/recipe/{userId}")
     @ApiOperation(value = "Obtener una foto de usuario por usuario", response = ResponseEntity.class)
@@ -50,7 +50,7 @@ public class UserPhotoController {
 
     })
     public ResponseEntity<UserPhotoVo> getUserPhotoByUserId(@PathVariable Integer userId) throws  UserNotFoundException, UserPhotoNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(userPhotoService.getUserPhotoByUserId(userId).toVO());
+        return ResponseEntity.status(HttpStatus.OK).body(userPhotoService.getUserPhotoByUserId(userId).toVO());
     }
     @PostMapping
     @ApiOperation(value = "Crear una foto de usuario", response = ResponseEntity.class)
@@ -62,7 +62,7 @@ public class UserPhotoController {
 
     })
     public ResponseEntity<UserPhotoVo> savePhotoUser(@RequestParam Integer userId, @RequestParam MultipartFile image) throws  IOException, UserNotFoundException, UserPhotoNotFoundException {
-        return ResponseEntity.status(HttpStatus.FOUND).body(userPhotoService.saveUserPhoto(userId, image).toVO());
+        return ResponseEntity.status(HttpStatus.OK).body(userPhotoService.saveUserPhoto(userId, image).toVO());
     }
 
     @DeleteMapping
