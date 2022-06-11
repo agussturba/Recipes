@@ -1,6 +1,7 @@
 package com.uade.recipes.vo;
 
 import com.uade.recipes.model.Recipe;
+import com.uade.recipes.model.Type;
 import com.uade.recipes.model.User;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,7 +26,7 @@ public class RecipeVo {
     Boolean enabled;
 
 
-    public Recipe toModel(User owner) {
+    public Recipe toModel(User owner, Type type) {
         Recipe recipe = new Recipe();
         recipe.setId(getId());
         recipe.setName(getName());
@@ -36,6 +37,7 @@ public class RecipeVo {
         recipe.setDuration(duration);
         recipe.setTimestamp(timestamp);
         recipe.setEnabled(enabled);
+        recipe.setType(type);
         return recipe;
     }
 

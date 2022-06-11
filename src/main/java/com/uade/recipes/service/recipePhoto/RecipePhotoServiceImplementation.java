@@ -35,10 +35,6 @@ public class RecipePhotoServiceImplementation implements RecipePhotoService {
         return recipePhotoRepository.findById(id).orElseThrow(RecipePhotoNotFoundException::new);
     }
 
-    @Override
-    public List<RecipePhoto> getAllRecipePhotos() {
-        return (List<RecipePhoto>) recipePhotoRepository.findAll();
-    }
 
     @Override
     public List<RecipePhoto> getRecipePhotosByRecipeId(Integer recipeId) throws RecipeNotFoundException {
@@ -51,15 +47,16 @@ public class RecipePhotoServiceImplementation implements RecipePhotoService {
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(RecipeNotFoundException::new);
         List<RecipePhoto> recipePhotos = new ArrayList<>();
         for (MultipartFile image : images) {
-            recipePhotos.add(setNewImageRecipe(image,recipe));
+            recipePhotos.add(setNewImageRecipe(image, recipe));
         }
         return (List<RecipePhoto>) recipePhotoRepository.saveAll(recipePhotos);
     }
+
     private RecipePhoto setNewImageRecipe(MultipartFile image, Recipe recipe) throws IOException {
         RecipePhoto recipePhoto = new RecipePhoto();
         recipePhoto.setRecipe(recipe);
-        Map uploadResult = saveRecipePhotoToCloudinary(recipe.getId(),image);
-        recipePhoto.setPhotoUrl( uploadResult.get("url").toString());
+        Map uploadResult = saveRecipePhotoToCloudinary(recipe.getId(), image);
+        recipePhoto.setPhotoUrl(uploadResult.get("url").toString());
         recipePhoto.setExtension(StringUtils.getFilenameExtension(image.getOriginalFilename()));
         return recipePhoto;
     }

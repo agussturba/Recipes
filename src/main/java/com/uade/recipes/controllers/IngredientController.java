@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -80,6 +81,18 @@ public class IngredientController {
     })
     public ResponseEntity<IngredientVo> getIngredientByName(@PathVariable String name) throws IngredientNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(ingredientService.getIngredientByName(name).toVO());
+    }
+
+    @PostMapping("/save")
+    @ApiOperation(value = "Guardar datos hardcodeados en la bd", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Ingredientes guardados con exito"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Ingrediente no encontrado")
+    })
+    public void saveIngredientList() throws  FileNotFoundException {
+         ingredientService.saveListIngredients();
     }
 
     private List<IngredientVo> transformListToVoList(List<Ingredient> list){

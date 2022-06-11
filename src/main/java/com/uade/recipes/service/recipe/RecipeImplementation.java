@@ -29,7 +29,7 @@ public class RecipeImplementation implements RecipeService {
     private final TypeService typeService;
     private final IngredientQuantityService ingredientQuantityService;
 
-    public RecipeImplementation(RecipeRepository recipeRepository,UserService userService, DishService dishService, TypeService typeService, IngredientQuantityService ingredientQuantityService) {
+    public RecipeImplementation(RecipeRepository recipeRepository, UserService userService, DishService dishService, TypeService typeService, IngredientQuantityService ingredientQuantityService) {
         this.recipeRepository = recipeRepository;
         this.userService = userService;
         this.dishService = dishService;
@@ -132,8 +132,11 @@ public class RecipeImplementation implements RecipeService {
     public Recipe saveOrUpdateRecipe(RecipeVo recipeVo) throws DishNotFoundException, UserNotFoundException {
         validateRecipeData(recipeVo);
         User owner = userService.getUserById(recipeVo.getOwnerId());
-        return recipeRepository.save(recipeVo.toModel(owner));
-    }
+        Type type = typeService.getTypeById(recipeVo.getTypeId());
+        Recipe recipe = recipeRepository.save(recipeVo.toModel(owner, type));
+        dishService.addRecipeToDishByRecipeIdAndDishId(recipe, recipeVo.getDishId());
+        return recipe;
+        }
 
     @Override
     public List<IngredientQuantity> convertRecipeIngredientQuantityByIngredientIdAndRecipeIdAndNewQuantity(Integer ingredientId, Double newQuantity, Integer recipeId) throws IngredientNotFoundException, RecipeNotFoundException, CannotDivideTheIngredientException {

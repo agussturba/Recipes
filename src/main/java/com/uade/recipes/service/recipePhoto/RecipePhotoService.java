@@ -10,8 +10,6 @@ import java.util.List;
 public interface RecipePhotoService {
     RecipePhoto getRecipePhotoById(Integer id);
 
-    List<RecipePhoto> getAllRecipePhotos();
-
     List<RecipePhoto> getRecipePhotosByRecipeId(Integer recipeId) throws RecipeNotFoundException;
 
     Iterable<RecipePhoto> saveRecipePhoto(Integer recipeId, List<MultipartFile> images) throws RecipeNotFoundException, IOException;

@@ -68,7 +68,11 @@ public class DishServiceImplementation implements DishService {
         Type type = typeService.getTypeById(dishVo.getTypeId());
         return dishRepository.save(dishVo.toModel(type));
     }
-
+    public void addRecipeToDishByRecipeIdAndDishId(Recipe recipe,Integer dishId){
+        Dish dish = getDishById(dishId);
+        dish.getRecipes().add(recipe);
+        dishRepository.save(dish);
+    }
 
     private List<Dish> filterDishesByTypesIdList(List<Dish> candidateDishes, List<Integer> typeIdList) {
         return candidateDishes.stream()

@@ -5,7 +5,7 @@ spring:
   jpa:
 
     hibernate:
-      ddl-auto: "create-drop"
+       ddl-auto: "create-drop"
     show-sql: true
   datasource:
     url: "jdbc:sqlserver://localhost:2000;databaseName=Recipes"

@@ -13,7 +13,6 @@ public class IngredientVo {
     Integer id;
     String name;
     boolean dividable;
-    List<Integer> typeIdList;
 
     public Ingredient toModel() {
         Ingredient ingredient = new Ingredient();

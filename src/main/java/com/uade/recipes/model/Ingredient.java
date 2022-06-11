@@ -27,17 +27,15 @@ import java.util.stream.Collectors;
 
 public class Ingredient {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Integer id;
     @Column(nullable = false)
     private String name;
-
     /**
      * Atributo para verificar que el ingrediento puede ser divisible.Que el ingrediente puede ser la mitadd
      * de dicho elemento. IE un tomate es divisble porque podes trabajar con medio tomate pero un huevo no es
      * divisible.
      */
-
     @Column(table = "ingredient_addition")
     private boolean dividable;
 

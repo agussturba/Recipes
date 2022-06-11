@@ -1,22 +1,33 @@
 package com.uade.recipes.service.recipe;
 
+import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
+import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.*;
 import com.uade.recipes.persistance.RecipeRepository;
 import com.uade.recipes.service.dish.DishService;
 import com.uade.recipes.service.ingredientQuantity.IngredientQuantityService;
 import com.uade.recipes.service.type.TypeService;
 import com.uade.recipes.service.user.UserService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class RecipeImplementationTest {
     @Mock
     private RecipeRepository recipeRepository;
@@ -46,6 +57,7 @@ class RecipeImplementationTest {
 
     @BeforeEach
     void setUp() {
+        recipeTestList = new ArrayList<>();
         testUser = new User();
         testUser.setId(1);
         testUser.setUserName("agussturba");
@@ -68,7 +80,7 @@ class RecipeImplementationTest {
         testRecipe.setName("PAPAS");
         testRecipe.setDuration(2);
         testRecipe.setPortions(3D);
-        testRecipe.setPeopleAmount(2);
+        testRecipe.setPeopleAmount(1);
         testRecipe.setType(testType);
         testRecipe.setOwner(testUser);
 
@@ -93,33 +105,65 @@ class RecipeImplementationTest {
         testIngredientQuantity.setUnit(testUnit);
 
         testDish = new Dish("Pizza", testType);
-
         recipeTestList.add(testRecipe);
+        testDish.setRecipes(recipeTestList);
 
     }
 
     @Test
     void getAllRecipes() {
+        when(recipeRepository.findAll()).thenReturn(recipeTestList);
+        List<Recipe> recipes = recipeImplementation.getAllRecipes();
+        assertNotNull(recipes);
+        assertEquals(1,recipes.size());
+        verify(recipeRepository).findAll();
     }
 
     @Test
-    void getRecipeById() {
+    void getRecipeById() throws RecipeNotFoundException {
+        when(recipeRepository.findById(any(Integer.class))).thenReturn(java.util.Optional.ofNullable(testRecipe));
+        Recipe recipe = recipeImplementation.getRecipeById(1);
+        assertNotNull(recipe);
+        assertEquals("PAPAS",recipe.getName());
+        verify(recipeRepository).findById(1);
     }
 
     @Test
     void getRecipesByName() {
+        when(recipeRepository.findByNameOrderByName(any(String.class))).thenReturn(recipeTestList);
+        List<Recipe> recipes = recipeImplementation.getRecipesByName("papas");
+        assertNotNull(recipes);
+        assertEquals(1,recipes.size());
+        verify(recipeRepository).findByNameOrderByName("papas");
     }
 
     @Test
     void getRecipesByPeopleAmount() {
+        when(recipeRepository.findByPeopleAmount(any(Integer.class))).thenReturn(recipeTestList);
+        List<Recipe> recipes = recipeImplementation.getRecipesByPeopleAmount(1);
+        assertNotNull(recipes);
+        assertEquals(1,recipes.size());
+        verify(recipeRepository).findByPeopleAmount(1);
     }
 
     @Test
-    void getRecipesByUserId() {
+    void getRecipesByOwnerId() throws UserNotFoundException {
+        when(userService.getUserById(any(Integer.class))).thenReturn(testUser);
+        when(recipeRepository.findByOwnerOrderByName(any(User.class))).thenReturn(recipeTestList);
+        List<Recipe> recipes = recipeImplementation.getRecipesByOwnerId(1);
+        assertNotNull(recipes);
+        assertEquals(1,recipes.size());
+        verify(recipeRepository).findByOwnerOrderByName(testUser);
     }
 
     @Test
     void getRecipesByTypes() {
+        when(typeService.getTypesByIdList(any(List.class))).thenReturn(typeTestList);
+        when(recipeRepository.findByTypeInOrderByName(any(List.class))).thenReturn(recipeTestList);
+        List<Recipe> recipes = recipeImplementation.getRecipesByTypes(Arrays.asList(1));
+        assertNotNull(recipes);
+        assertEquals(1,recipes.size());
+        verify(recipeRepository).findByTypeInOrderByName(typeTestList);
     }
 
     @Test
@@ -127,27 +171,54 @@ class RecipeImplementationTest {
     }
 
     @Test
-    void getRecipesByUserIdAndPeopleAmount() {
+    void getRecipesByOwnerIdAndPeopleAmount() throws UserNotFoundException {
+        when(userService.getUserById(any(Integer.class))).thenReturn(testUser);
+        when(recipeRepository.findByOwnerAndPeopleAmount(any(User.class),any(Integer.class))).thenReturn(recipeTestList);
+        List<Recipe> recipes = recipeImplementation.getRecipesByOwnerIdAndPeopleAmount(1,1);
+        assertNotNull(recipes);
+        assertEquals(1,recipes.size());
+        verify(recipeRepository).findByOwnerAndPeopleAmount(testUser,1);
+
     }
 
     @Test
-    void getRecipesByUserIdAndDishIdAndPeopleAmount() {
+    void getRecipesByOwnerIdAndDishIdAndPeopleAmount() throws UserNotFoundException {
+        when(dishService.getDishById(any(Integer.class))).thenReturn(testDish);
+        List<Recipe> recipes = recipeImplementation.getRecipesByOwnerIdAndDishIdAndPeopleAmount(1,1,1);
+        assertNotNull(recipes);
+        assertEquals(1,recipes.size());
+        verify(dishService).getDishById(1);
     }
 
     @Test
     void getRecipesByDishIdAndPeopleAmount() {
+        when(dishService.getDishById(any(Integer.class))).thenReturn(testDish);
+        List<Recipe> recipes = recipeImplementation.getRecipesByDishIdAndPeopleAmount(1,1);
+        assertNotNull(recipes);
+        assertEquals(1,recipes.size());
+        verify(dishService).getDishById(1);
     }
 
     @Test
-    void getRecipesByUserIdAndDishId() {
+    void getRecipesByOwnerIdAndDishId() {
     }
 
     @Test
     void getRecipesByDishId() {
+        when(dishService.getDishById(any(Integer.class))).thenReturn(testDish);
+        List<Recipe> recipes = recipeImplementation.getRecipesByDishId(1);
+        assertNotNull(recipes);
+        assertEquals(1,recipes.size());
+        verify(dishService).getDishById(1);
+
     }
 
     @Test
-    void isRecipeEnabled() {
+    void isRecipeEnabled() throws RecipeNotFoundException {
+        when(recipeRepository.findById(any(Integer.class))).thenReturn(java.util.Optional.ofNullable(testRecipe));
+        Boolean isEnabled = recipeImplementation.isRecipeEnabled(1);
+        assertTrue(isEnabled);
+        verify(recipeRepository).findById(1);
     }
 
     @Test
