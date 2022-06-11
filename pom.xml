@@ -3,7 +3,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.6.5</version>
@@ -15,7 +14,6 @@
     <name>recipes</name>
     <description>Project for Recipes API</description>
     <dependencies>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -50,6 +48,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.16.22</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -103,6 +102,7 @@
                         <exclude>
                             <groupId>org.lombok</groupId>
                             <artifactId>lombok</artifactId>
+                            <version>1.16.22</version>
                         </exclude>
                     </excludes>
                 </configuration>
