@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 @Setter
 @ToString
 @SecondaryTable(name = "ingredient_addition", pkJoinColumns = @PrimaryKeyJoinColumn(name = "ingredient_id"))
-
 public class Ingredient {
     @Id
     @GeneratedValue

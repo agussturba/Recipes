@@ -116,7 +116,7 @@ public class IngredientQuantityImplementation implements IngredientQuantityServi
     }
 
     private boolean isAcceptableQuantity(Ingredient ingredient, Double newQuantity) {
-        return ingredient.isDividable() || newQuantity % 1 == 0;
+        return ingredient.getDividable() || newQuantity % 1 == 0;
     }
 
 
