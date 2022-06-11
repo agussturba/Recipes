@@ -4,6 +4,7 @@ import com.uade.recipes.exceptions.ingredientExceptions.IngredientNameContainsNu
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.model.Ingredient;
 import com.uade.recipes.persistance.IngredientRepository;
+import com.uade.recipes.utilities.SaveDataDB;
 import com.uade.recipes.vo.IngredientVo;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.uade.recipes.utilities.SaveDataDB.getListOfIngredients;
 import static com.uade.recipes.validations.IngredientsValidations.validateIngredientData;
 
 @Service
@@ -41,7 +41,8 @@ public class IngredientServiceImplementation implements IngredientService {
 
     @Override
     public void saveListIngredients() throws FileNotFoundException {
-        List<Ingredient> ingredients = getListOfIngredients();
+        SaveDataDB saveDataDB = new SaveDataDB();
+        List<Ingredient> ingredients = saveDataDB.getListOfIngredients();
         for (Ingredient ingredient:ingredients) {
             try {
                 getIngredientByName(ingredient.getName());

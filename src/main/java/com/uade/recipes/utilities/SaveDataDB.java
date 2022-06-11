@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -12,8 +13,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class SaveDataDB {
-    public static List<Ingredient> getListOfIngredients() throws FileNotFoundException {
-        Scanner sc = new Scanner(new File("D:\\Documentos\\ingredientesTraducidos.csv"));
+    public List<Ingredient> getListOfIngredients() throws FileNotFoundException {
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        Scanner sc = new Scanner(new File(classLoader.getResource("ingredientesTraducidos.csv").getFile()));
         List<Ingredient> ingredientList = new ArrayList<>();
         sc.useDelimiter(";");
         AtomicInteger contador = new AtomicInteger(1);
