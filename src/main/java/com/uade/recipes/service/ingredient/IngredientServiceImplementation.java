@@ -42,7 +42,7 @@ public class IngredientServiceImplementation implements IngredientService {
     @Override
     public void saveAllIngredients(List<IngredientVo> ingredientVoList) {
         List<Ingredient> ingredients = ingredientVoList.stream().map(IngredientVo::toModel).collect(Collectors.toList());
-        ingredients.stream().map(ingredient -> ingredientRepository.save(ingredient));
+        ingredientRepository.saveAll(ingredients);
     }
     @Override
     public Ingredient saveIngredient(IngredientVo ingredientVo) throws IngredientNameContainsNumberException {
