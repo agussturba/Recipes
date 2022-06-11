@@ -40,20 +40,10 @@ public class IngredientServiceImplementation implements IngredientService {
     }
 
     @Override
-    public void saveListIngredients() throws FileNotFoundException {
-        SaveDataDB saveDataDB = new SaveDataDB();
-        List<Ingredient> ingredients = saveDataDB.getListOfIngredients();
-        for (Ingredient ingredient:ingredients) {
-            try {
-                getIngredientByName(ingredient.getName());
-            } catch (IngredientNotFoundException e) {
-                System.out.println(ingredient);
-                ingredientRepository.save(ingredient);
-            }
-        }
+    public void saveAllIngredients(List<IngredientVo> ingredientVoList) {
+        List<Ingredient> ingredients = ingredientVoList.stream().map(IngredientVo::toModel).collect(Collectors.toList());
+        ingredientRepository.saveAll(ingredients);
     }
-
-
     @Override
     public Ingredient saveIngredient(IngredientVo ingredientVo) throws IngredientNameContainsNumberException {
         validateIngredientData(ingredientVo);

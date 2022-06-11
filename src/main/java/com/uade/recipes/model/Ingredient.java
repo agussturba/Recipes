@@ -37,7 +37,7 @@ public class Ingredient {
      * divisible.
      */
     @Column(table = "ingredient_addition")
-    private boolean dividable;
+    private Boolean dividable;
 
     public IngredientVo toVO() {
         IngredientVo vo = new IngredientVo();

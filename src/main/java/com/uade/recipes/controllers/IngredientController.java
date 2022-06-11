@@ -91,8 +91,8 @@ public class IngredientController {
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "Ingrediente no encontrado")
     })
-    public void saveIngredientList() throws  FileNotFoundException {
-         ingredientService.saveListIngredients();
+    public void saveIngredientList(@RequestBody List<IngredientVo> ingredientVoList) {
+         ingredientService.saveAllIngredients(ingredientVoList);
     }
 
     private List<IngredientVo> transformListToVoList(List<Ingredient> list){
