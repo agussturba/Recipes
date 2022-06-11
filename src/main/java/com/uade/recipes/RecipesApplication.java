@@ -12,9 +12,7 @@ public class RecipesApplication {
 
 
 	public static void main(String[] args) throws IOException {
-		SaveDataDB saveDataDB = new SaveDataDB();
-		saveDataDB.saveListIngredients();
-	//	SpringApplication.run(RecipesApplication.class, args);
+		SpringApplication.run(RecipesApplication.class, args);
 	}
 
 }
