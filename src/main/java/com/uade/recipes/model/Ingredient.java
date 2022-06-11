@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @SecondaryTable(name = "ingredient_addition", pkJoinColumns = @PrimaryKeyJoinColumn(name = "ingredient_id"))
 public class Ingredient {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(nullable = false)
     private String name;
