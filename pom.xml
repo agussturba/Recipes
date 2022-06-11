@@ -8,6 +8,7 @@
         <version>2.5.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>com.uade</groupId>
     <artifactId>recipes</artifactId>
     <version>0.0.1-SNAPSHOT</version>
@@ -100,6 +101,11 @@
                 <configuration>
                     <excludes>
                         <exclude>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        </exclude>
+
+                        <exclude>
                             <groupId>org.lombok</groupId>
                             <artifactId>lombok</artifactId>
                             <version>1.16.22</version>
@@ -127,5 +133,6 @@
 
         </plugins>
     </build>
+
 
 </project>
