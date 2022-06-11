@@ -92,6 +92,19 @@ public class UserController {
         userVo.setRole("GUEST");
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(userVo).toVO());
     }
+    @PostMapping("/save")
+    @ApiOperation(value = "Salvar una lista de usuarios", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Usuarios creados"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 409, message = "El nombre de usuario ya existe o La contraseña no se valida o el rol no es valido o el email ya existe") //TODO CHEQUEAR
+    })
+    public void saveUserGuest(@RequestBody List<UserVo> userVoList) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException, UserPhotoNotFoundException {
+        List<User> users = userVoList.stream().map(UserVo::toModel).collect(Collectors.toList());
+        userService.saveAllUsers(users);
+    }
+
 
     @PutMapping
     @ApiOperation(value = "Actualizar datos de un usuario", response = ResponseEntity.class)

@@ -55,6 +55,14 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
+    public void saveAllUsers(List<User> users) {
+        for (User user:users) {
+            user.setRegistrationTimestamp(LocalDateTime.now());
+        }
+        userRepository.saveAll(users);
+    }
+
+    @Override
     public void confirmEmail(String email) throws UserNotFoundException {
         User user = validateUserRegistration(email);
         user.setEnabled(true);
