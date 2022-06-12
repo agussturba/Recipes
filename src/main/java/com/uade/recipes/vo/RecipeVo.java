@@ -28,7 +28,9 @@ public class RecipeVo {
 
     public Recipe toModel(User owner, Type type) {
         Recipe recipe = new Recipe();
+        if (id!=null){
         recipe.setId(getId());
+        }
         recipe.setName(getName());
         recipe.setDescription(getDescription());
         recipe.setOwner(owner);
