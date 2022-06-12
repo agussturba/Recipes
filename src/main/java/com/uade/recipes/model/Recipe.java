@@ -8,6 +8,7 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -47,7 +48,13 @@ public class Recipe {
         vo.setDescription(description);
         vo.setOwnerId(owner.getId());
         vo.setPeopleAmount(peopleAmount);
-        vo.setRecipePhotoIdList(recipePhoto.stream().map(RecipePhoto::getId).collect(Collectors.toList()));
+        if (recipePhoto != null) {
+            vo.setRecipePhotoIdList(recipePhoto.stream().map(RecipePhoto::getId).collect(Collectors.toList()));
+        }
+        else {
+            recipePhoto = new ArrayList<>();
+        }
+        vo.setDuration(duration);
         vo.setPortions(portions);
         vo.setTypeId(type.getId());
         vo.setTimestamp(timestamp);
