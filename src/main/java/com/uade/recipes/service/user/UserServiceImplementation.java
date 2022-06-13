@@ -169,7 +169,7 @@ public class UserServiceImplementation implements UserService {
             checkEmailExistence(userVo.getEmail());
             user.setName(userVo.getEmail());
         }
-        if (!userVo.getAvatar().isEmpty() || userVo.getAvatar() != null) {
+        if (userVo.getAvatar() != null) {
             user.setAvatar(userVo.getAvatar());
         }
         return userRepository.save(user);
