@@ -9,6 +9,7 @@ import com.uade.recipes.model.RecipePhoto;
 import com.uade.recipes.persistance.RecipePhotoRepository;
 import com.uade.recipes.persistance.RecipeRepository;
 import com.uade.recipes.utilities.CloudinaryUtil;
+import com.uade.recipes.vo.RecipePhotoVo;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class RecipePhotoServiceImplementation implements RecipePhotoService {
@@ -43,7 +45,7 @@ public class RecipePhotoServiceImplementation implements RecipePhotoService {
     }
 
     @Override
-    public List<RecipePhoto> saveRecipePhoto(Integer recipeId, List<MultipartFile> images) throws RecipeNotFoundException, IOException {
+    public List<Object> saveRecipePhoto(Integer recipeId, List<MultipartFile> images) throws RecipeNotFoundException, IOException {
         Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(RecipeNotFoundException::new);
         List<RecipePhoto> recipePhotos = new ArrayList<>();
         Map uploadResult = saveRecipePhotoToCloudinary(recipeId, images.get(0));
@@ -53,7 +55,15 @@ public class RecipePhotoServiceImplementation implements RecipePhotoService {
             recipePhotos.add(setNewImageRecipe(image, recipe));
         }
         recipeRepository.save(recipe);
-        return (List<RecipePhoto>) recipePhotoRepository.saveAll(recipePhotos);
+        List<Object> result = new ArrayList<>();
+        result.add(recipe.getMainPhoto());
+        result.addAll(transformListToVoList(recipePhotos));
+        recipePhotoRepository.saveAll(recipePhotos);
+        return result;
+    }
+
+    private List<RecipePhotoVo> transformListToVoList(List<RecipePhoto> list){
+        return list.stream().map(RecipePhoto::toVO).collect(Collectors.toList());
     }
 
     private RecipePhoto setNewImageRecipe(MultipartFile image, Recipe recipe) throws IOException {

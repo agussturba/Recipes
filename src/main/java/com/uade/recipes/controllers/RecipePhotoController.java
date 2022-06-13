@@ -69,8 +69,8 @@ public class RecipePhotoController {
             @ApiResponse(code = 404, message = "La receta no fue encontrada"),
 
     })
-    public ResponseEntity<List<RecipePhotoVo>> saveRecipePhoto(@RequestParam Integer recipeId, @RequestParam List<MultipartFile> images) throws RecipeNotFoundException, IOException {
-        List<RecipePhotoVo> result = transformListToVoList( (List<RecipePhoto>) recipePhotoService.saveRecipePhoto(recipeId, images));
+    public ResponseEntity<List<Object>> saveRecipePhoto(@RequestParam Integer recipeId, @RequestParam List<MultipartFile> images) throws RecipeNotFoundException, IOException {
+        List<Object> result = (List<Object>) recipePhotoService.saveRecipePhoto(recipeId, images);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
