@@ -77,7 +77,7 @@ public class RecipeController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{recipeId}")
     @ApiOperation(value = "Retornar una receta por su id", response = Iterable.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "receta retornada correctamente"),
