@@ -19,11 +19,25 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/user")
+//test
 public class UserController {
     private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping("/{id}")
+    @ApiOperation(value = "Obtener un usuario en base a su id", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200 /*302*/, message = "El usuario fue encontrado"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Usuario no encontrado"),
+
+    })
+    public ResponseEntity<UserVo> getUserById(@PathVariable Integer id) throws UserNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserById(id).toVO());
     }
 
 
