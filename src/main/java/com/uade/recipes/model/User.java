@@ -27,8 +27,7 @@ public class User {
     @Column(nullable = false)
     private String userName;
     private String name;
-    @OneToOne
-    private UserPhoto avatar;
+    private String avatar;
     private boolean enabled;
 
     @Column(table = "user_addition")
@@ -47,11 +46,7 @@ public class User {
         vo.setPassword(password);
         vo.setRegistrationTimestamp(registrationTimestamp);
         vo.setEnabled(enabled);
-        if (this.avatar == null) {
-            vo.setAvatarId(null);
-        } else {
-            vo.setAvatarId(avatar.getId());
-        }
+        vo.setAvatar(avatar);
         return vo;
     }
 

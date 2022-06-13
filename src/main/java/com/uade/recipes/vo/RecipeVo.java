@@ -18,7 +18,7 @@ public class RecipeVo {
     Integer typeId;
     Integer dishId;
     Integer ownerId;
-    List<Integer> recipePhotoIdList;
+    String mainPhoto;
     Integer peopleAmount;
     Double portions;
     Integer duration;
@@ -37,6 +37,7 @@ public class RecipeVo {
         recipe.setPeopleAmount(peopleAmount);
         recipe.setPortions(portions);
         recipe.setDuration(duration);
+        recipe.setMainPhoto(mainPhoto);
         recipe.setTimestamp(timestamp);
         recipe.setEnabled(enabled);
         recipe.setType(type);

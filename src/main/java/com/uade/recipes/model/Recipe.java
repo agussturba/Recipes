@@ -27,8 +27,7 @@ public class Recipe {
     private String description;
     @Column(table = "recipe_addition")
     private Integer duration;
-    @OneToMany
-    private List<RecipePhoto> recipePhoto;
+    private String mainPhoto;
     @OneToOne
     private User owner;
     private Integer peopleAmount;
@@ -48,12 +47,7 @@ public class Recipe {
         vo.setDescription(description);
         vo.setOwnerId(owner.getId());
         vo.setPeopleAmount(peopleAmount);
-        if (recipePhoto != null) {
-            vo.setRecipePhotoIdList(recipePhoto.stream().map(RecipePhoto::getId).collect(Collectors.toList()));
-        }
-        else {
-            recipePhoto = new ArrayList<>();
-        }
+        vo.setMainPhoto(mainPhoto);
         vo.setDuration(duration);
         vo.setPortions(portions);
         vo.setTypeId(type.getId());

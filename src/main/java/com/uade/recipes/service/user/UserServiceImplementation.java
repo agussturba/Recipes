@@ -1,31 +1,34 @@
 package com.uade.recipes.service.user;
 
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.uade.recipes.exceptions.userExceptions.EmailExistsException;
 import com.uade.recipes.exceptions.userExceptions.RegistrationProcessIncompleteException;
 import com.uade.recipes.exceptions.userExceptions.UserNameExistsException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
-import com.uade.recipes.exceptions.userPhotoExceptions.UserPhotoNotFoundException;
 import com.uade.recipes.model.User;
-import com.uade.recipes.model.UserPhoto;
 import com.uade.recipes.persistance.UserRepository;
 import com.uade.recipes.service.email.EmailSenderService;
-import com.uade.recipes.service.userPhoto.UserPhotoService;
+import com.uade.recipes.utilities.CloudinaryUtil;
 import com.uade.recipes.vo.UserVo;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserServiceImplementation implements UserService {
     private final UserRepository userRepository;
-    private final UserPhotoService userPhotoService;
+    private final Cloudinary cloudinary = CloudinaryUtil.getInstance();
     private final EmailSenderService emailSender;
 
-    public UserServiceImplementation(UserRepository userRepository, UserPhotoService userPhotoService, EmailSenderService emailSender) {
+    public UserServiceImplementation(UserRepository userRepository, EmailSenderService emailSender) {
         this.userRepository = userRepository;
-        this.userPhotoService = userPhotoService;
         this.emailSender = emailSender;
     }
 
@@ -56,7 +59,7 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public void saveAllUsers(List<User> users) {
-        for (User user:users) {
+        for (User user : users) {
             user.setRegistrationTimestamp(LocalDateTime.now());
         }
         userRepository.saveAll(users);
@@ -95,6 +98,33 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
+    public String saveUserPhoto(Integer userId, MultipartFile image) throws UserNotFoundException, IOException {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Map uploadResult = saveUserPhotoToCloudinary(image, userId);
+        user.setAvatar((String) uploadResult.get("url"));
+        userRepository.save(user);
+        return user.getAvatar();
+    }
+
+    @Override
+    public void deleteUserPhoto(Integer userId) throws UserNotFoundException, IOException {
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        List<String> url = Arrays.asList(user.getAvatar().split("/"));
+        String filename = url.get(url.size() - 1);
+        String public_id = filename.substring(0, filename.indexOf("."));
+        cloudinary.uploader().destroy(public_id, ObjectUtils.emptyMap());
+        user.setAvatar("https://res.cloudinary.com/fransiciliano/image/upload/v1650134710/default_avatar.png");
+        userRepository.save(user);
+
+    }
+
+    private Map saveUserPhotoToCloudinary(MultipartFile image, Integer userId) throws IOException {
+        Map uploadResult = cloudinary.uploader().upload(image.getBytes(),
+                ObjectUtils.asMap("public_id", "user_" + userId + "_avatar"));
+        return uploadResult;
+    }
+
+    @Override
     public User getUserByAliasAndPassword(String alias, String password) throws UserNotFoundException {
         User user = getUserByAlias(alias);
         if (user.getPassword().equals(password)) return user;
@@ -120,7 +150,7 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
-    public User updateUser(UserVo userVo) throws UserNotFoundException, UserPhotoNotFoundException, EmailExistsException, UserNameExistsException {
+    public User updateUser(UserVo userVo) throws UserNotFoundException, EmailExistsException, UserNameExistsException {
         User user = this.getUserById(userVo.getId());
         userVo.setEnabled(true);
         userVo.setRole(user.getRole());
@@ -139,9 +169,8 @@ public class UserServiceImplementation implements UserService {
             checkEmailExistence(userVo.getEmail());
             user.setName(userVo.getEmail());
         }
-        if (userVo.getAvatarId() != null) {
-            UserPhoto photo = userPhotoService.getUserPhotoById(userVo.getAvatarId());
-            user.setAvatar(photo);
+        if (!userVo.getAvatar().isEmpty() || userVo.getAvatar() != null) {
+            user.setAvatar(userVo.getAvatar());
         }
         return userRepository.save(user);
 

@@ -2,20 +2,18 @@ package com.uade.recipes.controllers;
 
 
 import com.uade.recipes.exceptions.userExceptions.*;
-import com.uade.recipes.exceptions.userPhotoExceptions.UserPhotoNotFoundException;
-import com.uade.recipes.model.Type;
 import com.uade.recipes.model.User;
 import com.uade.recipes.service.user.UserService;
 import com.uade.recipes.vo.UserVo;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,7 +62,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "Usuario no encontrado"),
 
     })
-    public ResponseEntity<String> getSuggestedAlias(@PathVariable String currentAlias)  {
+    public ResponseEntity<String> getSuggestedAlias(@PathVariable String currentAlias) {
         return ResponseEntity.status(HttpStatus.OK).body("Alias");
     }
 
@@ -76,10 +74,11 @@ public class UserController {
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 409, message = "El nombre de usuario ya existe o La contraseña no se valida o el rol no es valido o el email ya existe") //TODO CHEQUEAR
     })
-    public ResponseEntity<UserVo> saveUserStudent(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException, UserPhotoNotFoundException {
+    public ResponseEntity<UserVo> saveUserStudent(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException {
         userVo.setRole("STUDENT");
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(userVo).toVO());
     }
+
     @PostMapping("/guest")
     @ApiOperation(value = "Crear un nuevo usuario invitado", response = ResponseEntity.class)
     @ApiResponses(value = {
@@ -88,10 +87,11 @@ public class UserController {
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 409, message = "El nombre de usuario ya existe o La contraseña no se valida o el rol no es valido o el email ya existe") //TODO CHEQUEAR
     })
-    public ResponseEntity<UserVo> saveUserGuest(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException, UserPhotoNotFoundException {
+    public ResponseEntity<UserVo> saveUserGuest(@RequestBody UserVo userVo) throws UserNameExistsException, EmailExistsException {
         userVo.setRole("GUEST");
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(userVo).toVO());
     }
+
     @PostMapping("/save")
     @ApiOperation(value = "Salvar una lista de usuarios", response = ResponseEntity.class)
     @ApiResponses(value = {
@@ -100,7 +100,7 @@ public class UserController {
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 409, message = "El nombre de usuario ya existe o La contraseña no se valida o el rol no es valido o el email ya existe") //TODO CHEQUEAR
     })
-    public void saveUserGuest(@RequestBody List<UserVo> userVoList) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException, UserPhotoNotFoundException {
+    public void saveUserGuest(@RequestBody List<UserVo> userVoList) {
         List<User> users = userVoList.stream().map(UserVo::toModel).collect(Collectors.toList());
         userService.saveAllUsers(users);
     }
@@ -115,7 +115,7 @@ public class UserController {
             @ApiResponse(code = 409, message = "El nombre de usuario ya existe o La contraseña no es valida o el rol no es valido o el email ya existe") //TODO CHEQUEAR
 
     })
-    public ResponseEntity<UserVo> updateUser(@RequestBody UserVo userVo) throws UserNameExistsException, InvalidPasswordException, InvalidRoleException, EmailExistsException, InvalidEmailException, UserNotFoundException, UserPhotoNotFoundException {
+    public ResponseEntity<UserVo> updateUser(@RequestBody UserVo userVo) throws UserNameExistsException, EmailExistsException, UserNotFoundException {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.updateUser(userVo).toVO());
     }
 
@@ -144,6 +144,33 @@ public class UserController {
     public ResponseEntity isRegistrationComplete(@RequestParam String email) throws UserNotFoundException, RegistrationProcessIncompleteException {
         userService.isRegistryComplete(email);
         return ResponseEntity.status(HttpStatus.OK).body("");
+    }
+
+    @PostMapping("/photo")
+    @ApiOperation(value = "Crear una foto de usuario", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Foto de usuario creada exitosamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "El usuario no fue encontrado"),
+
+    })
+    public ResponseEntity<String> savePhotoUser(@RequestParam Integer userId, @RequestParam MultipartFile image) throws IOException, UserNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.saveUserPhoto(userId, image));
+    }
+
+    @DeleteMapping("/photo")
+    @ApiOperation(value = "Eliminar la foto de usuario", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Foto de usuario eliminada exitosamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "El usuario o foto no fue encontrado"),
+
+    })
+    public ResponseEntity deleteUserPhoto(@RequestParam Integer userId) throws IOException, UserNotFoundException {
+        userService.deleteUserPhoto(userId);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     private List<UserVo> transformListToVoList(List<User> list) {

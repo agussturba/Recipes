@@ -1,10 +1,12 @@
 package com.uade.recipes.service.user;
 
 import com.uade.recipes.exceptions.userExceptions.*;
-import com.uade.recipes.exceptions.userPhotoExceptions.UserPhotoNotFoundException;
 import com.uade.recipes.model.User;
 import com.uade.recipes.vo.UserVo;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.mail.Multipart;
+import java.io.IOException;
 import java.util.List;
 
 public interface UserService {
@@ -24,7 +26,7 @@ public interface UserService {
 
     User saveUser(UserVo userVo) throws EmailExistsException, UserNameExistsException;
 
-    User updateUser(UserVo userVo) throws UserNotFoundException, UserPhotoNotFoundException, EmailExistsException, UserNameExistsException;
+    User updateUser(UserVo userVo) throws UserNotFoundException, EmailExistsException, UserNameExistsException;
 
     void changePassword(String email, String password) throws UserNotFoundException;
 
@@ -35,4 +37,8 @@ public interface UserService {
     void confirmEmail(String email) throws UserNotFoundException;
 
     void isRegistryComplete(String email) throws UserNotFoundException, RegistrationProcessIncompleteException;
+
+    String saveUserPhoto(Integer userId, MultipartFile image) throws UserNotFoundException, IOException;
+
+    void deleteUserPhoto(Integer userId) throws UserNotFoundException, IOException;
 }

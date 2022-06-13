@@ -63,7 +63,6 @@ class FavoriteRecipeServiceImplementationTest {
         testRecipe.setTimestamp(LocalDateTime.now());
         testRecipe.setDescription("Receta de Papa");
         testRecipe.setEnabled(true);
-        testRecipe.setRecipePhoto(Arrays.asList(testRecipePhoto));
         testRecipe.setName("PAPAS");
         testRecipe.setDuration(2);
         testRecipe.setPortions(3D);

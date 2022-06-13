@@ -17,7 +17,7 @@ public class UserVo {
     String role;
     boolean enabled;
     String name;
-    Integer avatarId;
+    String avatar;
     LocalDateTime registrationTimestamp;
 
 
@@ -30,7 +30,11 @@ public class UserVo {
         user.setRole(role);
         user.setEnabled(enabled);
         user.setName(name);
-        user.setAvatar(null);
+        if (avatar.isEmpty()) {
+            user.setAvatar("https://res.cloudinary.com/fransiciliano/image/upload/v1650134710/default_avatar.png");
+        } else {
+            user.setAvatar(avatar);
+        }
         user.setPassword(password);
         user.setRegistrationTimestamp(registrationTimestamp);
         return user;
