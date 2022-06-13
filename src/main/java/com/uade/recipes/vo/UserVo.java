@@ -30,7 +30,7 @@ public class UserVo {
         user.setRole(role);
         user.setEnabled(enabled);
         user.setName(name);
-        if (avatar.isEmpty() || avatar == null) {
+        if (avatar == null) {
             user.setAvatar("https://res.cloudinary.com/fransiciliano/image/upload/v1650134710/default_avatar.png");
         } else {
             user.setAvatar(avatar);
