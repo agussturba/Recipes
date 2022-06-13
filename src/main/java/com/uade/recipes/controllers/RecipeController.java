@@ -77,6 +77,18 @@ public class RecipeController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @GetMapping("/{id}")
+    @ApiOperation(value = "Retornar una receta por su id", response = Iterable.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "receta retornada correctamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "La receta no fue encontrada")
+    })
+    public ResponseEntity<RecipeVo> getRecipeById(@PathVariable Integer recipeId) throws RecipeNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipeById(recipeId).toVO());
+    }
+
 
     @GetMapping("/name/{name}")
     @ApiOperation(value = "Retornar recetas por nombre", response = Iterable.class)
