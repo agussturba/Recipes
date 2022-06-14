@@ -47,6 +47,7 @@ public class User {
         vo.setRegistrationTimestamp(registrationTimestamp);
         vo.setEnabled(enabled);
         vo.setAvatar(avatar);
+
         return vo;
     }
 

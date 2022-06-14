@@ -49,6 +49,7 @@ public class Recipe {
         vo.setPeopleAmount(peopleAmount);
         vo.setMainPhoto(mainPhoto);
         vo.setDuration(duration);
+        vo.setOwnerName(owner.getName());
         vo.setPortions(portions);
         vo.setTypeId(type.getId());
         vo.setTimestamp(timestamp);

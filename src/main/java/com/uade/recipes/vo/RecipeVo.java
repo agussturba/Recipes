@@ -18,6 +18,7 @@ public class RecipeVo {
     Integer typeId;
     Integer dishId;
     Integer ownerId;
+    String ownerName;
     String mainPhoto;
     Integer peopleAmount;
     Double portions;
@@ -26,10 +27,11 @@ public class RecipeVo {
     Boolean enabled;
 
 
+
     public Recipe toModel(User owner, Type type) {
         Recipe recipe = new Recipe();
-        if (id!=null){
-        recipe.setId(getId());
+        if (id != null) {
+            recipe.setId(getId());
         }
         recipe.setName(getName());
         recipe.setDescription(getDescription());
