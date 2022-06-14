@@ -18,7 +18,7 @@ public class RecipeVo {
     Integer typeId;
     Integer dishId;
     Integer ownerId;
-    String ownerName;
+    String ownerUserName;
     String mainPhoto;
     Integer peopleAmount;
     Double portions;

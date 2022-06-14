@@ -8,10 +8,7 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -49,7 +46,7 @@ public class Recipe {
         vo.setPeopleAmount(peopleAmount);
         vo.setMainPhoto(mainPhoto);
         vo.setDuration(duration);
-        vo.setOwnerName(owner.getName());
+        vo.setOwnerUserName(owner.getUserName());
         vo.setPortions(portions);
         vo.setTypeId(type.getId());
         vo.setTimestamp(timestamp);
