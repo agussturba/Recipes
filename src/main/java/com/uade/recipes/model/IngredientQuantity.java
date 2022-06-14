@@ -40,6 +40,7 @@ public class IngredientQuantity {
 
     public IngredientQuantityVo toVO() {
         IngredientQuantityVo vo = new IngredientQuantityVo();
+        vo.setId(id);
         vo.setIngredientName(ingredient.getName());
         vo.setIngredientId(ingredient.getId());
         vo.setRecipeId(recipe.getId());
