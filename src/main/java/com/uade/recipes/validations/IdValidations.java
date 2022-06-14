@@ -1,7 +1,6 @@
 package com.uade.recipes.validations;
 
-import com.uade.recipes.exceptions.dishExceptions.DishIdLowerEqualThanZeroException;
-import com.uade.recipes.exceptions.dishExceptions.DishIdNullException;
+
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientIdLowerEqualThanZeroException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientIdNullException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeIdLowerOrEqualThanOneException;
@@ -24,14 +23,7 @@ public class IdValidations {
         }
     }
 
-    public static void validateDishId(Integer dishId) {
-        if (dishId == null) {
-            throw new DishIdNullException();
-        }
-        if (dishId <= 0) {
-            throw new DishIdLowerEqualThanZeroException();
-        }
-    }
+
     public static void validateTypeId(Integer typeId) {
         if (typeId == null) {
             throw new TypeIdNullException();

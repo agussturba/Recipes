@@ -1,13 +1,11 @@
 package com.uade.recipes.controllers;
 
-import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;
 import com.uade.recipes.exceptions.ingredientExceptions.CannotDivideTheIngredientException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.exceptions.instructionExceptions.InstructionNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.IngredientQuantity;
-import com.uade.recipes.model.Instruction;
 import com.uade.recipes.model.Recipe;
 import com.uade.recipes.service.ingredientQuantity.IngredientQuantityService;
 import com.uade.recipes.service.recipe.RecipeService;
@@ -18,16 +16,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,38 +33,28 @@ public class RecipeController {
     }
 
     @GetMapping
-    @ApiOperation(value = "Retornar una lista de todas las recetas donde se le puede pasar opcionalmente un user Id y/o un dish Id y/o peopleAmount", response = Iterable.class)
+    @ApiOperation(value = "Retornar una lista de todas las recetas donde se le puede pasar opcionalmente un user Id y/o la cantidad de personas", response = Iterable.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Lista de recetas retornada satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
-            @ApiResponse(code = 404, message = "El plato/usuario no fue encontrado")
+            @ApiResponse(code = 404, message = "El usuario no fue encontrado")
     })
-    public ResponseEntity<List<RecipeVo>> getAllRecipes(@RequestParam(required = false) Integer ownerId, @RequestParam(required = false) Integer dishId, @RequestParam(required = false) Integer peopleAmount) throws DishNotFoundException, UserNotFoundException {
-        if (ownerId == null && dishId == null && peopleAmount == null) {
+    public ResponseEntity<List<RecipeVo>> getAllRecipes(@RequestParam(required = false) Integer ownerId, @RequestParam(required = false) Integer peopleAmount) throws  UserNotFoundException {
+        if (ownerId == null  && peopleAmount == null) {
             List<RecipeVo> result = transformListToVoList(recipeService.getAllRecipes());
             return ResponseEntity.status(HttpStatus.OK).body(result);
-        } else if (ownerId != null && dishId == null && peopleAmount == null) {
+        } else if (ownerId != null  && peopleAmount == null) {
             List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByOwnerId(ownerId));
             return ResponseEntity.status(HttpStatus.OK).body(result);
-        } else if (ownerId == null && dishId != null && peopleAmount == null) {
-            List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByDishId(dishId));
-            return ResponseEntity.status(HttpStatus.OK).body(result);
-        } else if (ownerId != null && dishId != null && peopleAmount == null) {
-            List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByOwnerIdAndDishId(ownerId, dishId));
-            return ResponseEntity.status(HttpStatus.OK).body(result);
-        } else if (ownerId != null && dishId == null && peopleAmount != null) {
+        }  else if (ownerId != null  && peopleAmount != null) {
             List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByOwnerIdAndPeopleAmount(ownerId, peopleAmount));
             return ResponseEntity.status(HttpStatus.OK).body(result);
-        } else if (ownerId == null && dishId == null && peopleAmount != null) {
+        } else  {
             List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByPeopleAmount(peopleAmount));
             return ResponseEntity.status(HttpStatus.OK).body(result);
-        } else if (ownerId == null && dishId != null && peopleAmount != null) {
-            List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByDishIdAndPeopleAmount(dishId, peopleAmount));
-            return ResponseEntity.status(HttpStatus.OK).body(result);
         }
-        List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByOwnerIdAndDishIdAndPeopleAmount(ownerId, dishId, peopleAmount));
-        return ResponseEntity.status(HttpStatus.OK).body(result);
+
     }
 
     @GetMapping("/{recipeId}")
@@ -210,7 +190,7 @@ public class RecipeController {
             @ApiResponse(code = 404, message = "El usuario/plato/tipo/foto de receta no fueron encontrados"),
 
     })
-    public ResponseEntity<RecipeVo> saveRecipe(@RequestBody RecipeVo recipeVo) throws InstructionNotFoundException, DishNotFoundException, UserNotFoundException {
+    public ResponseEntity<RecipeVo> saveRecipe(@RequestBody RecipeVo recipeVo) throws InstructionNotFoundException, UserNotFoundException {
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.saveOrUpdateRecipe(recipeVo).toVO());
     }
 
@@ -224,7 +204,7 @@ public class RecipeController {
             @ApiResponse(code = 404, message = "El usuario/plato/tipo/foto de receta no fueron encontrados"),
 
     })
-    public ResponseEntity<RecipeVo> updateRecipe(@RequestBody RecipeVo recipeVo) throws InstructionNotFoundException, DishNotFoundException, UserNotFoundException {
+    public ResponseEntity<RecipeVo> updateRecipe(@RequestBody RecipeVo recipeVo) throws InstructionNotFoundException, UserNotFoundException {
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.saveOrUpdateRecipe(recipeVo).toVO());
     }
 

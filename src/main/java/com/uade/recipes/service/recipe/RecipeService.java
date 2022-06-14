@@ -1,7 +1,6 @@
 package com.uade.recipes.service.recipe;
 
 import com.uade.recipes.exceptions.ingredientExceptions.CannotDivideTheIngredientException;
-import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.exceptions.instructionExceptions.InstructionNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
@@ -29,17 +28,9 @@ public interface RecipeService {
 
     List<Recipe> getRecipesByOwnerIdAndPeopleAmount(Integer ownerId, Integer peopleAmount) throws UserNotFoundException;
 
-    List<Recipe> getRecipesByOwnerIdAndDishIdAndPeopleAmount(Integer ownerId, Integer dishId, Integer peopleAmount) throws UserNotFoundException, DishNotFoundException;
+    Boolean isRecipeEnabled(Integer recipeId) throws UserNotFoundException, RecipeNotFoundException;
 
-    List<Recipe> getRecipesByDishIdAndPeopleAmount(Integer dishId, Integer peopleAmount) throws DishNotFoundException;
-
-    List<Recipe> getRecipesByOwnerIdAndDishId(Integer ownerId, Integer dishId) throws DishNotFoundException, UserNotFoundException;
-
-    List<Recipe> getRecipesByDishId(Integer dishId) throws UserNotFoundException, DishNotFoundException;
-
-    Boolean isRecipeEnabled(Integer recipeId) throws UserNotFoundException, DishNotFoundException, RecipeNotFoundException;
-
-    Recipe saveOrUpdateRecipe(RecipeVo RecipeVo) throws DishNotFoundException, InstructionNotFoundException, UserNotFoundException;
+    Recipe saveOrUpdateRecipe(RecipeVo RecipeVo) throws  InstructionNotFoundException, UserNotFoundException;
 
     List<IngredientQuantity> convertRecipeIngredientQuantityByIngredientIdAndRecipeIdAndNewQuantity(Integer ingredientId, Double newQuantity, Integer recipeId) throws IngredientNotFoundException, RecipeNotFoundException, CannotDivideTheIngredientException;
 

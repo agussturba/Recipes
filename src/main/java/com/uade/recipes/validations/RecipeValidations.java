@@ -6,7 +6,6 @@ import com.uade.recipes.exceptions.recipeExceptions.RecipeNameContainsNumberExce
 import com.uade.recipes.vo.RecipeVo;
 
 import static com.uade.recipes.validations.GeneralValidations.containsNumber;
-import static com.uade.recipes.validations.IdValidations.validateDishId;
 import static com.uade.recipes.validations.IdValidations.validateUserId;
 
 public class RecipeValidations {
@@ -14,7 +13,6 @@ public class RecipeValidations {
         if (containsNumber(recipeVo.getName())) {
             throw new RecipeNameContainsNumberException();
         }
-        validateDishId(recipeVo.getDishId());
         validateUserId(recipeVo.getOwnerId());
 
         if (recipeVo.getPortions() <= 0) {

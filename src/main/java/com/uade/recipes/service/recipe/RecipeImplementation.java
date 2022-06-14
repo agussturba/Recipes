@@ -1,13 +1,15 @@
 package com.uade.recipes.service.recipe;
 
-import com.uade.recipes.exceptions.dishExceptions.DishNotFoundException;
+
 import com.uade.recipes.exceptions.ingredientExceptions.CannotDivideTheIngredientException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
-import com.uade.recipes.model.*;
+import com.uade.recipes.model.IngredientQuantity;
+import com.uade.recipes.model.Recipe;
+import com.uade.recipes.model.Type;
+import com.uade.recipes.model.User;
 import com.uade.recipes.persistance.RecipeRepository;
-import com.uade.recipes.service.dish.DishService;
 import com.uade.recipes.service.ingredientQuantity.IngredientQuantityService;
 import com.uade.recipes.service.type.TypeService;
 import com.uade.recipes.service.user.UserService;
@@ -25,14 +27,12 @@ import static com.uade.recipes.validations.RecipeValidations.validateRecipeData;
 public class RecipeImplementation implements RecipeService {
     private final RecipeRepository recipeRepository;
     private final UserService userService;
-    private final DishService dishService;
     private final TypeService typeService;
     private final IngredientQuantityService ingredientQuantityService;
 
-    public RecipeImplementation(RecipeRepository recipeRepository, UserService userService, DishService dishService, TypeService typeService, IngredientQuantityService ingredientQuantityService) {
+    public RecipeImplementation(RecipeRepository recipeRepository, UserService userService, TypeService typeService, IngredientQuantityService ingredientQuantityService) {
         this.recipeRepository = recipeRepository;
         this.userService = userService;
-        this.dishService = dishService;
         this.typeService = typeService;
         this.ingredientQuantityService = ingredientQuantityService;
     }
@@ -83,43 +83,12 @@ public class RecipeImplementation implements RecipeService {
         return recipeRepository.findByOwnerAndPeopleAmount(owner, peopleAmount);
     }
 
-    @Override
-    public List<Recipe> getRecipesByOwnerIdAndDishIdAndPeopleAmount(Integer ownerId, Integer dishId, Integer peopleAmount) throws DishNotFoundException {
-        Dish dish = dishService.getDishById(dishId);
-        List<Recipe> recipes = dish.getRecipes();
-        return recipes.stream()
-                .filter(recipe -> Objects.equals(recipe.getPeopleAmount(), peopleAmount) && Objects.equals(recipe.getOwnerId(), ownerId))
-                .collect(Collectors.toList());
-
-    }
-
-    @Override
-    public List<Recipe> getRecipesByDishIdAndPeopleAmount(Integer dishId, Integer peopleAmount) throws DishNotFoundException {
-        Dish dish = dishService.getDishById(dishId);
-        List<Recipe> recipes = dish.getRecipes();
-        return recipes.stream()
-                .filter(recipe -> Objects.equals(recipe.getPeopleAmount(), peopleAmount))
-                .collect(Collectors.toList());
-
-    }
 
 
-    @Override
-    public List<Recipe> getRecipesByOwnerIdAndDishId(Integer userId, Integer dishId) throws DishNotFoundException {
-        Dish dish = dishService.getDishById(dishId);
-        List<Recipe> recipes = dish.getRecipes();
-        return recipes.stream()
-                .filter(recipe -> Objects.equals(recipe.getOwnerId(), userId))
-                .collect(Collectors.toList());
 
 
-    }
 
-    @Override
-    public List<Recipe> getRecipesByDishId(Integer dishId) throws DishNotFoundException {
-        Dish dish = dishService.getDishById(dishId);
-        return dish.getRecipes();
-    }
+
 
     @Override
     public Boolean isRecipeEnabled(Integer recipeId) throws RecipeNotFoundException {
@@ -129,12 +98,11 @@ public class RecipeImplementation implements RecipeService {
 
 
     @Override
-    public Recipe saveOrUpdateRecipe(RecipeVo recipeVo) throws DishNotFoundException, UserNotFoundException {
+    public Recipe saveOrUpdateRecipe(RecipeVo recipeVo) throws  UserNotFoundException {
         validateRecipeData(recipeVo);
         User owner = userService.getUserById(recipeVo.getOwnerId());
         Type type = typeService.getTypeById(recipeVo.getTypeId());
         Recipe recipe = recipeRepository.save(recipeVo.toModel(owner, type));
-        dishService.addRecipeToDishByRecipeIdAndDishId(recipe, recipeVo.getDishId());
         return recipe;
         }
 
