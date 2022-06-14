@@ -14,6 +14,7 @@ public class IngredientQuantityVo {
     Integer ingredientId;
     Integer unitId;
     Double quantity;
+    String ingredientName;
     Integer recipeId;
     String observations;
 
