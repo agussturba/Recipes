@@ -1,6 +1,5 @@
 package com.uade.recipes.controllers;
 
-import com.uade.recipes.model.Type;
 import com.uade.recipes.model.Unit;
 import com.uade.recipes.service.unit.UnitService;
 import com.uade.recipes.vo.UnitVo;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

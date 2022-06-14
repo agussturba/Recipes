@@ -4,7 +4,7 @@ import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.recipeRatingExceptions.RatingIsLowerThanZeroException;
 import com.uade.recipes.exceptions.recipeRatingExceptions.RatingIsNullException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
-import com.uade.recipes.model.RecipePhoto;
+
 import com.uade.recipes.model.RecipeRating;
 import com.uade.recipes.service.recipeRating.RecipeRatingService;
 import com.uade.recipes.vo.RecipeRatingVo;

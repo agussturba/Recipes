@@ -1,7 +1,6 @@
 package com.uade.recipes.controllers;
 
 import com.uade.recipes.exceptions.instructionExceptions.InstructionNotFoundException;
-import com.uade.recipes.model.Instruction;
 import com.uade.recipes.model.Multimedia;
 import com.uade.recipes.service.multimedia.MultimediaService;
 import com.uade.recipes.vo.MultimediaVo;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

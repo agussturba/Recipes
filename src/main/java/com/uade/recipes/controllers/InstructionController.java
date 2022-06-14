@@ -2,10 +2,8 @@ package com.uade.recipes.controllers;
 
 import com.uade.recipes.exceptions.instructionExceptions.InstructionNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
-import com.uade.recipes.model.IngredientQuantity;
 import com.uade.recipes.model.Instruction;
 import com.uade.recipes.service.instruction.InstructionService;
-import com.uade.recipes.vo.IngredientQuantityVo;
 import com.uade.recipes.vo.InstructionVo;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
