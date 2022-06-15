@@ -31,7 +31,7 @@ public class FavoriteRecipeController {
         this.favoriteRecipeService = favoriteRecipeService;
     }
 
-    @GetMapping
+    @GetMapping("/{userId}")
     @ApiOperation(value = "Obtener una lista de todos las recetas favoritas de un usuario", response = Iterable.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Lista de recetas favoritas del usuario retornado satisfactoriamente"),

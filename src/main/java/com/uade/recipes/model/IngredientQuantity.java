@@ -43,6 +43,7 @@ public class IngredientQuantity {
         vo.setId(id);
         vo.setIngredientName(ingredient.getName());
         vo.setIngredientId(ingredient.getId());
+        vo.setUnitName(unit.getDescription());
         vo.setRecipeId(recipe.getId());
         vo.setObservations(observations);
         vo.setQuantity(quantity);
