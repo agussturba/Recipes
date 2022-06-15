@@ -38,20 +38,17 @@ public class InstructionServiceImplementation implements InstructionService {
     @Override
     public Instruction saveOrUpdateInstruction(InstructionVo instructionVo) throws RecipeNotFoundException {
         validateInstructionData(instructionVo);
-        if(!instructionExist(instructionVo)) {
-            Recipe recipe = recipeService.getRecipeById(instructionVo.getRecipeId());
-            //Integer nextStep = getLastStepByRecipe(recipe) + 1;
-            return instructionRepository.save(instructionVo.toModel(recipe));
-        }
-        else{
-            throw new InstructionExistsException();
-        }
+        instructionExist(instructionVo);
+        Recipe recipe = recipeService.getRecipeById(instructionVo.getRecipeId());
+        //Integer nextStep = getLastStepByRecipe(recipe) + 1;
+        return instructionRepository.save(instructionVo.toModel(recipe));
     }
+
 
     @Override
     public void deleteInstructionByRecipeIdAndNumberOfStep(Integer recipeId, Integer numberOfStep) throws RecipeNotFoundException {
         Recipe recipe = recipeService.getRecipeById(recipeId);
-        Instruction instruction = instructionRepository.findByRecipeAndNumberOfStep(recipe,numberOfStep);
+        Instruction instruction = instructionRepository.findByRecipeAndNumberOfStep(recipe, numberOfStep).orElseThrow(InstructionExistsException::new);
         instructionRepository.delete(instruction);
 
     }
@@ -66,17 +63,13 @@ public class InstructionServiceImplementation implements InstructionService {
     @Override
     public Instruction getInstructionByRecipeIdAndNumberOfStep(Integer recipeId, Integer numberOfStep) throws RecipeNotFoundException {
         Recipe recipe = recipeService.getRecipeById(recipeId);
-        return instructionRepository.findByRecipeAndNumberOfStep(recipe,numberOfStep);
+        return instructionRepository.findByRecipeAndNumberOfStep(recipe, numberOfStep).orElseThrow(InstructionExistsException::new);
     }
 
-    private boolean instructionExist(InstructionVo instructionVo) throws RecipeNotFoundException {
+    private void instructionExist(InstructionVo instructionVo) throws RecipeNotFoundException {
         Recipe recipe = recipeService.getRecipeById(instructionVo.getRecipeId());
-        try {
-            instructionRepository.findByRecipeAndNumberOfStep(recipe,instructionVo.getNumberOfStep());
-            return true;
-        }catch (Exception e){
-            return false;
-        }
+        instructionRepository.findByRecipeAndNumberOfStep(recipe, instructionVo.getNumberOfStep());
+
     }
 
     private Integer getLastStepByRecipe(Recipe recipe) {
