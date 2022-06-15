@@ -12,9 +12,11 @@ public class InstructionVo {
     String description;
     Integer recipeId;
     Integer numberOfStep;
+    String title;
 
     public Instruction toModel(Recipe recipe){
         Instruction instruction = new Instruction();
+        instruction.setTitle(title);
         instruction.setId(this.getId());
         instruction.setDescription(this.getDescription());
         instruction.setNumberOfStep(numberOfStep);

@@ -6,12 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Objects;
 
 
@@ -19,6 +14,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@SecondaryTable(name = "instruction_addition", pkJoinColumns = @PrimaryKeyJoinColumn(name = "instruction_id"))
 public class Instruction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +22,8 @@ public class Instruction {
     private Integer id;
     @ManyToOne
     private Recipe recipe;
+    @Column(table = "instruction_addition")
+    private String title;
     @Column(nullable = false)
     private String description;
     @Column(nullable = false)
@@ -34,6 +32,7 @@ public class Instruction {
     public InstructionVo toVO(){
         InstructionVo vo = new InstructionVo();
         vo.setId(id);
+        vo.setTitle(title);
         vo.setRecipeId(recipe.getId());
         vo.setDescription(description);
         vo.setNumberOfStep(numberOfStep);
