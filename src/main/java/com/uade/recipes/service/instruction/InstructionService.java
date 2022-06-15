@@ -14,4 +14,10 @@ public interface InstructionService {
 
     Instruction saveOrUpdateInstruction(InstructionVo instructionVo) throws RecipeNotFoundException;
 
+    void deleteInstructionByRecipeIdAndNumberOfStep(Integer recipeId, Integer numberStep) throws RecipeNotFoundException;
+
+    void deleteAllInstructionsByRecipeId(Integer recipeId) throws RecipeNotFoundException;
+
+    Instruction getInstructionByRecipeIdAndNumberOfStep(Integer recipeId, Integer numberStep) throws RecipeNotFoundException;
+
 }

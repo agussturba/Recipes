@@ -11,5 +11,7 @@ import java.util.List;
 public interface InstructionRepository extends CrudRepository<Instruction, Integer> {
     List<Instruction> findByRecipe(Recipe recipe);
 
+    Instruction findByRecipeAndNumberOfStep(Recipe recipe, Integer numberOfStep);
+
     Instruction findFirstByRecipeOrderByNumberOfStepDesc(Recipe recipe);
 }
