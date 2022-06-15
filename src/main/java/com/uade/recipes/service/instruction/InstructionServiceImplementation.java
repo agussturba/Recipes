@@ -38,8 +38,8 @@ public class InstructionServiceImplementation implements InstructionService {
     public Instruction saveOrUpdateInstruction(InstructionVo instructionVo) throws RecipeNotFoundException {
         validateInstructionData(instructionVo);
         Recipe recipe = recipeService.getRecipeById(instructionVo.getRecipeId());
-        Integer nextStep = getLastStepByRecipe(recipe) + 1;
-        return instructionRepository.save(instructionVo.toModel(recipe, nextStep));
+        //Integer nextStep = getLastStepByRecipe(recipe) + 1;
+        return instructionRepository.save(instructionVo.toModel(recipe));
     }
 
 

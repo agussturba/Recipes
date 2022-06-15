@@ -13,7 +13,7 @@ public class InstructionVo {
     Integer recipeId;
     Integer numberOfStep;
 
-    public Instruction toModel(Recipe recipe,Integer numberOfStep){
+    public Instruction toModel(Recipe recipe){
         Instruction instruction = new Instruction();
         instruction.setId(this.getId());
         instruction.setDescription(this.getDescription());
