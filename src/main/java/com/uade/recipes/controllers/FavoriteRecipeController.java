@@ -65,7 +65,7 @@ public class FavoriteRecipeController {
     })
     public ResponseEntity deleteFavoriteRecipeByUserIdAndRecipeId(@RequestParam Integer recipeId, @RequestParam Integer userId) throws UserNotFoundException, IngredientNotFoundException, RecipeNotFoundException {
         favoriteRecipeService.deleteFavoriteRecipeByUserIdAndRecipeId(recipeId, userId);
-        return (ResponseEntity) ResponseEntity.status(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
     @DeleteMapping
     @ApiOperation(value = "Eliminar una receta de favoritos por su id ", response = ResponseEntity.class)
@@ -77,7 +77,7 @@ public class FavoriteRecipeController {
     })
     public ResponseEntity deleteFavoriteRecipeByFavoriteRecipeId(@RequestParam Integer favoriteRecipeId) throws UserNotFoundException, IngredientNotFoundException, RecipeNotFoundException {
         favoriteRecipeService.deleteFavoriteRecipeByFavoriteRecipeId(favoriteRecipeId);
-        return (ResponseEntity) ResponseEntity.status(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     private List<FavoriteRecipeVo> transformListToVoList(List<FavoriteRecipe> list){
