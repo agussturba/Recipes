@@ -5,7 +5,9 @@ import com.uade.recipes.model.Multimedia;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface MultimediaRepository extends CrudRepository<Multimedia, Integer> {
-    Multimedia findByInstruction(Instruction instruction);
+    List<Multimedia> findByInstruction(Instruction instruction);
 }
