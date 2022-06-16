@@ -13,6 +13,7 @@ public class IngredientQuantityVo {
     Integer id;
     Integer ingredientId;
     Integer unitId;
+    String unitName;
     Double quantity;
     String ingredientName;
     Integer recipeId;

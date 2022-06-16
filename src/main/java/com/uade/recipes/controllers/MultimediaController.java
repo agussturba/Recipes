@@ -39,9 +39,10 @@ public class MultimediaController {
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "La multimedia no fue encontrada")
     })
-    public ResponseEntity<MultimediaVo> getMultimediaById(@PathVariable Integer id){
+    public ResponseEntity<MultimediaVo> getMultimediaById(@PathVariable Integer id) {
         return ResponseEntity.status(HttpStatus.OK).body(multimediaService.getMultimediaById(id).toVO());
     }
+
     @GetMapping("/instruction/{id}")
     @ApiOperation(value = "Retornar una multimedia por el id de la instrucción", response = ResponseEntity.class)
     @ApiResponses(value = {
@@ -50,9 +51,10 @@ public class MultimediaController {
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "La multimedia o instrucción no fue encontrada")
     })
-    public ResponseEntity<MultimediaVo> getMultimediaByInstructionId(@PathVariable Integer id) throws InstructionNotFoundException {
-        return ResponseEntity.status(HttpStatus.OK).body(multimediaService.getMultimediaByInstructionId(id).toVO());
+    public ResponseEntity<List<MultimediaVo>> getMultimediaByInstructionId(@PathVariable Integer id) throws InstructionNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(transformListToVoList(multimediaService.getMultimediaByInstructionId(id)));
     }
+
     @PostMapping
     @ApiOperation(value = "Crear una multimedia para una instrucción", response = ResponseEntity.class)
     @ApiResponses(value = {
@@ -61,8 +63,8 @@ public class MultimediaController {
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "La instrucción no fue encontrada")
     })
-    public ResponseEntity<List<Multimedia>> saveMultimedia(@RequestParam Integer instructionId, @RequestParam List<MultipartFile> multimedia) throws InstructionNotFoundException, IOException {
-        return ResponseEntity.status(HttpStatus.OK).body((List<Multimedia>) multimediaService.saveMultimedia(instructionId, multimedia));
+    public ResponseEntity<List<MultimediaVo>> saveMultimedia(@RequestParam Integer instructionId, @RequestParam List<MultipartFile> multimedia) throws InstructionNotFoundException, IOException {
+        return ResponseEntity.status(HttpStatus.OK).body(transformListToVoList((List<Multimedia>) multimediaService.saveMultimedia(instructionId, multimedia)));
     }
 
     @DeleteMapping
@@ -78,7 +80,7 @@ public class MultimediaController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    private List<MultimediaVo> transformListToVoList(List<Multimedia> list){
+    private List<MultimediaVo> transformListToVoList(List<Multimedia> list) {
         return list.stream().map(Multimedia::toVO).collect(Collectors.toList());
     }
 

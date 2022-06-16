@@ -31,7 +31,7 @@ public class FavoriteRecipeController {
         this.favoriteRecipeService = favoriteRecipeService;
     }
 
-    @GetMapping
+    @GetMapping("/{userId}")
     @ApiOperation(value = "Obtener una lista de todos las recetas favoritas de un usuario", response = Iterable.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Lista de recetas favoritas del usuario retornado satisfactoriamente"),
@@ -65,7 +65,7 @@ public class FavoriteRecipeController {
     })
     public ResponseEntity deleteFavoriteRecipeByUserIdAndRecipeId(@RequestParam Integer recipeId, @RequestParam Integer userId) throws UserNotFoundException, IngredientNotFoundException, RecipeNotFoundException {
         favoriteRecipeService.deleteFavoriteRecipeByUserIdAndRecipeId(recipeId, userId);
-        return (ResponseEntity) ResponseEntity.status(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @DeleteMapping
@@ -78,7 +78,7 @@ public class FavoriteRecipeController {
     })
     public ResponseEntity deleteFavoriteRecipeByFavoriteRecipeId(@RequestParam Integer favoriteRecipeId) throws UserNotFoundException, IngredientNotFoundException, RecipeNotFoundException {
         favoriteRecipeService.deleteFavoriteRecipeByFavoriteRecipeId(favoriteRecipeId);
-        return (ResponseEntity) ResponseEntity.status(HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping("isfavourite")
