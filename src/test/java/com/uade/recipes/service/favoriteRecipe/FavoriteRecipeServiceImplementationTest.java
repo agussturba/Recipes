@@ -103,7 +103,7 @@ class FavoriteRecipeServiceImplementationTest {
     void deleteFavoriteRecipeByUserIdAndRecipeId() throws UserNotFoundException, RecipeNotFoundException {
         when(userService.getUserById(any(Integer.class))).thenReturn(testUser);
         when(recipeService.getRecipeById(any(Integer.class))).thenReturn(testRecipe);
-        when(favoriteRecipeRepository.findByUserAndRecipe(any(User.class),any(Recipe.class))).thenReturn(testFavoriteRecipe);
+        when(favoriteRecipeRepository.findByUserAndRecipe(any(User.class),any(Recipe.class))).thenReturn(java.util.Optional.ofNullable(testFavoriteRecipe));
         favoriteRecipeServiceImplementation.deleteFavoriteRecipeByUserIdAndRecipeId(1,1);
         verify(favoriteRecipeRepository).delete(testFavoriteRecipe);
     }

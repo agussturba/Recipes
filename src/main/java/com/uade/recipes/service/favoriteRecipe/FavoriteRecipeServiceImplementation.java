@@ -44,7 +44,7 @@ public class FavoriteRecipeServiceImplementation implements FavoriteRecipeServic
     public void deleteFavoriteRecipeByUserIdAndRecipeId(Integer recipeId, Integer userId) throws RecipeNotFoundException, UserNotFoundException {
         Recipe recipe = recipeService.getRecipeById(recipeId);
         User user = userService.getUserById(userId);
-        FavoriteRecipe favoriteRecipe = favoriteRecipeRepository.findByUserAndRecipe(user,recipe);
+        FavoriteRecipe favoriteRecipe = favoriteRecipeRepository.findByUserAndRecipe(user,recipe).orElseThrow(FavoriteRecipeNotFoundException::new);
         favoriteRecipeRepository.delete(favoriteRecipe);
     }
 
@@ -52,5 +52,10 @@ public class FavoriteRecipeServiceImplementation implements FavoriteRecipeServic
     public void deleteFavoriteRecipeByFavoriteRecipeId(Integer favoriteRecipeId) {
         FavoriteRecipe favoriteRecipe= favoriteRecipeRepository.findById(favoriteRecipeId).orElseThrow(FavoriteRecipeNotFoundException::new);
         favoriteRecipeRepository.delete(favoriteRecipe);
+    }
+
+    @Override
+    public boolean isInFavourites(Integer recipeId, Integer userId) throws RecipeNotFoundException, UserNotFoundException {
+        return favoriteRecipeRepository.findByUserAndRecipe(userService.getUserById(userId), recipeService.getRecipeById(recipeId)).isPresent();
     }
 }

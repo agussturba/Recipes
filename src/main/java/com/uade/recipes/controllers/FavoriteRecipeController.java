@@ -67,6 +67,7 @@ public class FavoriteRecipeController {
         favoriteRecipeService.deleteFavoriteRecipeByUserIdAndRecipeId(recipeId, userId);
         return (ResponseEntity) ResponseEntity.status(HttpStatus.OK);
     }
+
     @DeleteMapping
     @ApiOperation(value = "Eliminar una receta de favoritos por su id ", response = ResponseEntity.class)
     @ApiResponses(value = {
@@ -80,7 +81,19 @@ public class FavoriteRecipeController {
         return (ResponseEntity) ResponseEntity.status(HttpStatus.OK);
     }
 
-    private List<FavoriteRecipeVo> transformListToVoList(List<FavoriteRecipe> list){
+    @GetMapping("isfavourite")
+    @ApiOperation(value = "Indica si una receta pertenece a la lista de favoritos de un usuario")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "La receta existe/no existe en la lista de favoritos"),
+            @ApiResponse(code = 404, message = "Usuario no encontrado o receta no encontrada"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+    })
+    public ResponseEntity<Boolean> isInFavourites(@RequestParam Integer recipeId, @RequestParam Integer userId) throws UserNotFoundException, RecipeNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(favoriteRecipeService.isInFavourites(recipeId, userId));
+    }
+
+    private List<FavoriteRecipeVo> transformListToVoList(List<FavoriteRecipe> list) {
         return list.stream().map(FavoriteRecipe::toVo).collect(Collectors.toList());
     }
 }

@@ -17,4 +17,6 @@ public interface FavoriteRecipeService {
 
     void deleteFavoriteRecipeByFavoriteRecipeId(Integer favoriteRecipeId) throws IngredientNotFoundException, RecipeNotFoundException, UserNotFoundException;
 
+    boolean isInFavourites(Integer recipeId, Integer userId) throws RecipeNotFoundException, UserNotFoundException;
+
 }
