@@ -38,9 +38,9 @@ public class MultimediaServiceImplementation implements MultimediaService {
     }
 
     @Override
-    public Multimedia getMultimediaByInstructionId(Integer instructionId) throws InstructionNotFoundException {
+    public List<Multimedia> getMultimediaByInstructionId(Integer instructionId) throws InstructionNotFoundException {
         Instruction instruction = instructionService.getInstructionById(instructionId);
-        return multimediaRepository.findByInstruction(instruction);
+        return (List<Multimedia>) multimediaRepository.findByInstruction(instruction);
     }
 
     @Override

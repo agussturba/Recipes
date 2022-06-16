@@ -12,7 +12,7 @@ public interface MultimediaService {
 
     List<Multimedia> getAllMultimedia();
 
-    Multimedia getMultimediaByInstructionId(Integer instructionId) throws InstructionNotFoundException;
+    List<Multimedia> getMultimediaByInstructionId(Integer instructionId) throws InstructionNotFoundException;
 
     Iterable<Multimedia> saveMultimedia(Integer instructionId, List<MultipartFile> multimedia) throws InstructionNotFoundException, IOException;
 

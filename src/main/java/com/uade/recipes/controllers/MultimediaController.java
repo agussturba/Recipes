@@ -51,8 +51,8 @@ public class MultimediaController {
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "La multimedia o instrucción no fue encontrada")
     })
-    public ResponseEntity<MultimediaVo> getMultimediaByInstructionId(@PathVariable Integer id) throws InstructionNotFoundException {
-        return ResponseEntity.status(HttpStatus.OK).body(multimediaService.getMultimediaByInstructionId(id).toVO());
+    public ResponseEntity<List<MultimediaVo>> getMultimediaByInstructionId(@PathVariable Integer id) throws InstructionNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(transformListToVoList(multimediaService.getMultimediaByInstructionId(id)));
     }
 
     @PostMapping
