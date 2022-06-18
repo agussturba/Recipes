@@ -7,9 +7,11 @@ import com.uade.recipes.exceptions.userExceptions.EmailExistsException;
 import com.uade.recipes.exceptions.userExceptions.RegistrationProcessIncompleteException;
 import com.uade.recipes.exceptions.userExceptions.UserNameExistsException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
+import com.uade.recipes.model.Recipe;
 import com.uade.recipes.model.User;
 import com.uade.recipes.persistance.UserRepository;
 import com.uade.recipes.service.email.EmailSenderService;
+import com.uade.recipes.service.recipe.RecipeService;
 import com.uade.recipes.utilities.CloudinaryUtil;
 import com.uade.recipes.vo.UserVo;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -115,6 +118,12 @@ public class UserServiceImplementation implements UserService {
         cloudinary.uploader().destroy(public_id, ObjectUtils.emptyMap());
         user.setAvatar("https://res.cloudinary.com/fransiciliano/image/upload/v1650134710/default_avatar.png");
         userRepository.save(user);
+
+    }
+
+    @Override
+    public List<User> getUsersByPartialUserName(String username) throws UserNotFoundException {
+        return userRepository.findByUserNameContainingIgnoreCase(username).orElseThrow(UserNotFoundException::new);
 
     }
 

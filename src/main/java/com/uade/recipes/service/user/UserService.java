@@ -5,7 +5,6 @@ import com.uade.recipes.model.User;
 import com.uade.recipes.vo.UserVo;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.mail.Multipart;
 import java.io.IOException;
 import java.util.List;
 
@@ -41,4 +40,6 @@ public interface UserService {
     String saveUserPhoto(Integer userId, MultipartFile image) throws UserNotFoundException, IOException;
 
     void deleteUserPhoto(Integer userId) throws UserNotFoundException, IOException;
+
+    List<User> getUsersByPartialUserName(String username) throws UserNotFoundException;
 }

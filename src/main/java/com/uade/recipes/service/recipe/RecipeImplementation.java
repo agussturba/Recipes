@@ -16,6 +16,7 @@ import com.uade.recipes.service.user.UserService;
 import com.uade.recipes.vo.RecipeVo;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -121,6 +122,16 @@ public class RecipeImplementation implements RecipeService {
     @Override
     public List<Recipe> findRecipesByPartialName(String name) throws RecipeNotFoundException {
         return recipeRepository.findByNameContainingIgnoreCase(name).orElseThrow(RecipeNotFoundException::new);
+    }
+
+    @Override
+    public List<Recipe> findRecipesByPartialUsername(String username) throws UserNotFoundException {
+        List<User> users = userService.getUsersByPartialUserName(username);
+        List<Recipe> recipes = new ArrayList<>();
+        for (User user: users) {
+            recipes.addAll(getRecipesByOwnerId(user.getId()));
+        }
+        return recipes;
     }
 
 

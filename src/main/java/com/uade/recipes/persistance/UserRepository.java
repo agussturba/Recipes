@@ -3,9 +3,11 @@ package com.uade.recipes.persistance;
 
 import com.uade.recipes.model.User;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -19,4 +21,6 @@ public interface UserRepository extends CrudRepository<User, Integer> {
     Optional<User> findByEmailAndUserName(String email, String alias);
 
     Optional<User> findByEmailAndRegistrationTimestampGreaterThanAndRegistrationTimestampLessThanEqual(String email, LocalDateTime yesterday, LocalDateTime now);
+
+    Optional<List<User>> findByUserNameContainingIgnoreCase(@Param("username")String username);
 }

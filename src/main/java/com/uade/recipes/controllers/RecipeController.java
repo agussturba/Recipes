@@ -7,6 +7,7 @@ import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.IngredientQuantity;
 import com.uade.recipes.model.Recipe;
+import com.uade.recipes.persistance.UserRepository;
 import com.uade.recipes.service.ingredientQuantity.IngredientQuantityService;
 import com.uade.recipes.service.recipe.RecipeService;
 import com.uade.recipes.vo.IngredientQuantityVo;
@@ -230,6 +231,18 @@ public class RecipeController {
     })
     public ResponseEntity<List<RecipeVo>> getRecipesFromPartialName(@RequestParam String name) throws RecipeNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(transformListToVoList(recipeService.findRecipesByPartialName(name)));
+    }
+
+    @GetMapping("/username/like")
+    @ApiOperation(value = "Devuelve las recetas creadas por un usuario cuyo nombre de usuario es similar al pasado como parámetro", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Se encontraron recetas"),
+            @ApiResponse(code = 404, message = "No se encontraron recetas"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+    })
+    public ResponseEntity<List<RecipeVo>> getRecipesByPartialUsername(@RequestParam String username) throws UserNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(transformListToVoList(recipeService.findRecipesByPartialUsername(username)));
     }
 
     private List<RecipeVo> transformListToVoList(List<Recipe> list) {

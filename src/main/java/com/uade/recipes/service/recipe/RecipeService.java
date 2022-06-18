@@ -38,4 +38,6 @@ public interface RecipeService {
     List<IngredientQuantity> convertRecipeIngredientQuantityByConversionFactor(Integer recipeId, Double conversionFactor) throws IngredientNotFoundException, RecipeNotFoundException, CannotDivideTheIngredientException;
 
     List<Recipe> findRecipesByPartialName(String name) throws RecipeNotFoundException;
+
+    List<Recipe> findRecipesByPartialUsername(String username) throws UserNotFoundException;
 }
