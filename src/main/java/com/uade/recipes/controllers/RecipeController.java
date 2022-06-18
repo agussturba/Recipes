@@ -77,7 +77,7 @@ public class RecipeController {
     }
 
 
-    @GetMapping("/name/{name}")
+    @GetMapping("/name")
     @ApiOperation(value = "Retornar recetas por nombre", response = Iterable.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Lista de recetas por su nombre retornada satisfactoriamente"),
@@ -86,7 +86,7 @@ public class RecipeController {
             @ApiResponse(code = 404, message = "No existen recetas con dicho nombre")
 
     })
-    public ResponseEntity<List<RecipeVo>> getRecipesByName(@PathVariable String name) {
+    public ResponseEntity<List<RecipeVo>> getRecipesByName(@RequestParam String name) {
         List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByName(name));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
@@ -215,8 +215,21 @@ public class RecipeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.saveOrUpdateRecipe(recipeVo).toVO());
     }
 
+
     private List<Recipe> getRecipesFromIngredientQuantity(List<IngredientQuantity> list) {
         return list.stream().map(IngredientQuantity::getRecipe).collect(Collectors.toList());
+    }
+
+    @GetMapping("/like")
+    @ApiOperation(value = "Devuelve las recetas cuyo nombre es similar al pasado como parametro", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Se encontraron recetas"),
+            @ApiResponse(code = 404, message = "No se encontraron recetas"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+    })
+    public ResponseEntity<List<RecipeVo>> getRecipesFromPartialName(@RequestParam String name) throws RecipeNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(transformListToVoList(recipeService.findRecipesByPartialName(name)));
     }
 
     private List<RecipeVo> transformListToVoList(List<Recipe> list) {

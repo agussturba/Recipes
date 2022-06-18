@@ -118,6 +118,11 @@ public class RecipeImplementation implements RecipeService {
         return ingredientQuantityService.getConvertedIngredientQuantityListByRecipeIdAndConversionFactor(recipeId, conversionFactor);
     }
 
+    @Override
+    public List<Recipe> findRecipesByPartialName(String name) throws RecipeNotFoundException {
+        return recipeRepository.findByNameContaining(name).orElseThrow(RecipeNotFoundException::new);
+    }
+
 
     private Double getConversionFactor(Double oldQuantity, Double newQuantity) {
         return newQuantity / oldQuantity;

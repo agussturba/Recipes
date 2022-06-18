@@ -60,9 +60,19 @@ public class RecipeRatingImplementation implements RecipeRatingService {
     @Override
     public RecipeRating saveOrUpdateRecipeRating(RecipeRatingVo recipeRatingVo) throws UserNotFoundException, RecipeNotFoundException, RatingIsLowerThanZeroException, RatingIsNullException {
         validateRatingData(recipeRatingVo);
-        User user = userService.getUserById(recipeRatingVo.getUserId());
-        Recipe recipe = recipeService.getRecipeById(recipeRatingVo.getRecipeId());
-        return recipeRatingRepository.save(recipeRatingVo.toModel(recipe, user));
+
+        RecipeRating recipeRating = getRecipeRatingByRecipeIdAndUserId(recipeRatingVo.getRecipeId(), recipeRatingVo.getUserId());
+
+        if (recipeRating == null) {
+            User user = userService.getUserById(recipeRatingVo.getUserId());
+            Recipe recipe = recipeService.getRecipeById(recipeRatingVo.getRecipeId());
+            recipeRating = recipeRatingVo.toModel(recipe, user);
+        } else {
+            recipeRating.setRating(recipeRatingVo.getRating());
+            recipeRating.setComments(recipeRatingVo.getComments());
+        }
+
+        return recipeRatingRepository.save(recipeRating);
     }
     private Double getTotalRating(List<RecipeRating> ratingList){
         return ratingList.stream().collect(Collectors.summingDouble(RecipeRating::getRating));

@@ -8,6 +8,7 @@ import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.IngredientQuantity;
 import com.uade.recipes.model.Recipe;
 import com.uade.recipes.vo.RecipeVo;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -35,4 +36,6 @@ public interface RecipeService {
     List<IngredientQuantity> convertRecipeIngredientQuantityByIngredientIdAndRecipeIdAndNewQuantity(Integer ingredientId, Double newQuantity, Integer recipeId) throws IngredientNotFoundException, RecipeNotFoundException, CannotDivideTheIngredientException;
 
     List<IngredientQuantity> convertRecipeIngredientQuantityByConversionFactor(Integer recipeId, Double conversionFactor) throws IngredientNotFoundException, RecipeNotFoundException, CannotDivideTheIngredientException;
+
+    List<Recipe> findRecipesByPartialName(String name) throws RecipeNotFoundException;
 }
