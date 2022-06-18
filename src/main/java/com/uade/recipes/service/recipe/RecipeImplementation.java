@@ -120,7 +120,7 @@ public class RecipeImplementation implements RecipeService {
 
     @Override
     public List<Recipe> findRecipesByPartialName(String name) throws RecipeNotFoundException {
-        return recipeRepository.findByNameContaining(name).orElseThrow(RecipeNotFoundException::new);
+        return recipeRepository.findByNameContainingIgnoreCase(name).orElseThrow(RecipeNotFoundException::new);
     }
 
 

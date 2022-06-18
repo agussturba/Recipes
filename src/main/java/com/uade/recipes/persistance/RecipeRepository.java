@@ -22,5 +22,5 @@ public interface RecipeRepository extends CrudRepository<Recipe, Integer> {
 
     List<Recipe> findByPeopleAmount(Integer peopleAmount);
 
-    Optional<List<Recipe>> findByNameContaining(@Param("name") String name);
+    Optional<List<Recipe>> findByNameContainingIgnoreCase(@Param("name") String name);
 }
