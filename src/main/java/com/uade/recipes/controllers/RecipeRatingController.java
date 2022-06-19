@@ -113,6 +113,11 @@ public class RecipeRatingController {
         return ResponseEntity.status(HttpStatus.OK).body(recipeRatingService.getRecipeRatingByRecipeIdAndUserId(recipeId,userId).toVO());
     }
 
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<Double> getAverageRatingByUser(@PathVariable Integer userId) throws UserNotFoundException, RecipeNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(recipeRatingService.getAverageOfRecipeRatingsByUser(userId));
+    }
+
     private List<RecipeRatingVo> transformListToVoList(List<RecipeRating> list) {
         return list.stream().map(RecipeRating::toVO).collect(Collectors.toList());
     }

@@ -74,6 +74,17 @@ public class RecipeRatingImplementation implements RecipeRatingService {
 
         return recipeRatingRepository.save(recipeRating);
     }
+
+    @Override
+    public Double getAverageOfRecipeRatingsByUser(Integer userId) throws UserNotFoundException, RecipeNotFoundException {
+        List<Recipe> recipes = recipeService.getRecipesByOwnerId(userId);
+        Double total = 0d;
+        for (Recipe r: recipes) {
+            total += getAverageOfRecipeRatingsByRecipeId(r.getId());
+        }
+        return total / recipes.size();
+    }
+
     private Double getTotalRating(List<RecipeRating> ratingList){
         return ratingList.stream().collect(Collectors.summingDouble(RecipeRating::getRating));
     }
