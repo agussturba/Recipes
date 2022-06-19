@@ -27,15 +27,12 @@ public class TokenServiceImplementation implements TokenService {
     }
 
     @Override
-    public boolean isTokenValid(Integer token, Integer userId) throws UserNotFoundException {
+    public void isTokenValid(Integer token, Integer userId) throws UserNotFoundException, TokenNotFoundException {
         User user = userService.getUserById(userId);
-        try {
+
             tokenRepository.findByUserAndCodeAndTimestampGreaterThanEqualAndTimestampLessThanEqual(user, token, Timestamp.valueOf(LocalDateTime.now().minusDays(1)),
                     Timestamp.from(Instant.now())).orElseThrow(TokenNotFoundException::new);
-            return true;
-        } catch (TokenNotFoundException e) {
-            return false;
-        }
+
     }
 
 

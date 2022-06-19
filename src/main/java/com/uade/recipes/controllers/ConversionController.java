@@ -68,7 +68,7 @@ public class ConversionController {
             @ApiResponse(code = 404, message = "Source unit/Target unit no fue encontrado")
 
     })
-    public ResponseEntity<ConversionVo> saveConversion(@RequestBody ConversionVo conversionVo) {//TODO CONTROLAR QUE EL FACTOR CONVERSION ES > 0
+    public ResponseEntity<ConversionVo> saveConversion(@RequestBody ConversionVo conversionVo) {
         return ResponseEntity.status(HttpStatus.CREATED).body(conversionService.saveOrUpdateConversion(conversionVo).toVO());
     }
 
