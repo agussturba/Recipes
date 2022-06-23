@@ -113,7 +113,7 @@ public class UserServiceImplementation implements UserService {
         String filename = url.get(url.size() - 1);
         String public_id = filename.substring(0, filename.indexOf("."));
         cloudinary.uploader().destroy(public_id, ObjectUtils.emptyMap());
-        user.setAvatar("https://res.cloudinary.com/fransiciliano/image/upload/v1656009088/default_avatar.jpg");
+        user.setAvatar("https://res.cloudinary.com/fransiciliano/image/upload/v1656009492/default_avatar.jpg");
         userRepository.save(user);
 
     }
