@@ -39,8 +39,12 @@ public class RecipeRatingImplementation implements RecipeRatingService {
     @Override
     public RecipeRating getRecipeRatingByRecipeIdAndUserId(Integer recipeId, Integer userId) throws RecipeNotFoundException, UserNotFoundException {
         Recipe recipe = recipeService.getRecipeById(recipeId);
+        System.out.println(recipe);
         User user = userService.getUserById(userId);
-        return recipeRatingRepository.findByRecipeAndUser(recipe,user);
+        System.out.println(user);
+        RecipeRating recipeRating = recipeRatingRepository.findByRecipeAndUser(recipe, user);
+        System.out.println(recipeRating);
+        return recipeRating;
     }
 
     @Override
