@@ -39,10 +39,23 @@ public class ConversionController {
             List<ConversionVo> result = transformListToVoList(conversionService.getConversionsByTargetUnitId(targetUnitId));
             return ResponseEntity.status(HttpStatus.OK).body(result);
         } else if (sourceUnitId != null && targetUnitId != null) {
-            List<ConversionVo> result = transformListToVoList((List<Conversion>) conversionService.getConversionBySourceUnitIdAndTargetUnitId(sourceUnitId, targetUnitId));
-            return ResponseEntity.status(HttpStatus.OK).body(result);
+
         }
         List<ConversionVo> result = transformListToVoList(conversionService.getAllConversions());
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @GetMapping("/convert")
+    @ApiOperation(value = "Obtener una conversion por su source unit id y su target unit id", response = ResponseStatus.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Conversion retornada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Conversion no encontrada"),
+
+    })
+    public ResponseEntity<ConversionVo> getConversionBySourceUnitAndTargetUnit(@RequestParam Integer sourceUnitId, @RequestParam Integer targetUnitId) {
+        ConversionVo result = conversionService.getConversionBySourceUnitIdAndTargetUnitId(sourceUnitId, targetUnitId).toVO();
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
@@ -85,7 +98,7 @@ public class ConversionController {
         return ResponseEntity.status(HttpStatus.OK).body(conversionService.saveOrUpdateConversion(conversionVo).toVO());
     }
 
-    private List<ConversionVo> transformListToVoList(List<Conversion> conversions){
+    private List<ConversionVo> transformListToVoList(List<Conversion> conversions) {
         return conversions.stream().map(Conversion::toVO).collect(Collectors.toList());
     }
 }
