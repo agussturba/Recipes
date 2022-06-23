@@ -31,7 +31,7 @@ public class UserVo {
         user.setEnabled(enabled);
         user.setName(name);
         if (avatar == null) {
-            user.setAvatar("https://res.cloudinary.com/fransiciliano/image/upload/v1650134710/default_avatar.png");
+            user.setAvatar("https://res.cloudinary.com/fransiciliano/image/upload/v1656008636/default_avatar.jpg");
         } else {
             user.setAvatar(avatar);
         }
