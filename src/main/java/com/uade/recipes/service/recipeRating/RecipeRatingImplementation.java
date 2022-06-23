@@ -1,5 +1,6 @@
 package com.uade.recipes.service.recipeRating;
 
+import com.uade.recipes.exceptions.recipeRatingExceptions.RecipeRatingNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.recipeRatingExceptions.RatingIsLowerThanZeroException;
 import com.uade.recipes.exceptions.recipeRatingExceptions.RatingIsNullException;
@@ -39,12 +40,9 @@ public class RecipeRatingImplementation implements RecipeRatingService {
     @Override
     public RecipeRating getRecipeRatingByRecipeIdAndUserId(Integer recipeId, Integer userId) throws RecipeNotFoundException, UserNotFoundException {
         Recipe recipe = recipeService.getRecipeById(recipeId);
-        System.out.println(recipe);
         User user = userService.getUserById(userId);
-        System.out.println(user);
-        RecipeRating recipeRating = recipeRatingRepository.findByRecipeAndUser(recipe, user);
-        System.out.println(recipeRating);
-        return recipeRating;
+        return recipeRatingRepository.findByRecipeAndUser(recipe, user).orElseThrow(RecipeRatingNotFoundException::new);
+
     }
 
     @Override
@@ -83,13 +81,13 @@ public class RecipeRatingImplementation implements RecipeRatingService {
     public Double getAverageOfRecipeRatingsByUser(Integer userId) throws UserNotFoundException, RecipeNotFoundException {
         List<Recipe> recipes = recipeService.getRecipesByOwnerId(userId);
         Double total = 0d;
-        for (Recipe r: recipes) {
+        for (Recipe r : recipes) {
             total += getAverageOfRecipeRatingsByRecipeId(r.getId());
         }
         return total / recipes.size();
     }
 
-    private Double getTotalRating(List<RecipeRating> ratingList){
+    private Double getTotalRating(List<RecipeRating> ratingList) {
         return ratingList.stream().collect(Collectors.summingDouble(RecipeRating::getRating));
     }
 
