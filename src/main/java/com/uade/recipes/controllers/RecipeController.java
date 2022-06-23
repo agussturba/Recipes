@@ -145,6 +145,18 @@ public class RecipeController {
         List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByTypes(typesIds));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
+    @GetMapping("/count/{ownerId}")
+    @ApiOperation(value = "Obtener la cantidad de recetas de un usuario", response = Integer.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Cantidad devolvida con exito"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "No existen recetas de dicho usuario o no existe el usuario")
+
+    })
+    public ResponseEntity<Integer> getAmountOfRecipesByOwnerId(@PathVariable Integer ownerId) throws UserNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(recipeService.getAmountOfRecipesByOwnerId(ownerId));
+    }
 
     @GetMapping("/convert")
     @ApiOperation(value = "Convertir una receta por un factor de conversion", response = Iterable.class)

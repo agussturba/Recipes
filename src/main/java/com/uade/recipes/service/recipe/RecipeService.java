@@ -40,4 +40,6 @@ public interface RecipeService {
     List<Recipe> findRecipesByPartialName(String name) throws RecipeNotFoundException;
 
     List<Recipe> findRecipesByPartialUsername(String username) throws UserNotFoundException;
+
+    Integer getAmountOfRecipesByOwnerId(Integer ownerId) throws UserNotFoundException;
 }

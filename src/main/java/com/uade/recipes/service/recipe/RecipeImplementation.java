@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -84,11 +83,11 @@ public class RecipeImplementation implements RecipeService {
         return recipeRepository.findByOwnerAndPeopleAmount(owner, peopleAmount);
     }
 
-
-
-
-
-
+    @Override
+    public Integer getAmountOfRecipesByOwnerId(Integer ownerId) throws UserNotFoundException {
+        User owner = userService.getUserById(ownerId);
+        return this.getRecipesByOwnerId(ownerId).size();
+    }
 
 
     @Override
