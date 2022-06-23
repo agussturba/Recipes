@@ -93,7 +93,6 @@ class RecipeImplementationTest {
 
 
         testIngredient = new Ingredient();
-        testIngredient.setDividable(true);
         testIngredient.setName("Tomate");
 
         testIngredientQuantity = new IngredientQuantity();

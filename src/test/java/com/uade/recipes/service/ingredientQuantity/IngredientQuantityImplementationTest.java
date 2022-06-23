@@ -106,7 +106,6 @@ class IngredientQuantityImplementationTest {
 
         testIngredient = new Ingredient();
         testIngredient.setId(1);
-        testIngredient.setDividable(true);
         testIngredient.setName("Tomate");
 
         ingredientQuantityTestList = new ArrayList<>();

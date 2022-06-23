@@ -101,6 +101,7 @@ public class IngredientQuantityImplementation implements IngredientQuantityServi
     }
 
     private IngredientQuantity convertIngredientQuantity(IngredientQuantity ingredientQuantity, Double conversionFactor) throws IngredientNotFoundException {
+
         Double quantity = ingredientQuantity.getQuantity();
         Double newQuantity = quantity * conversionFactor;
         ingredientService.getIngredientById(ingredientQuantity.getIngredient().getId());
