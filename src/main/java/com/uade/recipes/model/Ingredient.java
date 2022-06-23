@@ -23,26 +23,18 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @ToString
-@SecondaryTable(name = "ingredient_addition", pkJoinColumns = @PrimaryKeyJoinColumn(name = "ingredient_id"))
 public class Ingredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(nullable = false)
     private String name;
-    /**
-     * Atributo para verificar que el ingrediento puede ser divisible.Que el ingrediente puede ser la mitadd
-     * de dicho elemento. IE un tomate es divisble porque podes trabajar con medio tomate pero un huevo no es
-     * divisible.
-     */
-    @Column(table = "ingredient_addition")
-    private Boolean dividable;
+
 
     public IngredientVo toVO() {
         IngredientVo vo = new IngredientVo();
         vo.setId(id);
         vo.setName(name);
-        vo.setDividable(dividable);
         return vo;
     }
 
