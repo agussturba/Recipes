@@ -1,11 +1,12 @@
 package com.uade.recipes.service.token;
 
 import com.uade.recipes.exceptions.tokenExceptions.TokenCantBeGeneratedException;
+import com.uade.recipes.exceptions.tokenExceptions.TokenNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 
 public interface TokenService {
 
-    boolean isTokenValid(Integer token, Integer userId) throws UserNotFoundException;
+    void isTokenValid(Integer token, Integer userId) throws UserNotFoundException, TokenNotFoundException;
 
     Integer generateToken(Integer userId) throws UserNotFoundException, TokenCantBeGeneratedException;
 

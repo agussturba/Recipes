@@ -6,16 +6,15 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Getter
 @Setter
 @ToString
+@SecondaryTable(name = "multimedia_addition", pkJoinColumns = @PrimaryKeyJoinColumn(name = "multimedia_id"))
+
 public class Multimedia {
     @Id
     @GeneratedValue

@@ -18,7 +18,6 @@ public class IngredientVo {
         Ingredient ingredient = new Ingredient();
         ingredient.setId(this.getId());
         ingredient.setName(this.getName());
-        ingredient.setDividable(dividable);
         return ingredient;
     }
 }

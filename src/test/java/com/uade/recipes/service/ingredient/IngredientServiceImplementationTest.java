@@ -45,7 +45,6 @@ class IngredientServiceImplementationTest {
 
         testIngredient = new Ingredient();
         testIngredient.setName("Tomate");
-        testIngredient.setDividable(true);
         testIngredient.setId(1);
         ingredientTestList.add(testIngredient);
     }

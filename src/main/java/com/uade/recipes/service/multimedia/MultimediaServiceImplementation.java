@@ -32,10 +32,6 @@ public class MultimediaServiceImplementation implements MultimediaService {
         return multimediaRepository.findById(id).orElseThrow(MultimediaNotFoundException::new);
     }
 
-    @Override
-    public List<Multimedia> getAllMultimedia() {
-        return (List<Multimedia>) multimediaRepository.findAll();
-    }
 
     @Override
     public List<Multimedia> getMultimediaByInstructionId(Integer instructionId) throws InstructionNotFoundException {

@@ -1,6 +1,7 @@
 package com.uade.recipes.controllers;
 
 import com.uade.recipes.exceptions.tokenExceptions.TokenCantBeGeneratedException;
+import com.uade.recipes.exceptions.tokenExceptions.TokenNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.service.token.TokenService;
 import com.uade.recipes.service.user.UserService;
@@ -61,9 +62,10 @@ public class AuthenticationController {
             @ApiResponse(code = 406, message = "El token ingresado es invalido"),//TODO TIRAR EL ERROR
             @ApiResponse(code = 404, message = "El usuario no fue encontrado")
     })
-    public ResponseEntity<Boolean> isValid(@PathVariable Integer token, @RequestParam String email) throws UserNotFoundException {
+    public ResponseEntity isValid(@PathVariable Integer token, @RequestParam String email) throws UserNotFoundException, TokenNotFoundException {
         Integer userId = userService.getUserByEmail(email).getId();
-        return ResponseEntity.status(HttpStatus.OK).body(tokenService.isTokenValid(token, userId));
+        tokenService.isTokenValid(token, userId);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @PutMapping("/password/restore")

@@ -10,7 +10,6 @@ import java.util.List;
 public interface MultimediaService {
     Multimedia getMultimediaById(Integer id);
 
-    List<Multimedia> getAllMultimedia();
 
     List<Multimedia> getMultimediaByInstructionId(Integer instructionId) throws InstructionNotFoundException;
 
