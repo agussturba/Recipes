@@ -75,16 +75,16 @@ public class UserController {
     }
 
     @GetMapping("/alias/{currentAlias}")
-    @ApiOperation(value = "Obtener una sugerencia para el alias de un usuario", response = ResponseEntity.class)
+    @ApiOperation(value = "Obtener una lista de sugerencia para el alias de un usuario", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 200 /*302*/, message = "se a retornado un alias sugerido "),
+            @ApiResponse(code = 200 /*302*/, message = "se a retornado una lista de alias posible "),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "Usuario no encontrado"),
 
     })
-    public ResponseEntity<String> getSuggestedAlias(@PathVariable String currentAlias) {
-        return ResponseEntity.status(HttpStatus.OK).body("Alias");
+    public ResponseEntity<List<String>> getSuggestedAliasList(@PathVariable String currentAlias) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getSuggestedAliasList(currentAlias));
     }
 
     @PostMapping("/student")
@@ -125,6 +125,7 @@ public class UserController {
         List<User> users = userVoList.stream().map(UserVo::toModel).collect(Collectors.toList());
         userService.saveAllUsers(users);
     }
+
 
 
     @PutMapping

@@ -3,6 +3,7 @@ package com.uade.recipes.service.user;
 import com.uade.recipes.exceptions.userExceptions.*;
 import com.uade.recipes.model.User;
 import com.uade.recipes.vo.UserVo;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -22,6 +23,8 @@ public interface UserService {
     User getUserByAlias(String userName) throws UserNotFoundException;
 
     User getUserById(Integer userId) throws UserNotFoundException;
+
+    List<String> getSuggestedAliasList(String currentAlias);
 
     User saveUser(UserVo userVo) throws EmailExistsException, UserNameExistsException;
 

@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -88,6 +89,23 @@ public class UserServiceImplementation implements UserService {
     @Override
     public User getUserById(Integer userId) throws UserNotFoundException {
         return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+    }
+
+    @Override
+    public List<String> getSuggestedAliasList(String currentAlias) {
+        List<String> suggestedAliasList = new ArrayList<>();
+        Integer randomNumber = 1;
+        while (suggestedAliasList.size()!=5){
+            String newSuggestedAlias = currentAlias+randomNumber;
+            try {
+                this.getUserByAlias(newSuggestedAlias);
+                randomNumber++;
+            }catch (UserNotFoundException e){
+                suggestedAliasList.add(newSuggestedAlias);
+                randomNumber++;
+            }
+        }
+        return suggestedAliasList;
     }
 
     @Override
