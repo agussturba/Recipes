@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -16,7 +15,7 @@ public class RecipeVo {
     String name;
     String description;
     Integer typeId;
-    Integer dishId;
+
     Integer ownerId;
     String ownerUserName;
     String mainPhoto;
