@@ -15,7 +15,7 @@ public class RecipeVo {
     String name;
     String description;
     Integer typeId;
-
+    String typeName;
     Integer ownerId;
     String ownerUserName;
     String mainPhoto;

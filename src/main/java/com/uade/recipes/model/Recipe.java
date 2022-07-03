@@ -48,6 +48,7 @@ public class Recipe {
         vo.setDuration(duration);
         vo.setOwnerUserName(owner.getUserName());
         vo.setPortions(portions);
+        vo.setTypeName(type.getDescription());
         vo.setTypeId(type.getId());
         vo.setTimestamp(timestamp);
         vo.setEnabled(enabled);
