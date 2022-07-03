@@ -91,11 +91,10 @@ public class RecipeImplementation implements RecipeService {
     public Set<Recipe> getRecipesByIngredients(List<Integer> ingredientsIds) throws IngredientNotFoundException {
         Set<Recipe> recipeSet = new HashSet<>();
         for (Integer ingredientId : ingredientsIds) {
-            if (recipeSet.isEmpty()){
+            if (recipeSet.isEmpty()) {
                 recipeSet.addAll(ingredientQuantityService.getRecipesByIngredientId(ingredientId));
-            }
-            else{
-                recipeSet = intersectionSet(recipeSet,ingredientQuantityService.getRecipesByIngredientId(ingredientId));
+            } else {
+                recipeSet = intersectionSet(recipeSet, ingredientQuantityService.getRecipesByIngredientId(ingredientId));
             }
         }
         return recipeSet;
@@ -111,21 +110,17 @@ public class RecipeImplementation implements RecipeService {
 
     @Override
     public Set<Recipe> getRecipesByMissingIngredientIdList(List<Integer> ingredientIds) throws IngredientNotFoundException {
-        Set<Recipe> recipeSet = new HashSet<>();
-        List<Recipe> recipes = getAllRecipes();
+        Set<Recipe> recipeSet = new HashSet<>(getAllRecipes());
         for (Integer ingredientId : ingredientIds) {
-            if (recipeSet.isEmpty()){
-                recipeSet.addAll(recipes);
-            }else{
-                filterRecipesByIngredientId(recipeSet,ingredientId);
-            }
+            recipeSet=filterRecipesByIngredientId(recipeSet, ingredientId);
         }
         return recipeSet;
     }
 
-    private void filterRecipesByIngredientId(Set<Recipe> unFilterRecipes,Integer ingredientId) throws IngredientNotFoundException {
+    private Set<Recipe> filterRecipesByIngredientId(Set<Recipe> unFilterRecipes, Integer ingredientId) throws IngredientNotFoundException {
         Set<Recipe> recipes = ingredientQuantityService.getRecipesByIngredientId(ingredientId);
         unFilterRecipes.removeAll(recipes);
+        return unFilterRecipes;
     }
 
     @Override
