@@ -91,7 +91,12 @@ public class RecipeImplementation implements RecipeService {
     public Set<Recipe> getRecipesByIngredients(List<Integer> ingredientsIds) throws IngredientNotFoundException {
         Set<Recipe> recipeSet = new HashSet<>();
         for (Integer ingredientId : ingredientsIds) {
-            recipeSet = mergeSet(recipeSet, ingredientQuantityService.getRecipesByIngredientId(ingredientId));
+            if (recipeSet.isEmpty()){
+                recipeSet.addAll(ingredientQuantityService.getRecipesByIngredientId(ingredientId));
+            }
+            else{
+                recipeSet = intersectionSet(recipeSet,ingredientQuantityService.getRecipesByIngredientId(ingredientId));
+            }
         }
         return recipeSet;
     }
