@@ -7,7 +7,6 @@ import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.IngredientQuantity;
 import com.uade.recipes.model.Recipe;
-import com.uade.recipes.persistance.UserRepository;
 import com.uade.recipes.service.ingredientQuantity.IngredientQuantityService;
 import com.uade.recipes.service.recipe.RecipeService;
 import com.uade.recipes.vo.IngredientQuantityVo;
@@ -17,15 +16,9 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,17 +41,17 @@ public class RecipeController {
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "El usuario no fue encontrado")
     })
-    public ResponseEntity<List<RecipeVo>> getAllRecipes(@RequestParam(required = false) Integer ownerId, @RequestParam(required = false) Integer peopleAmount) throws  UserNotFoundException {
-        if (ownerId == null  && peopleAmount == null) {
+    public ResponseEntity<List<RecipeVo>> getAllRecipes(@RequestParam(required = false) Integer ownerId, @RequestParam(required = false) Integer peopleAmount) throws UserNotFoundException {
+        if (ownerId == null && peopleAmount == null) {
             List<RecipeVo> result = transformListToVoList(recipeService.getAllRecipes());
             return ResponseEntity.status(HttpStatus.OK).body(result);
-        } else if (ownerId != null  && peopleAmount == null) {
+        } else if (ownerId != null && peopleAmount == null) {
             List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByOwnerId(ownerId));
             return ResponseEntity.status(HttpStatus.OK).body(result);
-        }  else if (ownerId != null  && peopleAmount != null) {
+        } else if (ownerId != null && peopleAmount != null) {
             List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByOwnerIdAndPeopleAmount(ownerId, peopleAmount));
             return ResponseEntity.status(HttpStatus.OK).body(result);
-        } else  {
+        } else {
             List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByPeopleAmount(peopleAmount));
             return ResponseEntity.status(HttpStatus.OK).body(result);
         }
@@ -77,6 +70,42 @@ public class RecipeController {
         return ResponseEntity.status(HttpStatus.OK).body(recipeService.getRecipeById(recipeId).toVO());
     }
 
+    @GetMapping("/filter")
+    @ApiOperation(value = "Retornar recetas por tipos,una lista de ingredientes para ser incluidos y otra para ser excluidos", response = Iterable.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Lista de recetas retornada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "Tipo no encontrado o ingrediente no encontrado")
+
+    })
+    public ResponseEntity<List<RecipeVo>> getRecipesByIncludedIngredientsAndExcludedIngredientsAndTypes(@RequestParam List<Integer> typesIds, @RequestParam List<Integer> includedIngredients, @RequestParam List<Integer> excludedIngredients) throws IngredientNotFoundException {
+        if (typesIds.size() == 0 && includedIngredients.size() == 0 && excludedIngredients.size() == 0) {
+            return ResponseEntity.status(HttpStatus.OK).body(transformListToVoList(recipeService.getAllRecipes()));
+        } else if (typesIds.size() != 0 && includedIngredients.size() == 0 && excludedIngredients.size() == 0) {
+            return ResponseEntity.status(HttpStatus.OK).body(transformListToVoList(recipeService.getRecipesByTypes(typesIds)));
+        } else if (typesIds.size() == 0 && includedIngredients.size() != 0 && excludedIngredients.size() == 0) {
+            List<Recipe> recipes = new ArrayList(recipeService.getRecipesByIngredients(includedIngredients));
+            return ResponseEntity.status(HttpStatus.OK).body(transformListToVoList(recipes));
+        } else if (typesIds.size() == 0 && includedIngredients.size() == 0 && excludedIngredients.size() != 0) {
+            List<Recipe> recipes = new ArrayList(recipeService.getRecipesByMissingIngredientIdList(excludedIngredients));
+            return ResponseEntity.status(HttpStatus.OK).body(transformListToVoList(recipes));
+        } else if (typesIds.size() != 0 && includedIngredients.size() != 0 && excludedIngredients.size() == 0) {
+            List<Recipe> recipes = new ArrayList(recipeService.getRecipesByTypesAndIngredients(typesIds, includedIngredients));
+            return ResponseEntity.status(HttpStatus.OK).body(transformListToVoList(recipes));
+        } else if (typesIds.size() != 0 && includedIngredients.size() == 0 && excludedIngredients.size() != 0) {
+            List<Recipe> recipes = new ArrayList(recipeService.getRecipesByTypesAndExcludedIngredients(typesIds, excludedIngredients));
+            return ResponseEntity.status(HttpStatus.OK).body(transformListToVoList(recipes));
+        } else if (typesIds.size() == 0 && includedIngredients.size() != 0 && excludedIngredients.size() != 0) {
+            List<Recipe> recipes = new ArrayList(recipeService.getRecipesByIncludedIngredientsAndExcludedIngredients(includedIngredients, excludedIngredients));
+            return ResponseEntity.status(HttpStatus.OK).body(transformListToVoList(recipes));
+        } else {
+            List<Recipe> recipes = new ArrayList(recipeService.getRecipesByIncludedIngredientsAndExcludedIngredientsAndTypes(includedIngredients, excludedIngredients, typesIds));
+            return ResponseEntity.status(HttpStatus.OK).body(transformListToVoList(recipes));
+        }
+
+    }
+
 
     @GetMapping("/name")
     @ApiOperation(value = "Retornar recetas por nombre", response = Iterable.class)
@@ -92,19 +121,6 @@ public class RecipeController {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @GetMapping("/name/{ingredientId}")
-    @ApiOperation(value = "Retornar recetas por un ingrediente faltante", response = Iterable.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Lista de recetas por ingrediente faltante retornada satisfactoriamente"),
-            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
-            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
-            @ApiResponse(code = 404, message = "No existen ingrediente con dicho id")
-
-    })
-    public ResponseEntity<List<RecipeVo>> getRecipesByMissingIngredientId(@RequestBody List<Integer> ingredientIdList) throws IngredientNotFoundException {
-        List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByMissingIngredientId(ingredientIdList.get(0)));
-        return ResponseEntity.status(HttpStatus.OK).body(result);
-    }
 
     @GetMapping("/enabled/{recipeId}")
     @ApiOperation(value = "Verificar si una receta esta habilitada", response = Boolean.class)
@@ -145,6 +161,7 @@ public class RecipeController {
         List<RecipeVo> result = transformListToVoList(recipeService.getRecipesByTypes(typesIds));
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
+
     @GetMapping("/count/{ownerId}")
     @ApiOperation(value = "Obtener la cantidad de recetas de un usuario", response = Integer.class)
     @ApiResponses(value = {

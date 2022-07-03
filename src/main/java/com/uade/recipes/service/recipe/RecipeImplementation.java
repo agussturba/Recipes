@@ -13,14 +13,18 @@ import com.uade.recipes.persistance.RecipeRepository;
 import com.uade.recipes.service.ingredientQuantity.IngredientQuantityService;
 import com.uade.recipes.service.type.TypeService;
 import com.uade.recipes.service.user.UserService;
+import com.uade.recipes.utilities.SetsUtilities;
 import com.uade.recipes.vo.RecipeVo;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.uade.recipes.utilities.SetsUtilities.intersectionSet;
+import static com.uade.recipes.utilities.SetsUtilities.mergeSet;
 import static com.uade.recipes.validations.RecipeValidations.validateRecipeData;
 
 @Service
@@ -70,11 +74,60 @@ public class RecipeImplementation implements RecipeService {
     }
 
     @Override
-    public List<Recipe> getRecipesByMissingIngredientId(Integer ingredientId) throws IngredientNotFoundException {
+    public Set<Recipe> getRecipesByTypesAndIngredients(List<Integer> typesIds, List<Integer> ingredientsIds) throws IngredientNotFoundException {
+        Set<Recipe> typesRecipe = new HashSet<>(this.getRecipesByTypes(typesIds));
+        Set<Recipe> ingredientsRecipe = this.getRecipesByIngredients(ingredientsIds);
+        return intersectionSet(typesRecipe, ingredientsRecipe);
+    }
+
+    @Override
+    public Set<Recipe> getRecipesByTypesAndExcludedIngredients(List<Integer> typesIds, List<Integer> ingredientsIds) throws IngredientNotFoundException {
+        Set<Recipe> typesRecipe = new HashSet<>(this.getRecipesByTypes(typesIds));
+        Set<Recipe> ingredientsRecipe = this.getRecipesByMissingIngredientIdList(ingredientsIds);
+        return intersectionSet(typesRecipe, ingredientsRecipe);
+    }
+
+    @Override
+    public Set<Recipe> getRecipesByIngredients(List<Integer> ingredientsIds) throws IngredientNotFoundException {
+        Set<Recipe> recipeSet = new HashSet<>();
+        for (Integer ingredientId : ingredientsIds) {
+            recipeSet = mergeSet(recipeSet, ingredientQuantityService.getRecipesByIngredientId(ingredientId));
+        }
+        return recipeSet;
+    }
+
+
+    public Set<Recipe> getRecipesByMissingIngredientId(Integer ingredientId) throws IngredientNotFoundException {
         Set<Recipe> unAcceptableRecipes = ingredientQuantityService.getRecipesByIngredientId(ingredientId);
         List<Recipe> recipes = getAllRecipes();
-        return recipes.stream().filter(unAcceptableRecipes::contains).collect(Collectors.toList());
+        return recipes.stream().filter(unAcceptableRecipes::contains).collect(Collectors.toSet());
 
+    }
+
+    @Override
+    public Set<Recipe> getRecipesByMissingIngredientIdList(List<Integer> ingredientIds) throws IngredientNotFoundException {
+        Set<Recipe> recipeSet = new HashSet<>();
+        for (Integer ingredientId : ingredientIds) {
+            recipeSet = mergeSet(recipeSet, getRecipesByMissingIngredientId(ingredientId));
+        }
+        return recipeSet;
+    }
+
+    @Override
+    public Set<Recipe> getRecipesByIncludedIngredientsAndExcludedIngredients(List<Integer> includedIngredientsIds, List<Integer> excludedIngredientsIds) throws IngredientNotFoundException {
+        Set<Recipe> recipesByMissingIngredientList = this.getRecipesByMissingIngredientIdList(excludedIngredientsIds);
+        Set<Recipe> recipesByIngredients = this.getRecipesByIngredients(includedIngredientsIds);
+        recipesByIngredients.removeAll(recipesByMissingIngredientList);
+        return recipesByIngredients;
+    }
+
+    @Override
+    public Set<Recipe> getRecipesByIncludedIngredientsAndExcludedIngredientsAndTypes(List<Integer> includedIngredientsIds, List<Integer> excludedIngredientsIds, List<Integer> typesIds) throws IngredientNotFoundException {
+        Set<Recipe> recipesByMissingIngredientList = this.getRecipesByMissingIngredientIdList(excludedIngredientsIds);
+        Set<Recipe> recipesByIngredients = this.getRecipesByIngredients(includedIngredientsIds);
+        Set<Recipe> typesRecipe = new HashSet<>(this.getRecipesByTypes(typesIds));
+        recipesByIngredients.removeAll(recipesByMissingIngredientList);
+        return intersectionSet(recipesByIngredients, typesRecipe);
     }
 
     @Override
@@ -85,7 +138,7 @@ public class RecipeImplementation implements RecipeService {
 
     @Override
     public Integer getAmountOfRecipesByOwnerId(Integer ownerId) throws UserNotFoundException {
-        User owner = userService.getUserById(ownerId);
+        userService.getUserById(ownerId);
         return this.getRecipesByOwnerId(ownerId).size();
     }
 
@@ -98,13 +151,12 @@ public class RecipeImplementation implements RecipeService {
 
 
     @Override
-    public Recipe saveOrUpdateRecipe(RecipeVo recipeVo) throws  UserNotFoundException {
+    public Recipe saveOrUpdateRecipe(RecipeVo recipeVo) throws UserNotFoundException {
         validateRecipeData(recipeVo);
         User owner = userService.getUserById(recipeVo.getOwnerId());
         Type type = typeService.getTypeById(recipeVo.getTypeId());
-        Recipe recipe = recipeRepository.save(recipeVo.toModel(owner, type));
-        return recipe;
-        }
+        return recipeRepository.save(recipeVo.toModel(owner, type));
+    }
 
     @Override
     public List<IngredientQuantity> convertRecipeIngredientQuantityByIngredientIdAndRecipeIdAndNewQuantity(Integer ingredientId, Double newQuantity, Integer recipeId) throws IngredientNotFoundException, RecipeNotFoundException, CannotDivideTheIngredientException {
@@ -127,7 +179,7 @@ public class RecipeImplementation implements RecipeService {
     public List<Recipe> findRecipesByPartialUsername(String username) throws UserNotFoundException {
         List<User> users = userService.getUsersByPartialUserName(username);
         List<Recipe> recipes = new ArrayList<>();
-        for (User user: users) {
+        for (User user : users) {
             recipes.addAll(getRecipesByOwnerId(user.getId()));
         }
         return recipes;
@@ -137,4 +189,6 @@ public class RecipeImplementation implements RecipeService {
     private Double getConversionFactor(Double oldQuantity, Double newQuantity) {
         return newQuantity / oldQuantity;
     }
+
+
 }

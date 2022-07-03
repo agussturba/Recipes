@@ -11,6 +11,7 @@ import com.uade.recipes.vo.RecipeVo;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Set;
 
 public interface RecipeService {
     List<Recipe> getAllRecipes();
@@ -25,7 +26,18 @@ public interface RecipeService {
 
     List<Recipe> getRecipesByTypes(List<Integer> typesIds);
 
-    List<Recipe> getRecipesByMissingIngredientId(Integer ingredientId) throws IngredientNotFoundException;
+    Set<Recipe> getRecipesByTypesAndExcludedIngredients(List<Integer> typesIds, List<Integer> ingredientsIds) throws IngredientNotFoundException;
+
+    Set<Recipe> getRecipesByTypesAndIngredients(List<Integer> typesIds,List<Integer> ingredientsIds) throws IngredientNotFoundException;
+
+    Set<Recipe> getRecipesByIngredients(List<Integer> ingredientsIds) throws IngredientNotFoundException;
+
+    Set<Recipe> getRecipesByMissingIngredientIdList(List<Integer> ingredientIds) throws IngredientNotFoundException;
+
+    Set<Recipe> getRecipesByIncludedIngredientsAndExcludedIngredients(List<Integer> includedIngredientsIds,List<Integer> excludedIngredientsIds) throws IngredientNotFoundException;
+
+
+    Set<Recipe> getRecipesByIncludedIngredientsAndExcludedIngredientsAndTypes(List<Integer> includedIngredientsIds,List<Integer> excludedIngredientsIds,List<Integer> typesIds) throws IngredientNotFoundException;
 
     List<Recipe> getRecipesByOwnerIdAndPeopleAmount(Integer ownerId, Integer peopleAmount) throws UserNotFoundException;
 
