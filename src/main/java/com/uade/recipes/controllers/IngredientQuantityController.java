@@ -45,6 +45,7 @@ public class IngredientQuantityController {
         return ResponseEntity.status(HttpStatus.OK).body(transformListToVoList(ingredientQuantityService.getIngredientQuantityByRecipeId(recipeId)));
     }
 
+
     @GetMapping("/{ingredientQuantityId}")
     @ApiOperation(value = "Obtener una cantidades de ingrediente por ID", response = Iterable.class)
     @ApiResponses(value = {

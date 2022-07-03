@@ -274,7 +274,7 @@ public class RecipeController {
     }
 
     private List<RecipeVo> transformListToVoList(List<Recipe> list) {
-        return list.stream().map(Recipe::toVO).collect(Collectors.toList());
+        return list.stream().filter(Recipe::isEnabled).map(Recipe::toVO).collect(Collectors.toList());
 
     }
 

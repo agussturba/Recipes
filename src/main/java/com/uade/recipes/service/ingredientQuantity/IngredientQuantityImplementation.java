@@ -72,6 +72,7 @@ public class IngredientQuantityImplementation implements IngredientQuantityServi
         for (IngredientQuantity ingredientQuantity : ingredientQuantityList) {
             recipes.add(ingredientQuantity.getRecipe());
         }
+        System.out.println(recipes);
         return recipes;
     }
 
