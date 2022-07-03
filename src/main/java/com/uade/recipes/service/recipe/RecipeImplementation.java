@@ -112,9 +112,10 @@ public class RecipeImplementation implements RecipeService {
     @Override
     public Set<Recipe> getRecipesByMissingIngredientIdList(List<Integer> ingredientIds) throws IngredientNotFoundException {
         Set<Recipe> recipeSet = new HashSet<>();
+        List<Recipe> recipes = getAllRecipes();
         for (Integer ingredientId : ingredientIds) {
             if (recipeSet.isEmpty()){
-                recipeSet.addAll(getRecipesByMissingIngredientId(ingredientId));
+                recipeSet.addAll(recipes);
             }else{
                 filterRecipesByIngredientId(recipeSet,ingredientId);
             }
