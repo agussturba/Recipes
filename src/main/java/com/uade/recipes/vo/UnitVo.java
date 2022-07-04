@@ -9,11 +9,13 @@ import lombok.Setter;
 public class UnitVo {
      Integer id;
      String description;
+     String shortened;
 
      public Unit toModel(){
          Unit unit=new Unit();
          unit.setDescription(description);
          unit.setId(id);
+         unit.setShortened(shortened);
          return unit;
      }
 }

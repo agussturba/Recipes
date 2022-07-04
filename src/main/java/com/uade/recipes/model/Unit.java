@@ -6,17 +6,14 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Getter
 @Setter
 @ToString
+@SecondaryTable(name = "unit_addition", pkJoinColumns = @PrimaryKeyJoinColumn(name = "unit_id"))
 public class Unit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,10 +21,14 @@ public class Unit {
     private Integer id;
     private String description;
 
+    @Column(table = "unit_addition")
+    private String shortened;
+
     public UnitVo toVO(){
         UnitVo vo = new UnitVo();
         vo.setId(id);
         vo.setDescription(description);
+        vo.setShortened(shortened);
 
         return vo;
     }
