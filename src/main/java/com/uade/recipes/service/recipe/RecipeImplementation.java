@@ -13,7 +13,6 @@ import com.uade.recipes.persistance.RecipeRepository;
 import com.uade.recipes.service.ingredientQuantity.IngredientQuantityService;
 import com.uade.recipes.service.type.TypeService;
 import com.uade.recipes.service.user.UserService;
-import com.uade.recipes.utilities.SetsUtilities;
 import com.uade.recipes.vo.RecipeVo;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.uade.recipes.utilities.SetsUtilities.intersectionSet;
-import static com.uade.recipes.utilities.SetsUtilities.mergeSet;
 import static com.uade.recipes.validations.RecipeValidations.validateRecipeData;
 
 @Service
@@ -134,11 +132,13 @@ public class RecipeImplementation implements RecipeService {
 
     @Override
     public Set<Recipe> getRecipesByIncludedIngredientsAndExcludedIngredientsAndTypes(List<Integer> includedIngredientsIds, List<Integer> excludedIngredientsIds, List<Integer> typesIds) throws IngredientNotFoundException {
-        Set<Recipe> recipesByMissingIngredientList = this.getRecipesByMissingIngredientIdList(excludedIngredientsIds);
         Set<Recipe> recipesByIngredients = this.getRecipesByIngredients(includedIngredientsIds);
         Set<Recipe> typesRecipe = new HashSet<>(this.getRecipesByTypes(typesIds));
-        recipesByIngredients.removeAll(recipesByMissingIngredientList);
-        return intersectionSet(recipesByIngredients, typesRecipe);
+        Set<Recipe> recipeSet =  intersectionSet(recipesByIngredients, typesRecipe);
+        for (Integer excludedIngredientId: excludedIngredientsIds) {
+            filterRecipesByIngredientId(recipeSet, excludedIngredientId);
+        }
+        return recipeSet;
     }
 
     @Override
