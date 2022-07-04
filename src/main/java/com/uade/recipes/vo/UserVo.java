@@ -21,7 +21,6 @@ public class UserVo {
     LocalDateTime registrationTimestamp;
 
 
-
     public User toModel() {
         User user = new User();
         user.setId(id);

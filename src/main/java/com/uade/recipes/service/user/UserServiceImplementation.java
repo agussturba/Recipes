@@ -111,7 +111,7 @@ public class UserServiceImplementation implements UserService {
     @Override
     public void isRegistryComplete(String email) throws UserNotFoundException, RegistrationProcessIncompleteException {
         User user = getUserByEmail(email);
-        if (!user.isEnabled())
+        if (!user.isRegistryComplete())
             throw new RegistrationProcessIncompleteException();
     }
 
@@ -170,7 +170,9 @@ public class UserServiceImplementation implements UserService {
         checkAliasExistence(userVo);
         userVo.setRegistrationTimestamp(LocalDateTime.now());
         emailSender.sendSimpleEmail(userVo.getEmail(), "Hola " + userVo.getUserName() + ",\nEste es un mensaje para verificar tu correo electrónico.\nHaz Click en el link para validar tu correo: https://tasty-hub.herokuapp.com/api/user/email/confirmation?email=" + userVo.getEmail(), "Correo de verificación");
-        return userRepository.save(userVo.toModel());
+        User user = userVo.toModel();
+        user.setIsCompleted(false);
+        return userRepository.save(user);
     }
 
     @Override
