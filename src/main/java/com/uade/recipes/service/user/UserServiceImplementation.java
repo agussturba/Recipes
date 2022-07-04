@@ -95,12 +95,12 @@ public class UserServiceImplementation implements UserService {
     public List<String> getSuggestedAliasList(String currentAlias) {
         List<String> suggestedAliasList = new ArrayList<>();
         Integer randomNumber = 1;
-        while (suggestedAliasList.size()!=5){
-            String newSuggestedAlias = currentAlias+randomNumber;
+        while (suggestedAliasList.size() != 5) {
+            String newSuggestedAlias = currentAlias + randomNumber;
             try {
                 this.getUserByAlias(newSuggestedAlias);
                 randomNumber++;
-            }catch (UserNotFoundException e){
+            } catch (UserNotFoundException e) {
                 suggestedAliasList.add(newSuggestedAlias);
                 randomNumber++;
             }
@@ -202,10 +202,8 @@ public class UserServiceImplementation implements UserService {
 
     private void checkAliasExistence(UserVo userVo) throws UserNameExistsException {
         try {
-            if (userVo.getId() != null) {
-                getUserByAlias(userVo.getUserName());
-                throw new UserNameExistsException();
-            }
+            getUserByAlias(userVo.getUserName());
+            throw new UserNameExistsException();
         } catch (UserNotFoundException ignored) {
         }
     }
