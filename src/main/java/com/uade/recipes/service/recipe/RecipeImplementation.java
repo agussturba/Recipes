@@ -125,9 +125,10 @@ public class RecipeImplementation implements RecipeService {
 
     @Override
     public Set<Recipe> getRecipesByIncludedIngredientsAndExcludedIngredients(List<Integer> includedIngredientsIds, List<Integer> excludedIngredientsIds) throws IngredientNotFoundException {
-        Set<Recipe> recipesByMissingIngredientList = this.getRecipesByMissingIngredientIdList(excludedIngredientsIds);
         Set<Recipe> recipesByIngredients = this.getRecipesByIngredients(includedIngredientsIds);
-        recipesByIngredients.removeAll(recipesByMissingIngredientList);
+        for (Integer excludedIngredientId: excludedIngredientsIds) {
+            filterRecipesByIngredientId(recipesByIngredients, excludedIngredientId);
+        }
         return recipesByIngredients;
     }
 

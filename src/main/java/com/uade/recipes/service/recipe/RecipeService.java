@@ -36,7 +36,6 @@ public interface RecipeService {
 
     Set<Recipe> getRecipesByIncludedIngredientsAndExcludedIngredients(List<Integer> includedIngredientsIds,List<Integer> excludedIngredientsIds) throws IngredientNotFoundException;
 
-
     Set<Recipe> getRecipesByIncludedIngredientsAndExcludedIngredientsAndTypes(List<Integer> includedIngredientsIds,List<Integer> excludedIngredientsIds,List<Integer> typesIds) throws IngredientNotFoundException;
 
     List<Recipe> getRecipesByOwnerIdAndPeopleAmount(Integer ownerId, Integer peopleAmount) throws UserNotFoundException;
