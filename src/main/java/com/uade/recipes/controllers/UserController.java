@@ -167,6 +167,19 @@ public class UserController {
         userService.isRegistryComplete(email);
         return ResponseEntity.status(HttpStatus.OK).body("");
     }
+    @GetMapping("/check/link")
+    @ApiOperation(value = "Chequear que un mail fue verificado")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "El email corresponde un mail fue verificado"),
+            @ApiResponse(code = 404, message = "El usuario no fue encontrado"),
+            @ApiResponse(code = 409, message = "El email corresponde a un registro incompleto"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder")
+    })
+    public ResponseEntity isMailVerified(@RequestParam String email) throws UserNotFoundException, RegistrationProcessIncompleteException {
+        userService.isMailVerified(email);
+        return ResponseEntity.status(HttpStatus.OK).body("");
+    }
 
     @PostMapping("/photo")
     @ApiOperation(value = "Crear una foto de usuario", response = ResponseEntity.class)

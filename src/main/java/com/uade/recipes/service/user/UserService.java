@@ -34,6 +34,8 @@ public interface UserService {
 
     User validateUserRegistration(String email) throws UserNotFoundException;
 
+    void isMailVerified(String email) throws UserNotFoundException, RegistrationProcessIncompleteException;
+
     void saveAllUsers(List<User> users);
 
     void confirmEmail(String email) throws UserNotFoundException;
@@ -45,4 +47,6 @@ public interface UserService {
     void deleteUserPhoto(Integer userId) throws UserNotFoundException, IOException;
 
     List<User> getUsersByPartialUserName(String username) throws UserNotFoundException;
+
+
 }

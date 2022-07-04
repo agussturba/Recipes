@@ -59,6 +59,13 @@ public class UserServiceImplementation implements UserService {
     }
 
     @Override
+    public void isMailVerified(String email) throws UserNotFoundException, RegistrationProcessIncompleteException {
+        User user = getUserByEmail(email);
+        if (!user.isEnabled())
+            throw new RegistrationProcessIncompleteException();
+    }
+
+    @Override
     public void saveAllUsers(List<User> users) {
         for (User user : users) {
             user.setRegistrationTimestamp(LocalDateTime.now());
