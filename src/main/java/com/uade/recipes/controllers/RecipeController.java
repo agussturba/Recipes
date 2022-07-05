@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -271,6 +272,20 @@ public class RecipeController {
     })
     public ResponseEntity<List<RecipeVo>> getRecipesByPartialUsername(@RequestParam String username) throws UserNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(transformListToVoList(recipeService.findRecipesByPartialUsername(username)));
+    }
+
+    @DeleteMapping("/mainphoto/{recipeId}")
+    @ApiOperation(value = "Elimina la foto principal de una receta", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "La foto fue eliminada con éxito"),
+            @ApiResponse(code = 404, message = "No se encontraron recetas"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+    })
+
+    public ResponseEntity deleteMainPhoto(@PathVariable Integer recipeId) throws RecipeNotFoundException, IOException {
+        recipeService.deleteMainPhoto(recipeId);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     private List<RecipeVo> transformListToVoList(List<Recipe> list) {

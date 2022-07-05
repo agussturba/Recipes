@@ -10,6 +10,7 @@ import com.uade.recipes.model.Recipe;
 import com.uade.recipes.vo.RecipeVo;
 import org.springframework.data.jpa.repository.Query;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -53,4 +54,6 @@ public interface RecipeService {
     List<Recipe> findRecipesByPartialUsername(String username) throws UserNotFoundException;
 
     Integer getAmountOfRecipesByOwnerId(Integer ownerId) throws UserNotFoundException;
+
+    void deleteMainPhoto(Integer recipeId) throws RecipeNotFoundException, IOException;
 }

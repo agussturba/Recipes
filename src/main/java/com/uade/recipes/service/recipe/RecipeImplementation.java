@@ -1,6 +1,8 @@
 package com.uade.recipes.service.recipe;
 
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.uade.recipes.exceptions.ingredientExceptions.CannotDivideTheIngredientException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
@@ -13,13 +15,12 @@ import com.uade.recipes.persistance.RecipeRepository;
 import com.uade.recipes.service.ingredientQuantity.IngredientQuantityService;
 import com.uade.recipes.service.type.TypeService;
 import com.uade.recipes.service.user.UserService;
+import com.uade.recipes.utilities.CloudinaryUtil;
 import com.uade.recipes.vo.RecipeVo;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.io.IOException;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.uade.recipes.utilities.SetsUtilities.intersectionSet;
@@ -31,6 +32,7 @@ public class RecipeImplementation implements RecipeService {
     private final UserService userService;
     private final TypeService typeService;
     private final IngredientQuantityService ingredientQuantityService;
+    private final Cloudinary cloudinary = CloudinaryUtil.getInstance();
 
     public RecipeImplementation(RecipeRepository recipeRepository, UserService userService, TypeService typeService, IngredientQuantityService ingredientQuantityService) {
         this.recipeRepository = recipeRepository;
@@ -151,6 +153,17 @@ public class RecipeImplementation implements RecipeService {
     public Integer getAmountOfRecipesByOwnerId(Integer ownerId) throws UserNotFoundException {
         userService.getUserById(ownerId);
         return this.getRecipesByOwnerId(ownerId).size();
+    }
+
+    @Override
+    public void deleteMainPhoto(Integer recipeId) throws RecipeNotFoundException, IOException {
+        Recipe recipe = getRecipeById(recipeId);
+        List<String> url = Arrays.asList(recipe.getMainPhoto().split("/"));
+        String filename = url.get(url.size() - 1);
+        String publicId = filename.substring(0, filename.indexOf("."));
+        cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+        recipe.setMainPhoto(null);
+        recipeRepository.save(recipe);
     }
 
 
