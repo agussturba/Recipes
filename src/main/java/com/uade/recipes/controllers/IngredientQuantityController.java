@@ -12,14 +12,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -91,6 +84,19 @@ public class IngredientQuantityController {
     })
     public ResponseEntity<IngredientQuantityVo> updateIngredientQuantity(@RequestBody IngredientQuantityVo ingredientQuantityVo) throws IngredientNotFoundException, IngredientQuantityNotFoundException, RecipeNotFoundException, CannotDivideTheIngredientException {
         return ResponseEntity.status(HttpStatus.OK).body(ingredientQuantityService.saveOrUpdateIngredientQuantity(ingredientQuantityVo).toVO());
+    }
+
+    @DeleteMapping
+    @ApiOperation(value = "Eliminar las cantidades de ingredientes de una receta")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "cantidades de ingredientes de la receta eliminadas satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "La receta o la instrucción no fue encontrada")
+    })
+    public ResponseEntity deleteAllIngredientQuantities(@RequestParam Integer recipeId) throws RecipeNotFoundException {
+        ingredientQuantityService.deleteAllIngredientQuantities(recipeId);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     private List<IngredientQuantityVo> transformListToVoList(List<IngredientQuantity> list){

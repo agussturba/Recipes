@@ -1,6 +1,7 @@
 package com.uade.recipes.controllers;
 
 import com.uade.recipes.exceptions.instructionExceptions.InstructionNotFoundException;
+import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.model.Multimedia;
 import com.uade.recipes.service.multimedia.MultimediaService;
 import com.uade.recipes.vo.MultimediaVo;
@@ -79,6 +80,20 @@ public class MultimediaController {
         multimediaService.deleteMultimedia(multimediaId);
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @DeleteMapping("/deleteall/{recipeId}")
+    @ApiOperation(value = "Eliminar toda la multimedia de una instrucción por el id de la receta", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Multimedia eliminada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "La instrucción no fue encontrada")
+    })
+    public ResponseEntity deleteAllMultimedia(@PathVariable Integer recipeId) throws IOException, InstructionNotFoundException, RecipeNotFoundException {
+        multimediaService.deleteAllMultimedia(recipeId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 
     private List<MultimediaVo> transformListToVoList(List<Multimedia> list) {
         return list.stream().map(Multimedia::toVO).collect(Collectors.toList());

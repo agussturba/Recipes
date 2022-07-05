@@ -4,6 +4,7 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.uade.recipes.exceptions.multimediaExceptions.MultimediaNotFoundException;
 import com.uade.recipes.exceptions.instructionExceptions.InstructionNotFoundException;
+import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.model.Instruction;
 import com.uade.recipes.model.Multimedia;
 import com.uade.recipes.persistance.MultimediaRepository;
@@ -67,6 +68,18 @@ public class MultimediaServiceImplementation implements MultimediaService {
         String publicId = filename.substring(0, filename.indexOf("."));
         cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
         multimediaRepository.delete(multimedia);
+    }
+
+    @Override
+    public void deleteAllMultimedia(Integer recipeId) throws InstructionNotFoundException, IOException, RecipeNotFoundException {
+        List<Instruction> instructions = instructionService.getInstructionsByRecipeId(recipeId);
+        List<Multimedia> multim = new ArrayList<>();
+        for (Instruction ins : instructions) {
+            multim = getMultimediaByInstructionId(ins.getId());
+            for (Multimedia m : multim) {
+                deleteMultimedia(m.getId());
+            }
+        }
     }
 
     private Map saveMultimediaToCloudinary(MultipartFile multimediaFile) throws IOException {

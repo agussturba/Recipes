@@ -28,4 +28,6 @@ public interface IngredientQuantityService {
     IngredientQuantity saveOrUpdateIngredientQuantity(IngredientQuantityVo ingredientQuantityVo) throws IngredientNotFoundException, IngredientQuantityNotFoundException, RecipeNotFoundException, CannotDivideTheIngredientException;
 
     IngredientQuantity getIngredientQuantityByIngredientIdAndRecipeId(Integer ingredientId, Integer recipeId) throws IngredientNotFoundException, RecipeNotFoundException;
+
+    void deleteAllIngredientQuantities(Integer recipeId) throws RecipeNotFoundException;
 }

@@ -66,6 +66,12 @@ public class InstructionServiceImplementation implements InstructionService {
         return instructionRepository.findByRecipeAndNumberOfStep(recipe, numberOfStep).orElseThrow(InstructionExistsException::new);
     }
 
+    @Override
+    public void removeAllInstructions(Integer recipeId) throws RecipeNotFoundException {
+        List<Instruction> instructions = getInstructionsByRecipeId(recipeId);
+        instructionRepository.deleteAll(instructions);
+    }
+
     private void instructionExist(InstructionVo instructionVo) throws RecipeNotFoundException {
         Recipe recipe = recipeService.getRecipeById(instructionVo.getRecipeId());
         instructionRepository.findByRecipeAndNumberOfStep(recipe, instructionVo.getNumberOfStep());

@@ -77,7 +77,7 @@ public class RecipePhotoController {
     @DeleteMapping
     @ApiOperation(value = "Elimina una foto de una receta", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 302, message = "Foto de receta eliminada satisfactoriamente"),
+            @ApiResponse(code = 200, message = "Foto de receta eliminada satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "La receta no fue encontrada")
@@ -85,6 +85,19 @@ public class RecipePhotoController {
     })
     public ResponseEntity deleteRecipePhoto(@RequestParam Integer recipeId, @RequestParam Integer recipePhotoId) throws RecipeNotFoundException, IOException {
         recipePhotoService.deleteRecipePhoto(recipeId, recipePhotoId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/deleteall/{recipeId}")
+    @ApiOperation(value = "Elimina todas las fotos de una receta determinada", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Fotos de la receta eliminadas satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "La receta no fue encontrada")
+    })
+    public ResponseEntity deleteAllRecipePhotos(@PathVariable Integer recipeId) throws RecipeNotFoundException, IOException {
+        recipePhotoService.deleteAllRecipePhotos(recipeId);
         return new ResponseEntity(HttpStatus.OK);
     }
 

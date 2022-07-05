@@ -20,4 +20,6 @@ public interface InstructionService {
 
     Instruction getInstructionByRecipeIdAndNumberOfStep(Integer recipeId, Integer numberStep) throws RecipeNotFoundException;
 
+    void removeAllInstructions(Integer recipeId) throws RecipeNotFoundException;
+
 }

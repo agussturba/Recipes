@@ -10,13 +10,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -71,13 +65,26 @@ public class InstructionController {
     @PutMapping
     @ApiOperation(value = "Actualizar una instrucción", response = ResponseEntity.class)
     @ApiResponses(value = {
-            @ApiResponse(code = 302, message = "Instrucciones de la receta actualizadas satisfactoriamente"),
+            @ApiResponse(code = 200, message = "Instrucciones de la receta actualizadas satisfactoriamente"),
             @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
             @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
             @ApiResponse(code = 404, message = "La receta o la instrucción no fue encontrada")
     })
     public ResponseEntity<InstructionVo> updateInstruction(@RequestBody InstructionVo instructionVo) throws RecipeNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(instructionService.saveOrUpdateInstruction(instructionVo).toVO());
+    }
+
+    @DeleteMapping
+    @ApiOperation(value = "Eliminar las instrucciones de una receta")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Instrucciones de la receta eliminadas satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "La receta o la instrucción no fue encontrada")
+    })
+    public ResponseEntity deleteAllInstructions(@RequestParam Integer recipeId) throws RecipeNotFoundException {
+        instructionService.deleteAllInstructionsByRecipeId(recipeId);
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     private List<InstructionVo> transformListToVoList(List<Instruction> list){
