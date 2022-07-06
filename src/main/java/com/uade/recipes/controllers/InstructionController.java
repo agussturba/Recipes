@@ -87,6 +87,19 @@ public class InstructionController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}")
+    @ApiOperation(value = "Eliminar una instrucción")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Instrucciones eliminada satisfactoriamente"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "La instrucción no fue encontrada")
+    })
+    public ResponseEntity deleteInstruction(@PathVariable Integer id) throws RecipeNotFoundException, InstructionNotFoundException {
+        instructionService.deleteInstruction(id);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     private List<InstructionVo> transformListToVoList(List<Instruction> list){
         return list.stream().map(Instruction::toVO).collect(Collectors.toList());
     }

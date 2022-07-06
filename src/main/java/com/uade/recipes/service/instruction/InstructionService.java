@@ -22,4 +22,5 @@ public interface InstructionService {
 
     void removeAllInstructions(Integer recipeId) throws RecipeNotFoundException;
 
+    void deleteInstruction(Integer instructionId) throws InstructionNotFoundException;
 }
