@@ -7,12 +7,10 @@ import com.uade.recipes.exceptions.ingredientExceptions.CannotDivideTheIngredien
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
-import com.uade.recipes.model.IngredientQuantity;
-import com.uade.recipes.model.Recipe;
-import com.uade.recipes.model.Type;
-import com.uade.recipes.model.User;
+import com.uade.recipes.model.*;
 import com.uade.recipes.persistance.RecipeRepository;
 import com.uade.recipes.service.ingredientQuantity.IngredientQuantityService;
+import com.uade.recipes.service.recipePhoto.RecipePhotoService;
 import com.uade.recipes.service.type.TypeService;
 import com.uade.recipes.service.user.UserService;
 import com.uade.recipes.utilities.CloudinaryUtil;
@@ -20,8 +18,8 @@ import com.uade.recipes.vo.RecipeVo;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.uade.recipes.utilities.SetsUtilities.intersectionSet;
 import static com.uade.recipes.validations.RecipeValidations.validateRecipeData;
@@ -32,13 +30,15 @@ public class RecipeImplementation implements RecipeService {
     private final UserService userService;
     private final TypeService typeService;
     private final IngredientQuantityService ingredientQuantityService;
+    private final RecipePhotoService recipePhotoService;
     private final Cloudinary cloudinary = CloudinaryUtil.getInstance();
 
-    public RecipeImplementation(RecipeRepository recipeRepository, UserService userService, TypeService typeService, IngredientQuantityService ingredientQuantityService) {
+    public RecipeImplementation(RecipeRepository recipeRepository, UserService userService, TypeService typeService, IngredientQuantityService ingredientQuantityService, RecipePhotoService recipePhotoService) {
         this.recipeRepository = recipeRepository;
         this.userService = userService;
         this.typeService = typeService;
         this.ingredientQuantityService = ingredientQuantityService;
+        this.recipePhotoService = recipePhotoService;
     }
 
     @Override
@@ -101,12 +101,6 @@ public class RecipeImplementation implements RecipeService {
     }
 
 
-    public Set<Recipe> getRecipesByMissingIngredientId(Integer ingredientId) throws IngredientNotFoundException {
-        Set<Recipe> unAcceptableRecipes = ingredientQuantityService.getRecipesByIngredientId(ingredientId);
-        List<Recipe> recipes = getAllRecipes();
-        return recipes.stream().filter(unAcceptableRecipes::contains).collect(Collectors.toSet());
-
-    }
 
     @Override
     public Set<Recipe> getRecipesByMissingIngredientIdList(List<Integer> ingredientIds) throws IngredientNotFoundException {
@@ -167,19 +161,49 @@ public class RecipeImplementation implements RecipeService {
     }
 
 
+
     @Override
-    public Boolean isRecipeEnabled(Integer recipeId) throws RecipeNotFoundException {
-        Recipe recipe = getRecipeById(recipeId);
-        return recipe.isEnabled();
+    public Recipe updateRecipe(RecipeVo recipeVo) throws RecipeNotFoundException {
+        Recipe recipe = this.getRecipeById(recipeVo.getId());
+        if (recipeVo.getTypeId()!=null) {
+            Type type = typeService.getTypeById(recipeVo.getTypeId());
+            recipe.setType(type);
+        }
+        if (!recipeVo.getDescription().isEmpty()){
+            recipe.setDescription(recipeVo.getDescription());
+        }
+        if (!recipeVo.getName().isEmpty()){
+            recipe.setName(recipeVo.getName());
+        }
+        if (recipeVo.getPeopleAmount()!=null){
+            recipe.setPeopleAmount(recipeVo.getPeopleAmount());
+        }
+        if (recipeVo.getMainPhoto()!=null){
+            //RecipePhoto mainPhoto = recipePhotoService.getRecipePhotoById(recipeVo.getMainPhoto());
+        }
+        if (recipeVo.getPortions()!=null){
+            recipe.setPortions(recipeVo.getPortions());
+        }
+        if (recipeVo.getDuration()!=null){
+            recipe.setDuration(recipeVo.getDuration());
+        }
+        return recipeRepository.save(recipe);
     }
 
-
-    @Override
-    public Recipe saveOrUpdateRecipe(RecipeVo recipeVo) throws UserNotFoundException {
-        validateRecipeData(recipeVo);
+    public Recipe saveRecipe(RecipeVo recipeVo) throws UserNotFoundException {
         User owner = userService.getUserById(recipeVo.getOwnerId());
         Type type = typeService.getTypeById(recipeVo.getTypeId());
+        recipeVo.setEnabled(false);
+        recipeVo.setTimestamp(null);
         return recipeRepository.save(recipeVo.toModel(owner, type));
+    }
+
+    @Override
+    public Recipe enabledRecipe(Integer recipeId) throws RecipeNotFoundException {
+        Recipe recipe = getRecipeById(recipeId);
+        recipe.setEnabled(true);
+        recipe.setTimestamp(LocalDateTime.now());
+        return recipeRepository.save(recipe);
     }
 
     @Override

@@ -123,19 +123,6 @@ public class RecipeController {
     }
 
 
-    @GetMapping("/enabled/{recipeId}")
-    @ApiOperation(value = "Verificar si una receta esta habilitada", response = Boolean.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "La receta esta habilitada o deshabilitada"),
-            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
-            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
-            @ApiResponse(code = 404, message = "No existen dicha receta")
-
-    })
-    public ResponseEntity<Boolean> isRecipeEnabled(@PathVariable Integer recipeId) throws UserNotFoundException, RecipeNotFoundException {
-        return ResponseEntity.status(HttpStatus.OK).body(recipeService.isRecipeEnabled(recipeId));
-    }
-
     @PutMapping("/enabled/{recipeId}")
     @ApiOperation(value = "Habilitar una receta", response = ResponseEntity.class)
     @ApiResponses(value = {
@@ -228,7 +215,7 @@ public class RecipeController {
 
     })
     public ResponseEntity<RecipeVo> saveRecipe(@RequestBody RecipeVo recipeVo) throws InstructionNotFoundException, UserNotFoundException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.saveOrUpdateRecipe(recipeVo).toVO());
+        return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.saveRecipe(recipeVo).toVO());
     }
 
 
@@ -241,8 +228,8 @@ public class RecipeController {
             @ApiResponse(code = 404, message = "El usuario/plato/tipo/foto de receta no fueron encontrados"),
 
     })
-    public ResponseEntity<RecipeVo> updateRecipe(@RequestBody RecipeVo recipeVo) throws InstructionNotFoundException, UserNotFoundException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.saveOrUpdateRecipe(recipeVo).toVO());
+    public ResponseEntity<RecipeVo> updateRecipe(@RequestBody RecipeVo recipeVo) throws RecipeNotFoundException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(recipeService.updateRecipe(recipeVo).toVO());
     }
 
 

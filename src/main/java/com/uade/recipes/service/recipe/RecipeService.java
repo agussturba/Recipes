@@ -2,13 +2,11 @@ package com.uade.recipes.service.recipe;
 
 import com.uade.recipes.exceptions.ingredientExceptions.CannotDivideTheIngredientException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
-import com.uade.recipes.exceptions.instructionExceptions.InstructionNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.IngredientQuantity;
 import com.uade.recipes.model.Recipe;
 import com.uade.recipes.vo.RecipeVo;
-import org.springframework.data.jpa.repository.Query;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,21 +27,23 @@ public interface RecipeService {
 
     Set<Recipe> getRecipesByTypesAndExcludedIngredients(List<Integer> typesIds, List<Integer> ingredientsIds) throws IngredientNotFoundException;
 
-    Set<Recipe> getRecipesByTypesAndIngredients(List<Integer> typesIds,List<Integer> ingredientsIds) throws IngredientNotFoundException;
+    Set<Recipe> getRecipesByTypesAndIngredients(List<Integer> typesIds, List<Integer> ingredientsIds) throws IngredientNotFoundException;
 
     Set<Recipe> getRecipesByIngredients(List<Integer> ingredientsIds) throws IngredientNotFoundException;
 
     Set<Recipe> getRecipesByMissingIngredientIdList(List<Integer> ingredientIds) throws IngredientNotFoundException;
 
-    Set<Recipe> getRecipesByIncludedIngredientsAndExcludedIngredients(List<Integer> includedIngredientsIds,List<Integer> excludedIngredientsIds) throws IngredientNotFoundException;
+    Set<Recipe> getRecipesByIncludedIngredientsAndExcludedIngredients(List<Integer> includedIngredientsIds, List<Integer> excludedIngredientsIds) throws IngredientNotFoundException;
 
-    Set<Recipe> getRecipesByIncludedIngredientsAndExcludedIngredientsAndTypes(List<Integer> includedIngredientsIds,List<Integer> excludedIngredientsIds,List<Integer> typesIds) throws IngredientNotFoundException;
+    Set<Recipe> getRecipesByIncludedIngredientsAndExcludedIngredientsAndTypes(List<Integer> includedIngredientsIds, List<Integer> excludedIngredientsIds, List<Integer> typesIds) throws IngredientNotFoundException;
 
     List<Recipe> getRecipesByOwnerIdAndPeopleAmount(Integer ownerId, Integer peopleAmount) throws UserNotFoundException;
 
-    Boolean isRecipeEnabled(Integer recipeId) throws UserNotFoundException, RecipeNotFoundException;
+    Recipe updateRecipe(RecipeVo recipeVo) throws RecipeNotFoundException;
 
-    Recipe saveOrUpdateRecipe(RecipeVo RecipeVo) throws  InstructionNotFoundException, UserNotFoundException;
+    Recipe saveRecipe(RecipeVo recipeVo) throws UserNotFoundException;
+
+    Recipe enabledRecipe(Integer recipeId) throws RecipeNotFoundException;
 
     List<IngredientQuantity> convertRecipeIngredientQuantityByIngredientIdAndRecipeIdAndNewQuantity(Integer ingredientId, Double newQuantity, Integer recipeId) throws IngredientNotFoundException, RecipeNotFoundException, CannotDivideTheIngredientException;
 
