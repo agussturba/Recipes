@@ -180,13 +180,6 @@ class RecipeImplementationTest {
 
 
 
-    @Test
-    void isRecipeEnabled() throws RecipeNotFoundException {
-        when(recipeRepository.findById(any(Integer.class))).thenReturn(java.util.Optional.ofNullable(testRecipe));
-        Boolean isEnabled = recipeImplementation.isRecipeEnabled(1);
-        assertTrue(isEnabled);
-        verify(recipeRepository).findById(1);
-    }
 
     @Test
     void saveOrUpdateRecipe() {

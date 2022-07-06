@@ -19,7 +19,7 @@ public class Multimedia {
     @Id
     @GeneratedValue
     private Integer id;
-    @OneToMany
+    @OneToOne
     private Instruction instruction;
     private String typeContent;
     private String extension;
