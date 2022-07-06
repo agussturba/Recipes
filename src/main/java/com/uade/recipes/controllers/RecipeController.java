@@ -132,8 +132,8 @@ public class RecipeController {
             @ApiResponse(code = 404, message = "No existen dicha receta")
 
     })
-    public ResponseEntity<RecipeVo> enabledRecipeByRecipeId(@PathVariable Integer recipeId) {
-        return ResponseEntity.status(HttpStatus.OK).body(new RecipeVo());
+    public ResponseEntity<RecipeVo> enabledRecipeByRecipeId(@PathVariable Integer recipeId) throws RecipeNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(recipeService.enabledRecipe(recipeId).toVO());
     }
 
     @GetMapping("/type")
