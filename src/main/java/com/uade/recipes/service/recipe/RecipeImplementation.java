@@ -156,7 +156,14 @@ public class RecipeImplementation implements RecipeService {
         String filename = url.get(url.size() - 1);
         String publicId = filename.substring(0, filename.indexOf("."));
         cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
-        recipe.setMainPhoto(null);
+        try {
+            List<RecipePhoto> rplist = recipePhotoService.getRecipePhotosByRecipeId(recipeId);
+            RecipePhoto rp = rplist.get(0);
+            recipe.setMainPhoto(rp.getPhotoUrl());
+            recipePhotoService.deleteRecipePhotoFromDB(rp.getId());
+        } catch (Exception e) {
+            recipe.setMainPhoto(null);
+        }
         recipeRepository.save(recipe);
     }
 
