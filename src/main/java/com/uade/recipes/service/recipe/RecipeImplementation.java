@@ -5,10 +5,12 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.uade.recipes.exceptions.ingredientExceptions.CannotDivideTheIngredientException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
+import com.uade.recipes.exceptions.instructionExceptions.InstructionNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.*;
 import com.uade.recipes.persistance.InstructionRepository;
+import com.uade.recipes.persistance.MultimediaRepository;
 import com.uade.recipes.persistance.RecipeRepository;
 import com.uade.recipes.service.email.EmailSenderService;
 import com.uade.recipes.service.ingredientQuantity.IngredientQuantityService;
@@ -35,8 +37,9 @@ public class RecipeImplementation implements RecipeService {
     private final Cloudinary cloudinary = CloudinaryUtil.getInstance();
     private final EmailSenderService emailSenderService;
     private final InstructionRepository instructionRepository;
+    private final MultimediaRepository multimediaRepository;
 
-    public RecipeImplementation(RecipeRepository recipeRepository, UserService userService, TypeService typeService, IngredientQuantityService ingredientQuantityService, RecipePhotoService recipePhotoService, EmailSenderService emailSenderService, InstructionRepository instructionRepository) {
+    public RecipeImplementation(RecipeRepository recipeRepository, UserService userService, TypeService typeService, IngredientQuantityService ingredientQuantityService, RecipePhotoService recipePhotoService, EmailSenderService emailSenderService, InstructionRepository instructionRepository, MultimediaRepository multimediaRepository) {
         this.recipeRepository = recipeRepository;
         this.userService = userService;
         this.typeService = typeService;
@@ -44,6 +47,7 @@ public class RecipeImplementation implements RecipeService {
         this.recipePhotoService = recipePhotoService;
         this.emailSenderService = emailSenderService;
         this.instructionRepository = instructionRepository;
+        this.multimediaRepository = multimediaRepository;
     }
 
     @Override
@@ -155,9 +159,13 @@ public class RecipeImplementation implements RecipeService {
     }
 
     @Override
-    public void deleteRecipeByRecipeId(Integer recipeId) throws RecipeNotFoundException {
+    public void deleteRecipeByRecipeId(Integer recipeId) throws RecipeNotFoundException, InstructionNotFoundException {
         Recipe recipe = this.getRecipeById(recipeId);
         List<Instruction> instructions = getInstructionsByRecipeId(recipeId);
+        for (Instruction instruction:instructions) {
+            List<Multimedia> multimediaList = this.getMultimediaByInstructionId(instruction.getId());
+            multimediaRepository.deleteAll(multimediaList);
+        }
         instructionRepository.deleteAll(instructions);
         ingredientQuantityService.deleteAllIngredientQuantities(recipeId);
         recipeRepository.delete(recipe);
@@ -198,9 +206,6 @@ public class RecipeImplementation implements RecipeService {
         }
         if (recipeVo.getPeopleAmount()!=null){
             recipe.setPeopleAmount(recipeVo.getPeopleAmount());
-        }
-        if (recipeVo.getMainPhoto()!=null){
-            //RecipePhoto mainPhoto = recipePhotoService.getRecipePhotoById(recipeVo.getMainPhoto());
         }
         if (recipeVo.getPortions()!=null){
             recipe.setPortions(recipeVo.getPortions());
@@ -255,7 +260,10 @@ public class RecipeImplementation implements RecipeService {
         }
         return recipes;
     }
-
+    private  List<Multimedia> getMultimediaByInstructionId(Integer instructionId) throws InstructionNotFoundException {
+        Instruction instruction = instructionRepository.findById(instructionId).orElseThrow(InstructionNotFoundException::new);
+        return  multimediaRepository.findByInstruction(instruction);
+    }
     private List<Instruction> getInstructionsByRecipeId(Integer recipeId) throws RecipeNotFoundException {
         Recipe recipe = this.getRecipeById(recipeId);
         return instructionRepository.findByRecipe(recipe);

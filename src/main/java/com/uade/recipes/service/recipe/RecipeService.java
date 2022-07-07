@@ -2,6 +2,7 @@ package com.uade.recipes.service.recipe;
 
 import com.uade.recipes.exceptions.ingredientExceptions.CannotDivideTheIngredientException;
 import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundException;
+import com.uade.recipes.exceptions.instructionExceptions.InstructionNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.IngredientQuantity;
@@ -55,7 +56,7 @@ public interface RecipeService {
 
     Integer getAmountOfRecipesByOwnerId(Integer ownerId) throws UserNotFoundException;
 
-    void deleteRecipeByRecipeId(Integer recipeId) throws RecipeNotFoundException;
+    void deleteRecipeByRecipeId(Integer recipeId) throws RecipeNotFoundException, InstructionNotFoundException;
 
     void deleteMainPhoto(Integer recipeId) throws RecipeNotFoundException, IOException;
 }
