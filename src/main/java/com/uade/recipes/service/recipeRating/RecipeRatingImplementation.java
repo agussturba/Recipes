@@ -52,6 +52,9 @@ public class RecipeRatingImplementation implements RecipeRatingService {
         List<RecipeRating> recipeRatingList = getRecipeRatingByRecipeId(recipeId);
         Double totalRating = getTotalRating(recipeRatingList);
         Integer amountOfRatings = getAmountOfRatingsByRecipeId(recipeId);
+        if (getAmountOfRatingsByRecipeId(recipeId) == 0) {
+            return 0D;
+        }
         return totalRating / amountOfRatings;
     }
 
