@@ -110,12 +110,11 @@ public class RecipeImplementation implements RecipeService {
     }
 
 
-
     @Override
     public Set<Recipe> getRecipesByMissingIngredientIdList(List<Integer> ingredientIds) throws IngredientNotFoundException {
         Set<Recipe> recipeSet = new HashSet<>(getAllRecipes());
         for (Integer ingredientId : ingredientIds) {
-            recipeSet=filterRecipesByIngredientId(recipeSet, ingredientId);
+            recipeSet = filterRecipesByIngredientId(recipeSet, ingredientId);
         }
         return recipeSet;
     }
@@ -129,7 +128,7 @@ public class RecipeImplementation implements RecipeService {
     @Override
     public Set<Recipe> getRecipesByIncludedIngredientsAndExcludedIngredients(List<Integer> includedIngredientsIds, List<Integer> excludedIngredientsIds) throws IngredientNotFoundException {
         Set<Recipe> recipesByIngredients = this.getRecipesByIngredients(includedIngredientsIds);
-        for (Integer excludedIngredientId: excludedIngredientsIds) {
+        for (Integer excludedIngredientId : excludedIngredientsIds) {
             filterRecipesByIngredientId(recipesByIngredients, excludedIngredientId);
         }
         return recipesByIngredients;
@@ -139,8 +138,8 @@ public class RecipeImplementation implements RecipeService {
     public Set<Recipe> getRecipesByIncludedIngredientsAndExcludedIngredientsAndTypes(List<Integer> includedIngredientsIds, List<Integer> excludedIngredientsIds, List<Integer> typesIds) throws IngredientNotFoundException {
         Set<Recipe> recipesByIngredients = this.getRecipesByIngredients(includedIngredientsIds);
         Set<Recipe> typesRecipe = new HashSet<>(this.getRecipesByTypes(typesIds));
-        Set<Recipe> recipeSet =  intersectionSet(recipesByIngredients, typesRecipe);
-        for (Integer excludedIngredientId: excludedIngredientsIds) {
+        Set<Recipe> recipeSet = intersectionSet(recipesByIngredients, typesRecipe);
+        for (Integer excludedIngredientId : excludedIngredientsIds) {
             filterRecipesByIngredientId(recipeSet, excludedIngredientId);
         }
         return recipeSet;
@@ -159,14 +158,10 @@ public class RecipeImplementation implements RecipeService {
     }
 
     @Override
-    public void deleteRecipeByRecipeId(Integer recipeId) throws RecipeNotFoundException, InstructionNotFoundException {
+    public void deleteRecipeByRecipeId(Integer recipeId) throws RecipeNotFoundException, InstructionNotFoundException, IOException {
         Recipe recipe = this.getRecipeById(recipeId);
-        List<Instruction> instructions = getInstructionsByRecipeId(recipeId);
-        for (Instruction instruction:instructions) {
-            List<Multimedia> multimediaList = this.getMultimediaByInstructionId(instruction.getId());
-            multimediaRepository.deleteAll(multimediaList);
-        }
-        instructionRepository.deleteAll(instructions);
+        deleteRecipesPhotos(recipeId);
+        deleteInstructions(recipeId);
         ingredientQuantityService.deleteAllIngredientQuantities(recipeId);
         recipeRepository.delete(recipe);
     }
@@ -179,10 +174,10 @@ public class RecipeImplementation implements RecipeService {
         String publicId = filename.substring(0, filename.indexOf("."));
         cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
         try {
-            List<RecipePhoto> rplist = recipePhotoService.getRecipePhotosByRecipeId(recipeId);
-            RecipePhoto rp = rplist.get(0);
-            recipe.setMainPhoto(rp.getPhotoUrl());
-            recipePhotoService.deleteRecipePhotoFromDB(rp.getId());
+            List<RecipePhoto> recipePhotoList = recipePhotoService.getRecipePhotosByRecipeId(recipeId);
+            RecipePhoto recipePhoto = recipePhotoList.get(0);
+            recipe.setMainPhoto(recipePhoto.getPhotoUrl());
+            recipePhotoService.deleteRecipePhotoFromDB(recipePhoto.getId());
         } catch (Exception e) {
             recipe.setMainPhoto(null);
         }
@@ -190,27 +185,26 @@ public class RecipeImplementation implements RecipeService {
     }
 
 
-
     @Override
     public Recipe updateRecipe(RecipeVo recipeVo) throws RecipeNotFoundException {
         Recipe recipe = this.getRecipeById(recipeVo.getId());
-        if (recipeVo.getTypeId()!=null) {
+        if (recipeVo.getTypeId() != null) {
             Type type = typeService.getTypeById(recipeVo.getTypeId());
             recipe.setType(type);
         }
-        if (!recipeVo.getDescription().isEmpty()){
+        if (!recipeVo.getDescription().isEmpty()) {
             recipe.setDescription(recipeVo.getDescription());
         }
-        if (!recipeVo.getName().isEmpty()){
+        if (!recipeVo.getName().isEmpty()) {
             recipe.setName(recipeVo.getName());
         }
-        if (recipeVo.getPeopleAmount()!=null){
+        if (recipeVo.getPeopleAmount() != null) {
             recipe.setPeopleAmount(recipeVo.getPeopleAmount());
         }
-        if (recipeVo.getPortions()!=null){
+        if (recipeVo.getPortions() != null) {
             recipe.setPortions(recipeVo.getPortions());
         }
-        if (recipeVo.getDuration()!=null){
+        if (recipeVo.getDuration() != null) {
             recipe.setDuration(recipeVo.getDuration());
         }
         return recipeRepository.save(recipe);
@@ -230,7 +224,7 @@ public class RecipeImplementation implements RecipeService {
         User owner = userService.getUserById(recipe.getOwnerId());
         recipe.setEnabled(true);
         recipe.setTimestamp(LocalDateTime.now());
-        emailSenderService.sendSimpleEmail(owner.getEmail(), "Felicitaciones " + owner.getName() +  "!\nTu receta \"" + recipe.getName() + "\" Ha sido aprobada.\nMuchas gracias por tu aporte a nuestra comunidad!", "Tu receta \"" + recipe.getName() + "\" ha sido aprobada");
+        emailSenderService.sendSimpleEmail(owner.getEmail(), "Felicitaciones " + owner.getName() + "!\nTu receta \"" + recipe.getName() + "\" Ha sido aprobada.\nMuchas gracias por tu aporte a nuestra comunidad!", "Tu receta \"" + recipe.getName() + "\" ha sido aprobada");
         return recipeRepository.save(recipe);
     }
 
@@ -260,17 +254,40 @@ public class RecipeImplementation implements RecipeService {
         }
         return recipes;
     }
-    private  List<Multimedia> getMultimediaByInstructionId(Integer instructionId) throws InstructionNotFoundException {
+
+    private List<Multimedia> getMultimediaByInstructionId(Integer instructionId) throws InstructionNotFoundException {
         Instruction instruction = instructionRepository.findById(instructionId).orElseThrow(InstructionNotFoundException::new);
-        return  multimediaRepository.findByInstruction(instruction);
+        return multimediaRepository.findByInstruction(instruction);
     }
+
     private List<Instruction> getInstructionsByRecipeId(Integer recipeId) throws RecipeNotFoundException {
         Recipe recipe = this.getRecipeById(recipeId);
         return instructionRepository.findByRecipe(recipe);
     }
+
     private Double getConversionFactor(Double oldQuantity, Double newQuantity) {
         return newQuantity / oldQuantity;
     }
 
+    private void deleteRecipesPhotos(Integer recipeId) throws RecipeNotFoundException, IOException {
+        deleteMainPhoto(recipeId);
+        List<RecipePhoto> recipePhotos = recipePhotoService.getRecipePhotosByRecipeId(recipeId);
+        for (RecipePhoto recipePhoto :
+                recipePhotos) {
+            recipePhotoService.deleteRecipePhotoFromDB(recipePhoto.getId());
+        }
+
+    }
+    private void deleteInstructions(Integer recipeId) throws RecipeNotFoundException, InstructionNotFoundException {
+        List<Instruction> instructions = getInstructionsByRecipeId(recipeId);
+        deleteMultimediaByListInstruction(instructions);
+        instructionRepository.deleteAll(instructions);
+    }
+    private void deleteMultimediaByListInstruction(List<Instruction> instructionList) throws InstructionNotFoundException {
+        for (Instruction instruction : instructionList) {
+            List<Multimedia> multimediaList = this.getMultimediaByInstructionId(instruction.getId());
+            multimediaRepository.deleteAll(multimediaList);
+        }
+    }
 
 }
