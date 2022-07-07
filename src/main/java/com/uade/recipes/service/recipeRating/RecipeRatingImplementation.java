@@ -61,10 +61,9 @@ public class RecipeRatingImplementation implements RecipeRatingService {
     }
 
     @Override
-    public RecipeRating saveOrUpdateRecipeRating(RecipeRatingVo recipeRatingVo) throws UserNotFoundException, RecipeNotFoundException, RatingIsLowerThanZeroException, RatingIsNullException {
+    public RecipeRating updateRecipeRating(RecipeRatingVo recipeRatingVo) throws UserNotFoundException, RecipeNotFoundException {
 
         RecipeRating recipeRating = getRecipeRatingByRecipeIdAndUserId(recipeRatingVo.getRecipeId(), recipeRatingVo.getUserId());
-
         if (recipeRating == null) {
             User user = userService.getUserById(recipeRatingVo.getUserId());
             Recipe recipe = recipeService.getRecipeById(recipeRatingVo.getRecipeId());

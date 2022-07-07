@@ -88,7 +88,7 @@ public class RecipeRatingController {
 
     })
     public ResponseEntity<RecipeRatingVo> updateRecipeRating(@RequestBody RecipeRatingVo recipeRatingVo) throws UserNotFoundException, RecipeNotFoundException, RatingIsLowerThanZeroException, RatingIsNullException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(recipeRatingService.saveOrUpdateRecipeRating(recipeRatingVo).toVO());
+        return ResponseEntity.status(HttpStatus.CREATED).body(recipeRatingService.updateRecipeRating(recipeRatingVo).toVO());
     }
 
     @GetMapping("/user")
