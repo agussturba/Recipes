@@ -160,7 +160,9 @@ public class RecipeImplementation implements RecipeService {
     @Override
     public void deleteRecipeByRecipeId(Integer recipeId) throws RecipeNotFoundException, InstructionNotFoundException, IOException {
         Recipe recipe = this.getRecipeById(recipeId);
-        deleteRecipesPhotos(recipeId);
+        if (recipe.getMainPhoto() != null) {
+            deleteRecipesPhotos(recipeId);
+        }
         deleteInstructions(recipeId);
         ingredientQuantityService.deleteAllIngredientQuantities(recipeId);
         recipeRepository.delete(recipe);
@@ -278,11 +280,13 @@ public class RecipeImplementation implements RecipeService {
         }
 
     }
+
     private void deleteInstructions(Integer recipeId) throws RecipeNotFoundException, InstructionNotFoundException {
         List<Instruction> instructions = getInstructionsByRecipeId(recipeId);
         deleteMultimediaByListInstruction(instructions);
         instructionRepository.deleteAll(instructions);
     }
+
     private void deleteMultimediaByListInstruction(List<Instruction> instructionList) throws InstructionNotFoundException {
         for (Instruction instruction : instructionList) {
             List<Multimedia> multimediaList = this.getMultimediaByInstructionId(instruction.getId());
