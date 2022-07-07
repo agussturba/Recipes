@@ -12,6 +12,7 @@ import com.uade.recipes.persistance.RecipeRatingRepository;
 import com.uade.recipes.service.recipe.RecipeService;
 import com.uade.recipes.service.user.UserService;
 import com.uade.recipes.vo.RecipeRatingVo;
+import com.uade.recipes.vo.RecipeVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -61,7 +62,6 @@ public class RecipeRatingImplementation implements RecipeRatingService {
 
     @Override
     public RecipeRating saveOrUpdateRecipeRating(RecipeRatingVo recipeRatingVo) throws UserNotFoundException, RecipeNotFoundException, RatingIsLowerThanZeroException, RatingIsNullException {
-        validateRatingData(recipeRatingVo);
 
         RecipeRating recipeRating = getRecipeRatingByRecipeIdAndUserId(recipeRatingVo.getRecipeId(), recipeRatingVo.getUserId());
 
@@ -75,6 +75,18 @@ public class RecipeRatingImplementation implements RecipeRatingService {
         }
 
         return recipeRatingRepository.save(recipeRating);
+    }
+    @Override
+    public RecipeRating saveRecipeRating(RecipeRatingVo recipeRatingVo) throws UserNotFoundException, RecipeNotFoundException {
+
+        User user = userService.getUserById(recipeRatingVo.getUserId());
+        Recipe recipe = recipeService.getRecipeById(recipeRatingVo.getRecipeId());
+        RecipeRating recipeRating = new RecipeRating();
+        recipeRating.setRating(recipeRatingVo.getRating());
+        recipeRating.setComments(recipeRatingVo.getComments());
+        recipeRating.setRecipe(recipe);
+        recipeRating.setUser(user);
+       return recipeRatingRepository.save(recipeRating);
     }
 
     @Override
