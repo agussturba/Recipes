@@ -103,8 +103,8 @@ public class IngredientQuantityImplementation implements IngredientQuantityServi
 
     @Override
     public void deleteAllIngredientQuantities(Integer recipeId) throws RecipeNotFoundException {
-        List<IngredientQuantity> iq = getIngredientQuantityByRecipeId(recipeId);
-        ingredientQuantityRepository.deleteAll(iq);
+        List<IngredientQuantity> ingredientQuantityList = getIngredientQuantityByRecipeId(recipeId);
+        ingredientQuantityRepository.deleteAll(ingredientQuantityList);
     }
 
     private IngredientQuantity convertIngredientQuantity(IngredientQuantity ingredientQuantity, Double conversionFactor) throws IngredientNotFoundException {

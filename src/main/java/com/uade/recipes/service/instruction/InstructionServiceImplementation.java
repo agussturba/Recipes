@@ -60,11 +60,7 @@ public class InstructionServiceImplementation implements InstructionService {
         instructionRepository.deleteAll(instructionList);
     }
 
-    @Override
-    public Instruction getInstructionByRecipeIdAndNumberOfStep(Integer recipeId, Integer numberOfStep) throws RecipeNotFoundException {
-        Recipe recipe = recipeService.getRecipeById(recipeId);
-        return instructionRepository.findByRecipeAndNumberOfStep(recipe, numberOfStep).orElseThrow(InstructionExistsException::new);
-    }
+
 
     @Override
     public void removeAllInstructions(Integer recipeId) throws RecipeNotFoundException {

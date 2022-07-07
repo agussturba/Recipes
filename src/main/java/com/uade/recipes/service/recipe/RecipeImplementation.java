@@ -8,6 +8,7 @@ import com.uade.recipes.exceptions.ingredientExceptions.IngredientNotFoundExcept
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.*;
+import com.uade.recipes.persistance.InstructionRepository;
 import com.uade.recipes.persistance.RecipeRepository;
 import com.uade.recipes.service.email.EmailSenderService;
 import com.uade.recipes.service.ingredientQuantity.IngredientQuantityService;
@@ -33,14 +34,16 @@ public class RecipeImplementation implements RecipeService {
     private final RecipePhotoService recipePhotoService;
     private final Cloudinary cloudinary = CloudinaryUtil.getInstance();
     private final EmailSenderService emailSenderService;
+    private final InstructionRepository instructionRepository;
 
-    public RecipeImplementation(RecipeRepository recipeRepository, UserService userService, TypeService typeService, IngredientQuantityService ingredientQuantityService, RecipePhotoService recipePhotoService, EmailSenderService emailSenderService) {
+    public RecipeImplementation(RecipeRepository recipeRepository, UserService userService, TypeService typeService, IngredientQuantityService ingredientQuantityService, RecipePhotoService recipePhotoService, EmailSenderService emailSenderService, InstructionRepository instructionRepository) {
         this.recipeRepository = recipeRepository;
         this.userService = userService;
         this.typeService = typeService;
         this.ingredientQuantityService = ingredientQuantityService;
         this.recipePhotoService = recipePhotoService;
         this.emailSenderService = emailSenderService;
+        this.instructionRepository = instructionRepository;
     }
 
     @Override
@@ -154,6 +157,9 @@ public class RecipeImplementation implements RecipeService {
     @Override
     public void deleteRecipeByRecipeId(Integer recipeId) throws RecipeNotFoundException {
         Recipe recipe = this.getRecipeById(recipeId);
+        List<Instruction> instructions = getInstructionsByRecipeId(recipeId);
+        instructionRepository.deleteAll(instructions);
+        ingredientQuantityService.deleteAllIngredientQuantities(recipeId);
         recipeRepository.delete(recipe);
     }
 
@@ -250,7 +256,10 @@ public class RecipeImplementation implements RecipeService {
         return recipes;
     }
 
-
+    private List<Instruction> getInstructionsByRecipeId(Integer recipeId) throws RecipeNotFoundException {
+        Recipe recipe = this.getRecipeById(recipeId);
+        return instructionRepository.findByRecipe(recipe);
+    }
     private Double getConversionFactor(Double oldQuantity, Double newQuantity) {
         return newQuantity / oldQuantity;
     }
