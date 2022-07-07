@@ -145,7 +145,7 @@ public class RecipeController {
             @ApiResponse(code = 404, message = "No existen dicha receta")
 
     })
-    public ResponseEntity deleteRecipeById(@PathVariable Integer recipeId) throws RecipeNotFoundException, InstructionNotFoundException {
+    public ResponseEntity deleteRecipeById(@PathVariable Integer recipeId) throws RecipeNotFoundException, InstructionNotFoundException, IOException {
         recipeService.deleteRecipeByRecipeId(recipeId);
         return new ResponseEntity(HttpStatus.OK);
     }
