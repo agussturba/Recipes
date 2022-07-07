@@ -9,6 +9,7 @@ import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.*;
 import com.uade.recipes.persistance.RecipeRepository;
+import com.uade.recipes.service.email.EmailSenderService;
 import com.uade.recipes.service.ingredientQuantity.IngredientQuantityService;
 import com.uade.recipes.service.recipePhoto.RecipePhotoService;
 import com.uade.recipes.service.type.TypeService;
@@ -31,13 +32,15 @@ public class RecipeImplementation implements RecipeService {
     private final IngredientQuantityService ingredientQuantityService;
     private final RecipePhotoService recipePhotoService;
     private final Cloudinary cloudinary = CloudinaryUtil.getInstance();
+    private final EmailSenderService emailSenderService;
 
-    public RecipeImplementation(RecipeRepository recipeRepository, UserService userService, TypeService typeService, IngredientQuantityService ingredientQuantityService, RecipePhotoService recipePhotoService) {
+    public RecipeImplementation(RecipeRepository recipeRepository, UserService userService, TypeService typeService, IngredientQuantityService ingredientQuantityService, RecipePhotoService recipePhotoService, EmailSenderService emailSenderService) {
         this.recipeRepository = recipeRepository;
         this.userService = userService;
         this.typeService = typeService;
         this.ingredientQuantityService = ingredientQuantityService;
         this.recipePhotoService = recipePhotoService;
+        this.emailSenderService = emailSenderService;
     }
 
     @Override
@@ -211,10 +214,12 @@ public class RecipeImplementation implements RecipeService {
     }
 
     @Override
-    public Recipe enabledRecipe(Integer recipeId) throws RecipeNotFoundException {
+    public Recipe enabledRecipe(Integer recipeId) throws RecipeNotFoundException, UserNotFoundException {
         Recipe recipe = getRecipeById(recipeId);
+        User owner = userService.getUserById(recipe.getOwnerId());
         recipe.setEnabled(true);
         recipe.setTimestamp(LocalDateTime.now());
+        emailSenderService.sendSimpleEmail(owner.getEmail(), "Felicitaciones " + owner.getName() +  "!\nTu receta \"" + recipe.getName() + "\" Ha sido aprobada.\nMuchas gracias por tu aporte a nuestra comunidad!", "Tu receta \"" + recipe.getName() + "\" ha sido aprobada");
         return recipeRepository.save(recipe);
     }
 
