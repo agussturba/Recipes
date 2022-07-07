@@ -136,6 +136,20 @@ public class RecipeController {
         return ResponseEntity.status(HttpStatus.OK).body(recipeService.enabledRecipe(recipeId).toVO());
     }
 
+    @DeleteMapping("/{recipeId}")
+    @ApiOperation(value = "Eliminar una receta por su id", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "La receta fue eliminada"),
+            @ApiResponse(code = 401, message = "No esta autorizado a ver este recurso"),
+            @ApiResponse(code = 403, message = "Está prohibido acceder al recurso al que intentas acceder"),
+            @ApiResponse(code = 404, message = "No existen dicha receta")
+
+    })
+    public ResponseEntity deleteRecipeById(@PathVariable Integer recipeId) throws RecipeNotFoundException {
+        recipeService.deleteRecipeByRecipeId(recipeId);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @GetMapping("/type")
     @ApiOperation(value = "Obtener una lista de recetas a partir un grupo de tipos", response = Iterable.class)
     @ApiResponses(value = {

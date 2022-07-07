@@ -1,9 +1,7 @@
 package com.uade.recipes.service.recipeRating;
 
-import com.uade.recipes.exceptions.recipeRatingExceptions.RecipeRatingNotFoundException;
 import com.uade.recipes.exceptions.recipeExceptions.RecipeNotFoundException;
-import com.uade.recipes.exceptions.recipeRatingExceptions.RatingIsLowerThanZeroException;
-import com.uade.recipes.exceptions.recipeRatingExceptions.RatingIsNullException;
+import com.uade.recipes.exceptions.recipeRatingExceptions.RecipeRatingNotFoundException;
 import com.uade.recipes.exceptions.userExceptions.UserNotFoundException;
 import com.uade.recipes.model.Recipe;
 import com.uade.recipes.model.RecipeRating;
@@ -12,13 +10,10 @@ import com.uade.recipes.persistance.RecipeRatingRepository;
 import com.uade.recipes.service.recipe.RecipeService;
 import com.uade.recipes.service.user.UserService;
 import com.uade.recipes.vo.RecipeRatingVo;
-import com.uade.recipes.vo.RecipeVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.uade.recipes.validations.RatingValidations.validateRatingData;
 
 @Service
 public class RecipeRatingImplementation implements RecipeRatingService {
@@ -62,19 +57,12 @@ public class RecipeRatingImplementation implements RecipeRatingService {
 
     @Override
     public RecipeRating updateRecipeRating(RecipeRatingVo recipeRatingVo) throws UserNotFoundException, RecipeNotFoundException {
-
         RecipeRating recipeRating = getRecipeRatingByRecipeIdAndUserId(recipeRatingVo.getRecipeId(), recipeRatingVo.getUserId());
-        if (recipeRating == null) {
-            User user = userService.getUserById(recipeRatingVo.getUserId());
-            Recipe recipe = recipeService.getRecipeById(recipeRatingVo.getRecipeId());
-            recipeRating = recipeRatingVo.toModel(recipe, user);
-        } else {
-            recipeRating.setRating(recipeRatingVo.getRating());
-            recipeRating.setComments(recipeRatingVo.getComments());
-        }
-
+        recipeRating.setRating(recipeRatingVo.getRating());
+        recipeRating.setComments(recipeRatingVo.getComments());
         return recipeRatingRepository.save(recipeRating);
     }
+
     @Override
     public RecipeRating saveRecipeRating(RecipeRatingVo recipeRatingVo) throws UserNotFoundException, RecipeNotFoundException {
 
@@ -85,7 +73,7 @@ public class RecipeRatingImplementation implements RecipeRatingService {
         recipeRating.setComments(recipeRatingVo.getComments());
         recipeRating.setRecipe(recipe);
         recipeRating.setUser(user);
-       return recipeRatingRepository.save(recipeRating);
+        return recipeRatingRepository.save(recipeRating);
     }
 
     @Override

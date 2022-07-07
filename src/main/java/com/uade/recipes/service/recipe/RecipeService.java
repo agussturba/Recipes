@@ -55,5 +55,7 @@ public interface RecipeService {
 
     Integer getAmountOfRecipesByOwnerId(Integer ownerId) throws UserNotFoundException;
 
+    void deleteRecipeByRecipeId(Integer recipeId) throws RecipeNotFoundException;
+
     void deleteMainPhoto(Integer recipeId) throws RecipeNotFoundException, IOException;
 }
