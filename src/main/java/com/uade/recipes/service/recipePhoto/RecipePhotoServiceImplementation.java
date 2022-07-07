@@ -96,6 +96,12 @@ public class RecipePhotoServiceImplementation implements RecipePhotoService {
         }
     }
 
+    @Override
+    public void deleteRecipePhotoFromDB(Integer recipePhotoId) throws RecipeNotFoundException {
+        RecipePhoto rp = getRecipePhotoById(recipePhotoId);
+        recipePhotoRepository.delete(rp);
+    }
+
     public List<RecipePhoto> getRecipePhotosByIds(List<Integer> recipePhotoIdList) {
         return (List<RecipePhoto>) recipePhotoRepository.findAllById(recipePhotoIdList);
     }
