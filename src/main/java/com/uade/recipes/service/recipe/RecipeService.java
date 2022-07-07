@@ -43,7 +43,7 @@ public interface RecipeService {
 
     Recipe saveRecipe(RecipeVo recipeVo) throws UserNotFoundException;
 
-    Recipe enabledRecipe(Integer recipeId) throws RecipeNotFoundException;
+    Recipe enabledRecipe(Integer recipeId) throws RecipeNotFoundException, UserNotFoundException;
 
     List<IngredientQuantity> convertRecipeIngredientQuantityByIngredientIdAndRecipeIdAndNewQuantity(Integer ingredientId, Double newQuantity, Integer recipeId) throws IngredientNotFoundException, RecipeNotFoundException, CannotDivideTheIngredientException;
 
