@@ -82,11 +82,15 @@ public class RecipeRatingImplementation implements RecipeRatingService {
     @Override
     public Double getAverageOfRecipeRatingsByUser(Integer userId) throws UserNotFoundException, RecipeNotFoundException {
         List<Recipe> recipes = recipeService.getRecipesByOwnerId(userId);
+        Integer amountOfRecipes = recipes.size();
         Double total = 0d;
         for (Recipe r : recipes) {
+            if (getAverageOfRecipeRatingsByRecipeId(r.getId()) == 0D){
+                amountOfRecipes-=1;
+            }
             total += getAverageOfRecipeRatingsByRecipeId(r.getId());
         }
-        return total / recipes.size();
+        return total / amountOfRecipes;
     }
 
     private Double getTotalRating(List<RecipeRating> ratingList) {
